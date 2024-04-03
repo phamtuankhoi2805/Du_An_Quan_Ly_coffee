@@ -885,7 +885,6 @@ public class QuanLyView extends JFrame {
 		txt_idCaLam = new JTextField();
 		txt_idCaLam.setForeground(Color.BLACK);
 		txt_idCaLam.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_idCaLam.setEditable(false);
 		txt_idCaLam.setColumns(10);
 		txt_idCaLam.setBorder(new CompoundBorder());
 		txt_idCaLam.setBackground(Color.WHITE);
@@ -895,7 +894,6 @@ public class QuanLyView extends JFrame {
 		txt_tenCaLam = new JTextField();
 		txt_tenCaLam.setForeground(Color.BLACK);
 		txt_tenCaLam.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_tenCaLam.setEditable(false);
 		txt_tenCaLam.setColumns(10);
 		txt_tenCaLam.setBorder(new CompoundBorder());
 		txt_tenCaLam.setBackground(Color.WHITE);
@@ -913,6 +911,7 @@ public class QuanLyView extends JFrame {
 	            int rowIndex = tbl_caLam().getSelectedRow();
 	             idCaLam = (String) tbl_caLam().getValueAt(rowIndex, 0);
 	               qlc.fildTableXepCa(idCaLam);
+	        
 	        }
 	    });
 		tbl_CaLam.setModel(new DefaultTableModel(new Object[][] {},
@@ -935,7 +934,6 @@ public class QuanLyView extends JFrame {
 		txt_Ngay = new JTextField();
 		txt_Ngay.setForeground(Color.BLACK);
 		txt_Ngay.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_Ngay.setEditable(false);
 		txt_Ngay.setColumns(10);
 		txt_Ngay.setBorder(new CompoundBorder());
 		txt_Ngay.setBackground(Color.WHITE);
@@ -966,13 +964,17 @@ public class QuanLyView extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			     int rowIndex1 = tbl_xepCa.getSelectedRow();
-	           String idNhanVien = (String) tbl_caLam().getValueAt(rowIndex1, 0);
+	           String idNhanVien = (String) tbl_xepCa.getValueAt(rowIndex1, 0);
+	           System.out.println(idNhanVien);
+	           System.out.println(idCaLam);
 	           int choice = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm nhân viên vào ca làm?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 	           
 
 	           if (choice == JOptionPane.YES_OPTION) {
 	            try {
 	                NhanVienDAO.getInstance().updateCaLam(idCaLam, idNhanVien);
+	                qlc.fildTableCaLam();
+	                qlc.fildTableXepCa(idCaLam);
 	               JOptionPane.showMessageDialog(null, "thành công");
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -986,7 +988,7 @@ public class QuanLyView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID NV", "T\u00EAn NV", "ID Ca Làm Trong Ngày"
+				"ID NV", "T\u00EAn NV"
 			}
 		));
 		tbl_xepCa.setBounds(22, 356, 1005, 320);

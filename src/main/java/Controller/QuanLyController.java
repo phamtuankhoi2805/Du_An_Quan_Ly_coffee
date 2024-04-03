@@ -685,7 +685,7 @@ public class QuanLyController implements ActionListener {
 
 			    for (NhanVienModel sp : listNVXepCa) {
 			    	
-			        Object[] rowData = { sp.getIdNhanVien(), sp.getTenNV(), sp.getIdCaLam()};
+			        Object[] rowData = { sp.getIdNhanVien(), sp.getTenNV()};
 			        model.addRow(rowData);
 			        
 			 
