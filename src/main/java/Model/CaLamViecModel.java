@@ -7,7 +7,7 @@ private String idCaLam;
 private String tenCaLam;
 private String thoiGian;
 private String Ngay;
-
+private String idNhanVien;
 public CaLamViecModel() {
 
 }
@@ -18,6 +18,15 @@ public CaLamViecModel(String idCaLam, String tenCaLam, String thoiGian, String n
 	this.tenCaLam = tenCaLam;
 	this.thoiGian = thoiGian;
 	Ngay = ngay;
+}
+
+public CaLamViecModel(String idCaLam, String tenCaLam, String thoiGian, String ngay, String idNhanVien) {
+
+	this.idCaLam = idCaLam;
+	this.tenCaLam = tenCaLam;
+	this.thoiGian = thoiGian;
+	Ngay = ngay;
+	this.idNhanVien = idNhanVien;
 }
 
 public String getIdCaLam() {
@@ -50,6 +59,14 @@ public String getNgay() {
 
 public void setNgay(String ngay) {
 	Ngay = ngay;
+}
+
+public String getIdNhanVien() {
+	return idNhanVien;
+}
+
+public void setIdNhanVien(String idNhanVien) {
+	this.idNhanVien = idNhanVien;
 }
 
 

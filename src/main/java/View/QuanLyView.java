@@ -13,6 +13,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.BorderUIResource;
 
 import Controller.QuanLyController;
+import DAO.NhanVienDAO;
+import io.netty.util.Timeout;
+import io.netty.util.TimerTask;
 
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
@@ -166,7 +169,10 @@ public class QuanLyView extends JFrame {
 	private JTextField txt_soLuongTon;
 	private JTextField txt_soLuongLay;
 	private JButton btn_DatHang;
-
+       String idCaLam ;
+       
+	    private int clickCount = 0;
+	    private Timer timer;
 	/**
 	 * Launch the application.
 	 */
@@ -362,6 +368,7 @@ public class QuanLyView extends JFrame {
 				CardLayout cardLayout = (CardLayout) panel_chu.getLayout();
 				cardLayout.show(panel_chu, "Card 5");
 				qlc.fildTableCaLam();
+			
 				btn_trangChu.setEnabled(true);
 				btn_qLNhanVien.setEnabled(true);
 				btn_qLBanHang.setEnabled(true);
@@ -900,6 +907,14 @@ public class QuanLyView extends JFrame {
 		card5.add(cbo_batDau);
 
 		tbl_CaLam = new JTable();
+		tbl_caLam().addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            int rowIndex = tbl_caLam().getSelectedRow();
+	             idCaLam = (String) tbl_caLam().getValueAt(rowIndex, 0);
+	               qlc.fildTableXepCa(idCaLam);
+	        }
+	    });
 		tbl_CaLam.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "ID", "T\u00EAn Ca L\u00E0m", "Th\u1EDDi Gian", "Ng\u00E0y", "ID NV" }));
 		tbl_CaLam.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -947,9 +962,35 @@ public class QuanLyView extends JFrame {
 		card5.add(btn_xoaCaLam);
 
 		tbl_xepCa = new JTable();
-		tbl_xepCa.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID NV", "T\u00EAn NV", "ID Ca L\u00E0m", "Tổng Số Ca/ngày" }));
+		tbl_xepCa.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			     int rowIndex1 = tbl_xepCa.getSelectedRow();
+	           String idNhanVien = (String) tbl_caLam().getValueAt(rowIndex1, 0);
+	           int choice = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm nhân viên vào ca làm?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+	           
+
+	           if (choice == JOptionPane.YES_OPTION) {
+	            try {
+	                NhanVienDAO.getInstance().updateCaLam(idCaLam, idNhanVien);
+	               JOptionPane.showMessageDialog(null, "thành công");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+	           } else if (choice == JOptionPane.NO_OPTION) {
+	               System.out.println("huy");
+	           }
+			}
+		});
+		tbl_xepCa.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID NV", "T\u00EAn NV", "ID Ca Làm Trong Ngày"
+			}
+		));
 		tbl_xepCa.setBounds(22, 356, 1005, 320);
+		
 		JScrollPane scrollPane_5 = new JScrollPane(tbl_xepCa);
 		scrollPane_5.setBounds(23, 355, 1004, 321);
 		card5.add(scrollPane_5);
@@ -1514,6 +1555,9 @@ public class QuanLyView extends JFrame {
 	}
 	public JTable tbl_caLam() {
 		return tbl_CaLam;
+	}  
+	public JTable tblXepCa() {
+		return tbl_xepCa;
 	}  
 	private void applyBottomBorder(JTextField textField) {
 		Border border = textField.getBorder();

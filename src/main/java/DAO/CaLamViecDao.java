@@ -87,7 +87,7 @@ public class CaLamViecDao implements DAOInterface<CaLamViecModel> {
 		        Connection con = JDBCUtil.getConnection();
 
 		        // Bước 2: Tạo prepared statement
-		        String sql = " select * from CALAMVIEC ";
+		        String sql = "  select NV.IDNhanVien from CALAMVIEC as CLV join NHANVIEN as NV on  CLV.IDCaLam = NV.IDCaLam where  CLV.IDCaLam='CL1' ";
 		        PreparedStatement statement = con.prepareStatement(sql);
 
 		        ResultSet rs = statement.executeQuery();
@@ -111,8 +111,9 @@ public class CaLamViecDao implements DAOInterface<CaLamViecModel> {
 
 	@Override
 	public CaLamViecModel selectById(CaLamViecModel t) {
-		// TODO Auto-generated method stub
-		return null;
+		CaLamViecModel ketQua = null;
+     
+        return ketQua;
 	}
 
 	@Override
@@ -145,6 +146,66 @@ public class CaLamViecDao implements DAOInterface<CaLamViecModel> {
 		    return ketQua;
 	}
 
+	public ArrayList<NhanVienModel> selectByCondition1(String IDCalam) {
+		  ArrayList<NhanVienModel> ketQua = new ArrayList<>();
+		    try {
+		        // Bước 1: Kết nối CSDL
+		        Connection con = JDBCUtil.getConnection();
 
+		        // Bước 2: Tạo prepared statement
+		        String sql = "SELECT CLV.IDCaLam, CLV.TenCaLam, CLV.ThoiGian, CLV.Ngay, STRING_AGG(NV.IDNhanVien, ', ') AS IDNhanVien\r\n"
+		        		+ "FROM CALAMVIEC AS CLV\r\n"
+		        		+ "JOIN NHANVIEN AS NV ON CLV.IDCaLam = NV.IDCaLam\r\n"
+		        		+ "WHERE CLV.IDCaLam = '"+IDCalam+"'"+"\\r\\n"
+		        		+ "GROUP BY CLV.IDCaLam, CLV.TenCaLam, CLV.ThoiGian, CLV.Ngay";
+		        
+		        PreparedStatement statement = con.prepareStatement(sql);
 
+		        ResultSet rs = statement.executeQuery();
+
+		        while (rs.next()) {
+		         String idNhanVien = rs.getString("IDNhanVien");
+		         NhanVienModel nv = new NhanVienModel(idNhanVien, null, null, null, false, null, null, null, null, 0, null);
+		            ketQua.add(nv);
+		        }
+
+		        // Bước 3: Đóng kết nối
+		        JDBCUtil.closeConnection(con);
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return ketQua;
+	}
+	public String selectById(String IDCaLam) {
+		String ketQua = null;
+        try {
+            // Bước 1: Kết nối CSDL
+            Connection con = JDBCUtil.getConnection();
+
+            // Bước 2: Tạo prepared statement
+            // Bước 2: Tạo prepared statement
+            String sql = "SELECT CLV.IDCaLam, CLV.TenCaLam, CLV.ThoiGian, CLV.Ngay, STRING_AGG(NV.IDNhanVien, ', ') AS IDNhanVien\r\n"
+                    + "FROM CALAMVIEC AS CLV\r\n"
+                    + "JOIN NHANVIEN AS NV ON CLV.IDCaLam = NV.IDCaLam\r\n"
+                    + "WHERE CLV.IDCaLam = '" + IDCaLam + "'\r\n"
+                    + "GROUP BY CLV.IDCaLam, CLV.TenCaLam, CLV.ThoiGian, CLV.Ngay";
+            PreparedStatement statement = con.prepareStatement(sql);
+      
+
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                String IDNhanVien = rs.getString("IDNhanVien");
+	        
+
+                ketQua = IDNhanVien;
+            }
+
+            // Bước 3: Đóng kết nối
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ketQua;
+	}
 }

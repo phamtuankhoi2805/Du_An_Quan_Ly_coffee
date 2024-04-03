@@ -84,6 +84,7 @@ public class NhanVienDAO implements DAOInterface<NhanVienModel> {
 	        }
 	        return ketQua;
 	}
+	
 	public void updatePass(String idNhanVien,String passWord) {
 	
 	        try {
@@ -108,6 +109,30 @@ public class NhanVienDAO implements DAOInterface<NhanVienModel> {
 	        }
 	 
 	}
+	public void updateCaLam(String idCaLam,String idNhanVien) {
+		
+        try {
+            // Bước 1: Kết nối CSDL
+            Connection con = JDBCUtil.getConnection();
+
+            // Bước 2: Tạo prepared statement
+            String sql="UPDATE NHANVIEN SET IDCaLam=? WHERE IDNhanVien=?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1,idCaLam);
+           
+            statement.setString(2, idNhanVien);
+            // Bước 3: Thực thi truy vấn
+          statement.executeUpdate();
+
+          
+
+            // Bước 4: Đóng kết nối
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+ 
+}
 	@Override
 	public int delete(NhanVienModel t) {
 		 int ketQua = 0;

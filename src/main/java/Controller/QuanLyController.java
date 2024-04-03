@@ -543,18 +543,20 @@ public class QuanLyController implements ActionListener {
 	public void loadNgay() {
 	    // Định dạng ngày tháng
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	    
-	    // Tạo LocalDate từ ngày 01-04-2024
+
+	    // Ngày bắt đầu: 01/04/2024
 	    LocalDate startDate = LocalDate.of(2024, 4, 1);
-	    
-	    // Thêm ngày 01-04-2024 vào JComboBox
+
+	    // Thêm ngày 01/04/2024 vào JComboBox
 	    qlv.cbo_ngayLam().addItem(startDate.format(formatter));
-	    
-	    // Thêm các ngày tiếp theo vào JComboBox
+
+	    // Thêm 7 ngày tiếp theo vào JComboBox
 	    for (int i = 1; i <= 7; i++) {
 	        LocalDate nextDate = startDate.plusDays(i);
 	        qlv.cbo_ngayLam().addItem(nextDate.format(formatter));
 	    }
+
+	  
 	}
 // Form Nhập Nguyên liệu -------------------------------------------------------------------------------------------
 	
@@ -661,13 +663,34 @@ public class QuanLyController implements ActionListener {
 		public void fildTableCaLam() {
 		    DefaultTableModel model = (DefaultTableModel) qlv.tbl_caLam().getModel();
 		    model.setRowCount(0); // Xóa tất cả các dòng trong bảng
-
+          
 		     ArrayList<CaLamViecModel> listCa =  CaLamViecDao.getInstance().selectByCondition((String) qlv.cbo_ngayLam().getSelectedItem());
-		     
+		           
 
 		    for (CaLamViecModel sp : listCa) {
-		        Object[] rowData = { sp.getIdCaLam(), sp.getTenCaLam(), sp.getThoiGian(), sp.getNgay() };
+		    	String idNhanVien = CaLamViecDao.getInstance().selectById(sp.getIdCaLam());
+		        Object[] rowData = { sp.getIdCaLam(), sp.getTenCaLam(), sp.getThoiGian(), sp.getNgay(),idNhanVien };
 		        model.addRow(rowData);
+		        
+		 
+		      
 		    }
 		}
+		public void fildTableXepCa(String idCaLamm) {
+			   DefaultTableModel model = (DefaultTableModel) qlv.tblXepCa().getModel();
+			    model.setRowCount(0); // Xóa tất cả các dòng trong bảng
+			    String condition = "IDCaLam <> '"+idCaLamm+"' OR IDCaLam IS NULL";
+			     ArrayList<NhanVienModel> listNVXepCa =  NhanVienDAO.getInstance().selectByCondition(condition);
+			           
+
+			    for (NhanVienModel sp : listNVXepCa) {
+			    	
+			        Object[] rowData = { sp.getIdNhanVien(), sp.getTenNV(), sp.getIdCaLam()};
+			        model.addRow(rowData);
+			        
+			 
+			      
+			    }
+		}
+		
 }

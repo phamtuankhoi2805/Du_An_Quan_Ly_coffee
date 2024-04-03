@@ -24,6 +24,10 @@ public class DangNhapController implements ActionListener {
 		this.nvd = nvd;
 	}
 
+	public DangNhapController() {
+	
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String src = e.getActionCommand();
