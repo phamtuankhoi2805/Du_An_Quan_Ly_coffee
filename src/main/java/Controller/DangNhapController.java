@@ -102,6 +102,8 @@ public class DangNhapController implements ActionListener {
 	                    ql.lbl_chucVu().setText("Chức Vụ: "+nhanVienModel.getChucVu());
 	                    break;
 	                } else if (nhanVienModel.getChucVu().equals("Nhân viên")) {
+	                	NhanVienView nvv = new NhanVienView();
+	                	nvv.setVisible(true);
 	                	
 	                    loggedIn = true;
 	                    break;

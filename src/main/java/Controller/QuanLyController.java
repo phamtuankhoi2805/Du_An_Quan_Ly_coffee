@@ -33,11 +33,13 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import DAO.CaLamViecDao;
 import DAO.KhuyenMaiDAO;
+import DAO.NguyenLieuDAO;
 import DAO.NhanVienDAO;
 import DAO.SanPhamDAO;
 import DAO.TableNhapDAO;
 import Model.CaLamViecModel;
 import Model.KhuyenMaiModel;
+import Model.NguyenLieuModel;
 import Model.NhanVienModel;
 import Model.SanPhamModel;
 import Model.tableNhapModel;
@@ -55,6 +57,7 @@ public class QuanLyController implements ActionListener {
 
 	int i;
 	int a;
+	int b;
 //       ArrayList<CaLamViecModel> listCa =  CaLamViecDao.getInstance().selectByCondition((String) qlv.cbo_ngayLam().getSelectedItem());
 
 	public QuanLyController(QuanLyView qlv) {
@@ -111,6 +114,8 @@ public class QuanLyController implements ActionListener {
 			}
 		 else if (src.equals("Sửa KM")) {
 				suaKM();
+			}else if (src.equals("Xuất")) {
+				xuaHang();
 			}
 
 	}
@@ -814,5 +819,54 @@ public class QuanLyController implements ActionListener {
 			e.printStackTrace();
 		}
 
+	}
+	// from xuất kho -------------------------------------------------------------------------------
+	
+	public void fileTabelDSXuat() {
+		DefaultTableModel model = (DefaultTableModel) qlv.tbl_DSNguyenLieuXuat().getModel();
+		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
+		ArrayList<NguyenLieuModel> ListNL = NguyenLieuDAO.getInstance().selectAll();
+
+		for (NguyenLieuModel sp : ListNL) {
+			
+			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getDonViTinh() };
+			model.addRow(rowData);
+
+		}
+
+	}
+	public void disPlayfromXuatHang(int b) {
+		ArrayList<NguyenLieuModel> ListNL = NguyenLieuDAO.getInstance().selectAll();
+		NguyenLieuModel sp = ListNL.get(b);
+		qlv.txt_idNguyenLieuXuat().setText(sp.getIdNguyenLieu());
+		qlv.txt_tenNLXuat().setText(sp.getTenNguyenLieu());
+		qlv.txt_soLuongTonXuat().setText(Integer.toString(sp.getSoLuongTon()));
+		
+	}
+	public void fillcontrollXuatKho() {
+		try {
+
+			b = qlv.tbl_DSNguyenLieuXuat().getSelectedRow();
+
+			disPlayfromXuatHang(b);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	public void xuaHang() {
+	try {
+		String idNguyenLieuXuat  =  qlv.txt_idNguyenLieuXuat().getText();
+		String tenNguyenLieuXuat =  qlv.txt_tenNLXuat().getText();
+		int SoLuongTon = Integer.parseInt(qlv.txt_soLuongTonXuat().getText());
+		int soLuongLay = Integer.parseInt(qlv.txt_soLuongLayXuat().getText());
+		int tru  = SoLuongTon-soLuongLay;
+		NguyenLieuModel nl = new NguyenLieuModel(idNguyenLieuXuat, tenNguyenLieuXuat, tru,null);
+		NguyenLieuDAO.getInstance().updateSoLuongTon(nl);
+		JOptionPane.showMessageDialog(qlv, "thành công");
+		fileTabelDSXuat();
+		disPlayfromXuatHang(b);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 	}
 }

@@ -161,12 +161,12 @@ public class QuanLyView extends JFrame {
 	private JTable tbl_kho;
 	private JButton btn_nhapKho;
 	private JComboBox cbo_ngayLam;
-	private JTable tbl_DSNguyenLieu;
+	private JTable tbl_DSNguyenLieuXuat;
 	private JLabel lblNewLabel_20;
-	private JTextField txt_idNL;
-	private JTextField txt_tenNL;
-	private JTextField txt_soLuongTon;
-	private JTextField txt_soLuongLay;
+	private JTextField txt_idNLXuat;
+	private JTextField txt_tenNLXuat;
+	private JTextField txt_soLuongTonXuat;
+	private JTextField txt_soLuongLayXuat;
 	private JButton btn_DatHang;
        String idCaLam ;
        
@@ -174,6 +174,7 @@ public class QuanLyView extends JFrame {
 	    private Timer timer;
 		private JComboBox cbo_batDau;
 		private JButton btn_themCaLam;
+		private JButton btn_xuat;
 	/**
 	 * Launch the application.
 	 */
@@ -725,6 +726,8 @@ public class QuanLyView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout) card4.getLayout();
 				cardLayout.show(card4, "Small Card 2");
+				qlc.fileTabelDSXuat();
+				qlc.disPlayfromXuatHang(0);
 				// Thiết lập các trạng thái nút nhập kho và xuất kho tại đây (nếu cần)
 			}
 		});
@@ -791,23 +794,29 @@ public class QuanLyView extends JFrame {
 		btn_nhapKho.setBounds(10, 23, 115, 23);
 		smallCard2.add(btn_nhapKho);
 		
-		tbl_DSNguyenLieu = new JTable();
-		tbl_DSNguyenLieu.setModel(new DefaultTableModel(
+		tbl_DSNguyenLieuXuat = new JTable();
+		tbl_DSNguyenLieuXuat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				qlc.fillcontrollXuatKho();
+			}
+		});
+		tbl_DSNguyenLieuXuat.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"ID Nguyên Liệu", "Tên Nguyên Liệu", "Số Lượng Còn"
+			 "ID Nguy\u00EAn Li\u1EC7u", "T\u00EAn Nguy\u00EAn Li\u1EC7u", "Số Lượng Tồn","Đơn Vị Tính"
 			}
 		));
-		tbl_DSNguyenLieu.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		tbl_DSNguyenLieu.setBounds(501, 75, 526, 260);
-		JScrollPane scrollPane_7 = new JScrollPane(tbl_DSNguyenLieu);
-		scrollPane_7.setBounds(416, 101, 598, 260);
+		tbl_DSNguyenLieuXuat.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		tbl_DSNguyenLieuXuat.setBounds(501, 75, 526, 260);
+		JScrollPane scrollPane_7 = new JScrollPane(tbl_DSNguyenLieuXuat);
+		scrollPane_7.setBounds(30, 403, 985, 260);
 		smallCard2.add(scrollPane_7);
 		
 		JLabel lblNewLabel_19 = new JLabel("Danh Sách Nguyên Liệu");
 		lblNewLabel_19.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_19.setBounds(429, 59, 183, 23);
+		lblNewLabel_19.setBounds(39, 370, 183, 23);
 		smallCard2.add(lblNewLabel_19);
 		
 		lblNewLabel_20 = new JLabel("Thông Tin Nguyên Liệu");
@@ -815,45 +824,65 @@ public class QuanLyView extends JFrame {
 		lblNewLabel_20.setBounds(10, 56, 192, 29);
 		smallCard2.add(lblNewLabel_20);
 		
-		txt_idNL = new JTextField("ID Nguyên Liệu:");
-		txt_idNL.setBorder(new CompoundBorder());
-		txt_idNL.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_idNL.setBounds(29, 118, 349, 29);
-		smallCard2.add(txt_idNL);
-		txt_idNL.setColumns(10);;
-		applyBottomBorder(txt_idNL);
+		txt_idNLXuat = new JTextField("");
+		txt_idNLXuat.setBorder(new CompoundBorder());
+		txt_idNLXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txt_idNLXuat.setBounds(243, 92, 349, 29);
+		smallCard2.add(txt_idNLXuat);
+		txt_idNLXuat.setColumns(10);;
+		applyBottomBorder(txt_idNLXuat);
 		
-		txt_tenNL = new JTextField("Tên Nguyên Liệu: ");
-		txt_tenNL.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_tenNL.setColumns(10);
-		txt_tenNL.setBorder(new CompoundBorder());
-		txt_tenNL.setBounds(29, 157, 349, 29);
-		smallCard2.add(txt_tenNL);
-            applyBottomBorder(txt_tenNL);
+		txt_tenNLXuat = new JTextField("");
+		txt_tenNLXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txt_tenNLXuat.setColumns(10);
+		txt_tenNLXuat.setBorder(new CompoundBorder());
+		txt_tenNLXuat.setBounds(243, 128, 349, 29);
+		smallCard2.add(txt_tenNLXuat);
+            applyBottomBorder(txt_tenNLXuat);
             
-            txt_soLuongTon = new JTextField("Số Lượng Tồn");
-            txt_soLuongTon.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            txt_soLuongTon.setColumns(10);
-            txt_soLuongTon.setBorder(new CompoundBorder());
-            txt_soLuongTon.setBounds(29, 196, 349, 29);
-            applyBottomBorder(txt_soLuongTon);
-            smallCard2.add(txt_soLuongTon);
+            txt_soLuongTonXuat = new JTextField("");
+            txt_soLuongTonXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            txt_soLuongTonXuat.setColumns(10);
+            txt_soLuongTonXuat.setBorder(new CompoundBorder());
+            txt_soLuongTonXuat.setBounds(243, 167, 349, 29);
+            applyBottomBorder(txt_soLuongTonXuat);
+            smallCard2.add(txt_soLuongTonXuat);
             
-            txt_soLuongLay = new JTextField("Số Lượng Lấy: ");
-            txt_soLuongLay.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            txt_soLuongLay.setColumns(10);
-            txt_soLuongLay.setBorder(new CompoundBorder());
-            txt_soLuongLay.setBounds(29, 235, 349, 29);
-            smallCard2.add(txt_soLuongLay);
-            applyBottomBorder(txt_soLuongLay);
+            txt_soLuongLayXuat = new JTextField("");
+            txt_soLuongLayXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            txt_soLuongLayXuat.setColumns(10);
+            txt_soLuongLayXuat.setBorder(new CompoundBorder());
+            txt_soLuongLayXuat.setBounds(243, 206, 349, 29);
+            smallCard2.add(txt_soLuongLayXuat);
+            applyBottomBorder(txt_soLuongLayXuat);
             
-            JButton btn_xuat = new JButton("Xuất");
+             btn_xuat = new JButton("Xuất");
             btn_xuat.setForeground(Color.WHITE);
             btn_xuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
             btn_xuat.setBorder(new CompoundBorder());
             btn_xuat.setBackground(new Color(0, 0, 64));
-            btn_xuat.setBounds(29, 305, 108, 23);
+            btn_xuat.setBounds(30, 268, 108, 23);
             smallCard2.add(btn_xuat);
+           btn_xuat.addActionListener(qlc);
+            JLabel lblNewLabel_21 = new JLabel("ID Nguyên Liệu");
+            lblNewLabel_21.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            lblNewLabel_21.setBounds(20, 95, 213, 23);
+            smallCard2.add(lblNewLabel_21);
+            
+            JLabel lblNewLabel_21_1 = new JLabel("Tên Nguyên Liệu");
+            lblNewLabel_21_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            lblNewLabel_21_1.setBounds(20, 134, 213, 23);
+            smallCard2.add(lblNewLabel_21_1);
+            
+            JLabel lblNewLabel_21_1_1 = new JLabel("Số Lượng Tồn");
+            lblNewLabel_21_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            lblNewLabel_21_1_1.setBounds(20, 173, 213, 23);
+            smallCard2.add(lblNewLabel_21_1_1);
+            
+            JLabel lblNewLabel_21_1_1_1 = new JLabel("Số Lượng Lấy");
+            lblNewLabel_21_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            lblNewLabel_21_1_1_1.setBounds(20, 212, 213, 23);
+            smallCard2.add(lblNewLabel_21_1_1_1);
 		JPanel card5 = new JPanel();
 		card5.setBackground(new Color(255, 255, 255));
 		panel_chu.add(card5, "Card 5");
@@ -1574,10 +1603,26 @@ public class QuanLyView extends JFrame {
 	public JComboBox<String> cbo_tru() {
 		return cbo_tru;
 	}
+	
+	// xuat kho
+	public JTextField txt_idNguyenLieuXuat() {
+		return txt_idNLXuat;
+	}
+	public JTextField txt_tenNLXuat() {
+		return txt_tenNLXuat;
+	}
+	public JTextField txt_soLuongTonXuat() {
+		return  txt_soLuongTonXuat ;
+	}
+	public JTextField txt_soLuongLayXuat() {
+		return txt_soLuongLayXuat;
+	}
+	public JTable tbl_DSNguyenLieuXuat() {
+		return tbl_DSNguyenLieuXuat;
+	}
 	private void applyBottomBorder(JTextField textField) {
 		Border border = textField.getBorder();
 		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK); // Màu đen, độ dày là 1 pixel
 		textField.setBorder(BorderFactory.createCompoundBorder(border, bottomBorder));
 	}
-	
 }
