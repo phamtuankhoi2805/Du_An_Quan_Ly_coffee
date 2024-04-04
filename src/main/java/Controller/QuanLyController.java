@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,10 +32,12 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import DAO.CaLamViecDao;
+import DAO.KhuyenMaiDAO;
 import DAO.NhanVienDAO;
 import DAO.SanPhamDAO;
 import DAO.TableNhapDAO;
 import Model.CaLamViecModel;
+import Model.KhuyenMaiModel;
 import Model.NhanVienModel;
 import Model.SanPhamModel;
 import Model.tableNhapModel;
@@ -49,7 +52,9 @@ public class QuanLyController implements ActionListener {
 	private static String tenNV;
 	ArrayList<NhanVienModel> listNV = NhanVienDAO.getInstance().selectAll();
 	ArrayList<SanPhamModel> listSP = SanPhamDAO.getInstance().selectAll();
+
 	int i;
+	int a;
 //       ArrayList<CaLamViecModel> listCa =  CaLamViecDao.getInstance().selectByCondition((String) qlv.cbo_ngayLam().getSelectedItem());
 
 	public QuanLyController(QuanLyView qlv) {
@@ -65,7 +70,7 @@ public class QuanLyController implements ActionListener {
 		// thay đổi Login cho các phương thức
 		if (src.equals("Thoát")) {
 			qlv.setVisible(false);
-         System.exit(0);
+			System.exit(0);
 		} else if (src.equals("Mới")) {
 			moi();
 
@@ -86,17 +91,28 @@ public class QuanLyController implements ActionListener {
 
 		} else if (src.equals("Thêm SP")) {
 			themSP();
-          JOptionPane.showMessageDialog(qlv, "Mời Bạn Thêm Nguyên Liệu Sản Phẩm");
+			JOptionPane.showMessageDialog(qlv, "Mời Bạn Thêm Nguyên Liệu Sản Phẩm");
 		} else if (src.equals("Sửa SP")) {
 			suaSP();
 		} else if (src.equals("Đặt Hàng")) {
-			
-             createWordTemplate();
+
+			createWordTemplate();
 		} else if (src.equals("Thêm SP Đặt Hàng")) {
 			ThemChiTietView tctv = new ThemChiTietView();
 			tctv.setVisible(true);
+		} else if (src.equals("Thêm Ca Làm")) {
+			themCalam();
 		}
-		
+		 else if (src.equals("Làm Mới KM")) {
+				lamMoiKM();
+			}
+		 else if (src.equals("Thêm KM")) {
+				themKM();
+			}
+		 else if (src.equals("Sửa KM")) {
+				suaKM();
+			}
+
 	}
 
 	public void fildTable() {
@@ -481,7 +497,7 @@ public class QuanLyController implements ActionListener {
 				double giaBan = Double.parseDouble(qlv.txt_gia().getText());
 				String hinh = imagePath;
 				String TrangThai = (String) qlv.cbo_TrangThaiSP().getSelectedItem();
-				SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, hinh,TrangThai);
+				SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, hinh, TrangThai);
 				SanPhamDAO.getInstance().insert(sp);
 				listSP = SanPhamDAO.getInstance().selectAll();
 				displaySanPham(listSP.size() - 1);
@@ -489,7 +505,7 @@ public class QuanLyController implements ActionListener {
 				qlv.btn_themSP().setEnabled(false);
 				qlv.btn_doiAnh().setEnabled(true);
 				qlv.btn_suaSP().setEnabled(true);
-		
+
 				JOptionPane.showMessageDialog(qlv, "Thêm thành công");
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -506,7 +522,7 @@ public class QuanLyController implements ActionListener {
 			SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, null, TrangThai);
 			SanPhamDAO.getInstance().updateNoImage(sp);
 			fildTableQLSanPham();
-			
+
 			JOptionPane.showMessageDialog(qlv, "Sửa thành công");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -530,7 +546,7 @@ public class QuanLyController implements ActionListener {
 				double giaBan = Double.parseDouble(qlv.txt_gia().getText());
 				String hinh = imagePath;
 				String TrangThai = (String) qlv.cbo_TrangThaiSP().getSelectedItem();
-				SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, hinh,TrangThai);
+				SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, hinh, TrangThai);
 				SanPhamDAO.getInstance().update(sp);
 				listSP = SanPhamDAO.getInstance().selectAll();
 				displaySanPham(i);
@@ -540,157 +556,263 @@ public class QuanLyController implements ActionListener {
 			}
 		}
 	}
+
 	public void loadNgay() {
-	    // Định dạng ngày tháng
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		// Định dạng ngày tháng
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-	    // Ngày bắt đầu: 01/04/2024
-	    LocalDate startDate = LocalDate.of(2024, 4, 1);
+		// Ngày bắt đầu: 01/04/2024
+		LocalDate startDate = LocalDate.of(2024, 4, 1);
 
-	    // Thêm ngày 01/04/2024 vào JComboBox
-	    qlv.cbo_ngayLam().addItem(startDate.format(formatter));
+		// Thêm ngày 01/04/2024 vào JComboBox
+		qlv.cbo_ngayLam().addItem(startDate.format(formatter));
 
-	    // Thêm 7 ngày tiếp theo vào JComboBox
-	    for (int i = 1; i <= 7; i++) {
-	        LocalDate nextDate = startDate.plusDays(i);
-	        qlv.cbo_ngayLam().addItem(nextDate.format(formatter));
-	    }
+		// Thêm 7 ngày tiếp theo vào JComboBox
+		for (int i = 1; i <= 7; i++) {
+			LocalDate nextDate = startDate.plusDays(i);
+			qlv.cbo_ngayLam().addItem(nextDate.format(formatter));
+		}
 
-	  
 	}
 // Form Nhập Nguyên liệu -------------------------------------------------------------------------------------------
-	
-	
+
 	public void fildTableNguyenLieu() {
-	    DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
-	    model.setRowCount(0); // Xóa tất cả các dòng trong bảng
-	    ArrayList<tableNhapModel> listSP = TableNhapDAO.getInstance().selectAll();
+		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
+		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
+		ArrayList<tableNhapModel> listSP = TableNhapDAO.getInstance().selectAll();
 
-	    for (tableNhapModel sp : listSP) {
-	        Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getSoLuongNhap(), sp.getTenNhaCC(), sp.getSDT() };
-	        model.addRow(rowData);
-	    }
+		for (tableNhapModel sp : listSP) {
+			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getSoLuongNhap(),
+					sp.getTenNhaCC(), sp.getSDT() };
+			model.addRow(rowData);
+		}
 
-	    // Thêm trình lắng nghe sự kiện cho bảng tbl_kho
-	    qlv.tbl_kho().addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseClicked(MouseEvent e) {
-	            int selectedRow = qlv.tbl_kho().getSelectedRow();
-	            int selectedColumn = qlv.tbl_kho().getSelectedColumn();
+		// Thêm trình lắng nghe sự kiện cho bảng tbl_kho
+		qlv.tbl_kho().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int selectedRow = qlv.tbl_kho().getSelectedRow();
+				int selectedColumn = qlv.tbl_kho().getSelectedColumn();
 
-	            // Kiểm tra nếu người dùng nhấp chuột vào cột SoLuongNhap
-	            if (selectedColumn == 3) {
-	                String inputValue = JOptionPane.showInputDialog("Nhập giá trị SoLuongNhap mới:");
+				// Kiểm tra nếu người dùng nhấp chuột vào cột SoLuongNhap
+				if (selectedColumn == 3) {
+					String inputValue = JOptionPane.showInputDialog("Nhập giá trị SoLuongNhap mới:");
 
-	                // Kiểm tra nếu người dùng nhập giá trị
-	                if (inputValue != null && !inputValue.isEmpty()) {
-	                    int newSoLuongNhap = Integer.parseInt(inputValue);
+					// Kiểm tra nếu người dùng nhập giá trị
+					if (inputValue != null && !inputValue.isEmpty()) {
+						int newSoLuongNhap = Integer.parseInt(inputValue);
 
-	                    // Cập nhật giá trị SoLuongNhap tại vị trí đã chọn
-	                    model.setValueAt(newSoLuongNhap, selectedRow, selectedColumn);
-	                }
-	            }
-	        }
-	    });
+						// Cập nhật giá trị SoLuongNhap tại vị trí đã chọn
+						model.setValueAt(newSoLuongNhap, selectedRow, selectedColumn);
+					}
+				}
+			}
+		});
 	}
-	  public  void createWordTemplate() {
-	        DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
 
-	        // Tạo tệp Word mới
-	        XWPFDocument document = new XWPFDocument();
+	public void createWordTemplate() {
+		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
 
-	        // Tạo một đoạn văn bản trong tài liệu Word
-	        XWPFParagraph paragraph = document.createParagraph();
-	        paragraph.setAlignment(ParagraphAlignment.CENTER);
+		// Tạo tệp Word mới
+		XWPFDocument document = new XWPFDocument();
 
-	        // Tạo mẫu Word tùy chỉnh
-	        XWPFRun run = paragraph.createRun();
-	        run.setText("Báo Cáo Nhập Hàng");
-	        run.setBold(true);
-	        run.setFontSize(20);
-	        run.setColor("FF0000"); // Màu đỏ
+		// Tạo một đoạn văn bản trong tài liệu Word
+		XWPFParagraph paragraph = document.createParagraph();
+		paragraph.setAlignment(ParagraphAlignment.CENTER);
 
-	        // Thêm ngày tháng hiện tại vào tài liệu Word
-	        XWPFParagraph dateParagraph = document.createParagraph();
-	        dateParagraph.setAlignment(ParagraphAlignment.RIGHT);
-	        XWPFRun dateRun = dateParagraph.createRun();
-	        String pattern = "dd/MM/yyyy";
-	        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-	        String currentDate = dateFormat.format(new Date(i));
-	        dateRun.setText("Ngày: " + currentDate);
+		// Tạo mẫu Word tùy chỉnh
+		XWPFRun run = paragraph.createRun();
+		run.setText("Báo Cáo Nhập Hàng");
+		run.setBold(true);
+		run.setFontSize(20);
+		run.setColor("FF0000"); // Màu đỏ
 
-	        // Tạo một bảng trong tài liệu Word
-	        XWPFTable table = document.createTable();
+		// Thêm ngày tháng hiện tại vào tài liệu Word
+		XWPFParagraph dateParagraph = document.createParagraph();
+		dateParagraph.setAlignment(ParagraphAlignment.RIGHT);
+		XWPFRun dateRun = dateParagraph.createRun();
+		String pattern = "dd/MM/yyyy";
+		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+		String currentDate = dateFormat.format(new Date(i));
+		dateRun.setText("Ngày: " + currentDate);
 
-	        // Thêm tiêu đề cho bảng
-	        XWPFTableRow headerRow = table.getRow(0);
-	        headerRow.getCell(0).setText("ID Nguyên Liệu");
-	        headerRow.addNewTableCell().setText("Tên Nguyên Liệu");
-	        headerRow.addNewTableCell().setText("Số Lượng Nhập");
-	        headerRow.addNewTableCell().setText("Tên Nhà CC");
-	        headerRow.addNewTableCell().setText("Số Điện Thoại");
+		// Tạo một bảng trong tài liệu Word
+		XWPFTable table = document.createTable();
 
-	        for (int row = 0; row < model.getRowCount(); row++) {
-	            Object selectedSoLuongNhap = model.getValueAt(row, 3);
-	            if (selectedSoLuongNhap != null) {
-	                int soLuongNhap = Integer.parseInt(selectedSoLuongNhap.toString());
-	                if (soLuongNhap > 0) {
-	                    Object idNguyenLieu = model.getValueAt(row, 0);
-	                    Object tenNguyenLieu = model.getValueAt(row, 1);
-	                    Object tenNhaCC = model.getValueAt(row, 4);
-	                    Object sdt = model.getValueAt(row, 5);
+		// Thêm tiêu đề cho bảng
+		XWPFTableRow headerRow = table.getRow(0);
+		headerRow.getCell(0).setText("ID Nguyên Liệu");
+		headerRow.addNewTableCell().setText("Tên Nguyên Liệu");
+		headerRow.addNewTableCell().setText("Số Lượng Nhập");
+		headerRow.addNewTableCell().setText("Tên Nhà CC");
+		headerRow.addNewTableCell().setText("Số Điện Thoại");
 
-	                    // Thêm dữ liệu vào bảng Word
-	                    XWPFTableRow tableRow = table.createRow();
-	                    tableRow.getCell(0).setText(idNguyenLieu.toString());
-	                    tableRow.getCell(1).setText(tenNguyenLieu.toString());
-	                    tableRow.getCell(2).setText(selectedSoLuongNhap.toString());
-	                    tableRow.getCell(3).setText(tenNhaCC.toString());
-	                    tableRow.getCell(4).setText(sdt.toString());
-	                }
-	            }
-	        }
+		for (int row = 0; row < model.getRowCount(); row++) {
+			Object selectedSoLuongNhap = model.getValueAt(row, 3);
+			if (selectedSoLuongNhap != null) {
+				int soLuongNhap = Integer.parseInt(selectedSoLuongNhap.toString());
+				if (soLuongNhap > 0) {
+					Object idNguyenLieu = model.getValueAt(row, 0);
+					Object tenNguyenLieu = model.getValueAt(row, 1);
+					Object tenNhaCC = model.getValueAt(row, 4);
+					Object sdt = model.getValueAt(row, 5);
 
-	        // Lưu tài liệu Word thành file
-	        try (FileOutputStream out = new FileOutputStream("data.docx")) {
-	            document.write(out);
-	          JOptionPane.showMessageDialog(qlv, "Tạo Thành Công Đơn Nhập Hàng");
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
+					// Thêm dữ liệu vào bảng Word
+					XWPFTableRow tableRow = table.createRow();
+					tableRow.getCell(0).setText(idNguyenLieu.toString());
+					tableRow.getCell(1).setText(tenNguyenLieu.toString());
+					tableRow.getCell(2).setText(selectedSoLuongNhap.toString());
+					tableRow.getCell(3).setText(tenNhaCC.toString());
+					tableRow.getCell(4).setText(sdt.toString());
+				}
+			}
+		}
+
+		// Lưu tài liệu Word thành file
+		try (FileOutputStream out = new FileOutputStream("data.docx")) {
+			document.write(out);
+			JOptionPane.showMessageDialog(qlv, "Tạo Thành Công Đơn Nhập Hàng");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 // ca Làm Việc -------------------------------------------------------------------------------
-		public void fildTableCaLam() {
-		    DefaultTableModel model = (DefaultTableModel) qlv.tbl_caLam().getModel();
-		    model.setRowCount(0); // Xóa tất cả các dòng trong bảng
-          
-		     ArrayList<CaLamViecModel> listCa =  CaLamViecDao.getInstance().selectByCondition((String) qlv.cbo_ngayLam().getSelectedItem());
-		           
+	public void fildTableCaLam() {
+		DefaultTableModel model = (DefaultTableModel) qlv.tbl_caLam().getModel();
+		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
 
-		    for (CaLamViecModel sp : listCa) {
-		    	String idNhanVien = CaLamViecDao.getInstance().selectById(sp.getIdCaLam());
-		        Object[] rowData = { sp.getIdCaLam(), sp.getTenCaLam(), sp.getThoiGian(), sp.getNgay(),idNhanVien };
-		        model.addRow(rowData);
-		        
-		 
-		      
-		    }
-		}
-		public void fildTableXepCa(String idCaLamm) {
-			   DefaultTableModel model = (DefaultTableModel) qlv.tblXepCa().getModel();
-			    model.setRowCount(0); // Xóa tất cả các dòng trong bảng
-			    String condition = "IDCaLam <> '"+idCaLamm+"' OR IDCaLam IS NULL";
-			     ArrayList<NhanVienModel> listNVXepCa =  NhanVienDAO.getInstance().selectByCondition(condition);
-			           
+		ArrayList<CaLamViecModel> listCa = CaLamViecDao.getInstance()
+				.selectByCondition((String) qlv.cbo_ngayLam().getSelectedItem());
 
-			    for (NhanVienModel sp : listNVXepCa) {
-			    	
-			        Object[] rowData = { sp.getIdNhanVien(), sp.getTenNV()};
-			        model.addRow(rowData);
-			        
-			 
-			      
-			    }
+		for (CaLamViecModel sp : listCa) {
+			String idNhanVien = CaLamViecDao.getInstance().selectById(sp.getIdCaLam());
+			Object[] rowData = { sp.getIdCaLam(), sp.getTenCaLam(), sp.getThoiGian(), sp.getNgay(), idNhanVien };
+			model.addRow(rowData);
+
 		}
+	}
+
+	public void fildTableXepCa(String idCaLamm) {
+		DefaultTableModel model = (DefaultTableModel) qlv.tblXepCa().getModel();
+		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
+		String condition = "IDCaLam <> '" + idCaLamm + "' OR IDCaLam IS NULL";
+		ArrayList<NhanVienModel> listNVXepCa = NhanVienDAO.getInstance().selectByCondition(condition);
+
+		for (NhanVienModel sp : listNVXepCa) {
+
+			Object[] rowData = { sp.getIdNhanVien(), sp.getTenNV() };
+			model.addRow(rowData);
+
+		}
+	}
+
+	public void themCalam() {
+		try {
+			String idCaLamViec = qlv.txt_idCaLam().getText();
+			String tenCaLam = qlv.txt_tenCaLam().getText();
+			String ThoiGian = (String) qlv.cbo_batDau().getSelectedItem();
+			String ngay = (String) qlv.cbo_ngay().getSelectedItem();
+			CaLamViecModel clv = new CaLamViecModel(idCaLamViec, tenCaLam, ThoiGian, ngay);
+			CaLamViecDao.getInstance().insert(clv);
+			JOptionPane.showMessageDialog(qlv, "Thành Công");
+			fildTableCaLam();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Ca Làm
+	public void fileTabelkhuyenMai() {
+		DefaultTableModel model = (DefaultTableModel) qlv.tbl_KhuyenMai().getModel();
+		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
+		ArrayList<KhuyenMaiModel> listKM = KhuyenMaiDAO.getInstance().selectAll();
+
+		for (KhuyenMaiModel sp : listKM) {
+			double tongTru = sp.getTongTru();
+			String tru = String.format("%.0f%%", tongTru * 100);
+			Object[] rowData = { sp.getIdKhuyenMai(), sp.getTenKhuyenMai(), sp.getDieuKienKM(), tru };
+			model.addRow(rowData);
+
+		}
+
+	}
+
+	public void fillcontrollKhuyenMai() {
+		try {
+
+			a = qlv.tbl_KhuyenMai().getSelectedRow();
+
+			disPlayKhuyenMai(a);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void disPlayKhuyenMai(int a) {
+		ArrayList<KhuyenMaiModel> listKM = KhuyenMaiDAO.getInstance().selectAll();
+		KhuyenMaiModel sp = listKM.get(a);
+		qlv.txt_idKM().setText(sp.getIdKhuyenMai());
+		qlv.txt_tenKM().setText(sp.getTenKhuyenMai());
+		qlv.txt_dieuKienKM().setText(sp.getDieuKienKM());
+		double tongTru = sp.getTongTru();
+		String tru = String.format("%.0f%%", tongTru * 100);
+		qlv.cbo_tru().setSelectedItem(tru);
+	}
+
+	public void lamMoiKM() {
+	
+		qlv.txt_idKM().setText("");
+		qlv.txt_tenKM().setText("");
+		qlv.txt_dieuKienKM().setText("");
+		qlv.btn_themKM().setEnabled(true);
+		qlv.txt_idKM().setEditable(true);
+	
+		qlv.btn_suaKM().setEnabled(false);
+
+	}
+
+	public void themKM() {
+		try {
+			String idKM = qlv.txt_idKM().getText();
+			String tenKM = qlv.txt_tenKM().getText();
+			String dieuKienKM = qlv.txt_dieuKienKM().getText();
+			String selectedItem = qlv.cbo_tru().getSelectedItem().toString();
+			int percentIndex = selectedItem.indexOf("%");
+			String tachChuoi = selectedItem.substring(0, percentIndex);
+			float t =  Float.parseFloat(tachChuoi);
+			float tru  =  t/100;
+			KhuyenMaiModel km = new KhuyenMaiModel(idKM, tenKM, dieuKienKM, tru);
+			KhuyenMaiDAO.getInstance().insert(km);
+			qlv.btn_themKM().setEnabled(false);
+			qlv.txt_idKM().setEditable(false);
+	
 		
+			fileTabelkhuyenMai();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	public void suaKM() {
+		try {
+			String idKM = qlv.txt_idKM().getText();
+			String tenKM = qlv.txt_tenKM().getText();
+			String dieuKienKM = qlv.txt_dieuKienKM().getText();
+			String selectedItem = qlv.cbo_tru().getSelectedItem().toString();
+			int percentIndex = selectedItem.indexOf("%");
+			String tachChuoi = selectedItem.substring(0, percentIndex);
+			float t =  Float.parseFloat(tachChuoi);
+			float tru  =  t/100;
+			KhuyenMaiModel km = new KhuyenMaiModel(idKM, tenKM, dieuKienKM, tru);
+			KhuyenMaiDAO.getInstance().update(km);
+			qlv.btn_themKM().setEnabled(false);
+			fileTabelkhuyenMai();
+			JOptionPane.showMessageDialog(qlv, "thành công");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

@@ -250,7 +250,7 @@ public class NhanVienView extends JFrame {
 		panel_SP.add(lbl_giaSP1);
 		
 		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), null, null, Integer.valueOf(1)));
+		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinner.setBounds(236, 63, 30, 20);
 		panel_SP.add(spinner);
 		

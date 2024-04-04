@@ -3,14 +3,16 @@ package Model;
 public class KhuyenMaiModel {
 private String idKhuyenMai;
 private String tenKhuyenMai,dieuKienKM;
+private float tongTru;
 public KhuyenMaiModel() {
 
 }
-public KhuyenMaiModel(String idKhuyenMai, String tenKhuyenMai, String dieuKienKM) {
+public KhuyenMaiModel(String idKhuyenMai, String tenKhuyenMai, String dieuKienKM, float tongTru) {
 
 	this.idKhuyenMai = idKhuyenMai;
 	this.tenKhuyenMai = tenKhuyenMai;
 	this.dieuKienKM = dieuKienKM;
+	this.tongTru = tongTru;
 }
 public String getIdKhuyenMai() {
 	return idKhuyenMai;
@@ -30,5 +32,12 @@ public String getDieuKienKM() {
 public void setDieuKienKM(String dieuKienKM) {
 	this.dieuKienKM = dieuKienKM;
 }
+public float getTongTru() {
+	return tongTru;
+}
+public void setTongTru(float tongTru) {
+	this.tongTru = tongTru;
+}
+
 
 }

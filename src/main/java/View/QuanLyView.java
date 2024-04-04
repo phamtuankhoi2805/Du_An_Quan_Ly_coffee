@@ -150,7 +150,6 @@ public class QuanLyView extends JFrame {
 	private JTextField txt_tenCaLam;
 	private JTable tbl_CaLam;
 	private JLabel lblNewLabel_15;
-	private JTextField txt_Ngay;
 	private JTable tbl_xepCa;
 	private JComboBox cbo_trangThaiSP;
 	private JLabel lblNewLabel_16;
@@ -173,6 +172,8 @@ public class QuanLyView extends JFrame {
        
 	    private int clickCount = 0;
 	    private Timer timer;
+		private JComboBox cbo_batDau;
+		private JButton btn_themCaLam;
 	/**
 	 * Launch the application.
 	 */
@@ -286,6 +287,7 @@ public class QuanLyView extends JFrame {
 				CardLayout cardLayout = (CardLayout) panel_chu.getLayout();
 				cardLayout.show(panel_chu, "Card 3");
 				qlc.fildTableQLSanPham();
+				qlc.fileTabelkhuyenMai();
 				btn_trangChu.setEnabled(true);
 				btn_qLNhanVien.setEnabled(true);
 				btn_qLBanHang.setEnabled(false);
@@ -877,11 +879,6 @@ public class QuanLyView extends JFrame {
 		lblNewLabel_14_1_1.setBounds(23, 161, 144, 30);
 		card5.add(lblNewLabel_14_1_1);
 
-		JLabel lblNewLabel_14_1_1_1 = new JLabel("Ngày");
-		lblNewLabel_14_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_14_1_1_1.setBounds(23, 202, 144, 30);
-		card5.add(lblNewLabel_14_1_1_1);
-
 		txt_idCaLam = new JTextField();
 		txt_idCaLam.setForeground(Color.BLACK);
 		txt_idCaLam.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -900,7 +897,8 @@ public class QuanLyView extends JFrame {
 		txt_tenCaLam.setBounds(133, 120, 158, 20);
 		card5.add(txt_tenCaLam);
 
-		JComboBox<String> cbo_batDau = new JComboBox();
+	 cbo_batDau = new JComboBox();
+		cbo_batDau.setModel(new DefaultComboBoxModel(new String[] {"08:00 - 17:00", "09:00 - 18:00", "10:00 - 19:00", "07:00 - 16:00"}));
 		cbo_batDau.setBounds(133, 167, 110, 22);
 		card5.add(cbo_batDau);
 
@@ -931,34 +929,12 @@ public class QuanLyView extends JFrame {
 		lblNewLabel_15.setBounds(23, 308, 116, 36);
 		card5.add(lblNewLabel_15);
 
-		txt_Ngay = new JTextField();
-		txt_Ngay.setForeground(Color.BLACK);
-		txt_Ngay.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_Ngay.setColumns(10);
-		txt_Ngay.setBorder(new CompoundBorder());
-		txt_Ngay.setBackground(Color.WHITE);
-		txt_Ngay.setBounds(133, 209, 158, 20);
-		card5.add(txt_Ngay);
-
-		JButton btn_themCaLam = new JButton("Thêm Ca Làm");
+		 btn_themCaLam = new JButton("Thêm Ca Làm");
 		btn_themCaLam.setForeground(new Color(255, 255, 255));
 		btn_themCaLam.setBackground(new Color(0, 0, 128));
-		btn_themCaLam.setBounds(23, 243, 116, 23);
+		btn_themCaLam.setBounds(23, 202, 268, 23);
 		card5.add(btn_themCaLam);
-
-		JButton btn_SuaCaLam = new JButton("Sửa Ca Làm");
-
-		btn_SuaCaLam.setForeground(Color.WHITE);
-		btn_SuaCaLam.setBackground(new Color(0, 0, 128));
-		btn_SuaCaLam.setBounds(149, 243, 110, 23);
-		card5.add(btn_SuaCaLam);
-
-		JButton btn_xoaCaLam = new JButton("Xóa Ca Làm");
-		btn_xoaCaLam.setForeground(Color.WHITE);
-		btn_xoaCaLam.setBackground(new Color(0, 0, 128));
-		btn_xoaCaLam.setBounds(23, 277, 116, 23);
-		card5.add(btn_xoaCaLam);
-
+           btn_themCaLam.addActionListener(qlc);
 		tbl_xepCa = new JTable();
 		tbl_xepCa.addMouseListener(new MouseAdapter() {
 			@Override
@@ -1250,7 +1226,7 @@ public class QuanLyView extends JFrame {
 		txt_idKM.setColumns(10);
 		txt_idKM.setBorder(new CompoundBorder());
 		txt_idKM.setBackground(Color.WHITE);
-		txt_idKM.setBounds(96, 11, 273, 20);
+		txt_idKM.setBounds(106, 11, 273, 20);
 		panel_2.add(txt_idKM);
 
 		txt_tenKM = new JTextField();
@@ -1259,7 +1235,7 @@ public class QuanLyView extends JFrame {
 		txt_tenKM.setColumns(10);
 		txt_tenKM.setBorder(new CompoundBorder());
 		txt_tenKM.setBackground(Color.WHITE);
-		txt_tenKM.setBounds(96, 44, 273, 20);
+		txt_tenKM.setBounds(106, 42, 273, 20);
 		panel_2.add(txt_tenKM);
 
 		txt_dieuKienKM = new JTextField();
@@ -1268,29 +1244,31 @@ public class QuanLyView extends JFrame {
 		txt_dieuKienKM.setColumns(10);
 		txt_dieuKienKM.setBorder(new CompoundBorder());
 		txt_dieuKienKM.setBackground(Color.WHITE);
-		txt_dieuKienKM.setBounds(96, 75, 273, 20);
+		txt_dieuKienKM.setBounds(106, 75, 273, 20);
 		panel_2.add(txt_dieuKienKM);
 
-		btn_LamMoiKM = new JButton("Làm Mới");
+		btn_LamMoiKM = new JButton("Làm Mới KM");
+		
 		btn_LamMoiKM.setForeground(Color.WHITE);
 		btn_LamMoiKM.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btn_LamMoiKM.setBackground(new Color(0, 0, 128));
-		btn_LamMoiKM.setBounds(10, 194, 99, 23);
+		btn_LamMoiKM.setBounds(10, 194, 127, 23);
 		panel_2.add(btn_LamMoiKM);
 
-		btn_themKM = new JButton("Thêm");
+		btn_themKM = new JButton("Thêm KM");
+	
 		btn_themKM.setForeground(Color.WHITE);
 		btn_themKM.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btn_themKM.setEnabled(false);
 		btn_themKM.setBackground(new Color(0, 0, 128));
-		btn_themKM.setBounds(108, 194, 89, 23);
+		btn_themKM.setBounds(138, 194, 127, 23);
 		panel_2.add(btn_themKM);
 
-		btn_suaKM = new JButton("Sửa");
+		btn_suaKM = new JButton("Sửa KM");
 		btn_suaKM.setForeground(Color.WHITE);
 		btn_suaKM.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btn_suaKM.setBackground(new Color(0, 0, 128));
-		btn_suaKM.setBounds(198, 194, 89, 23);
+		btn_suaKM.setBounds(265, 194, 114, 23);
 		panel_2.add(btn_suaKM);
 
 		lblNewLabel_9 = new JLabel("Thông Tin Khuyến Mãi");
@@ -1304,9 +1282,20 @@ public class QuanLyView extends JFrame {
 		card3.add(lblNewLabel_10);
 
 		tbl_KhuyenMai = new JTable();
+		tbl_KhuyenMai.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				qlc.fillcontrollKhuyenMai();
+			}
+		});
 		tbl_KhuyenMai.setBackground(new Color(255, 255, 255));
-		tbl_KhuyenMai.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID KM", "T\u00EAn KM", "N\u1ED9i Dung KM", "\u0110i\u1EC1u Ki\u1EC7n" }));
+		tbl_KhuyenMai.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID KM", "T\u00EAn KM", "\u0110i\u1EC1u Ki\u1EC7n KM", "T\u1ED5ng Tr\u1EEB"
+			}
+		));
 		tbl_KhuyenMai.setBounds(399, 352, 628, 239);
 
 		lblNewLabel_11 = new JLabel("Bảng Khuyến Mãi");
@@ -1363,7 +1352,6 @@ public class QuanLyView extends JFrame {
 		panel_1.add(cbo_trangThaiSP);
 		applyBottomBorder(txt_idCaLam);
 		applyBottomBorder(txt_tenCaLam);
-		applyBottomBorder(txt_Ngay);
 		
 		JLabel lblNewLabel_18 = new JLabel("Danh Sách Ca Làm ");
 		lblNewLabel_18.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1385,6 +1373,7 @@ public class QuanLyView extends JFrame {
 		applyBottomBorder(txt_dieuKienKM);
 
 		cbo_tru = new JComboBox();
+		cbo_tru.setModel(new DefaultComboBoxModel(new String[] {"10%", "20%", "15%", "30%"}));
 		cbo_tru.setEditable(true);
 		cbo_tru.setBounds(96, 108, 99, 21);
 		panel_2.add(cbo_tru);
@@ -1401,7 +1390,7 @@ public class QuanLyView extends JFrame {
 		btn_themNV.addActionListener(qlc);
 		btn_sua.addActionListener(qlc);
 		qlc.fildTable();
-	
+	      qlc.disPlayKhuyenMai(0);
 		qlc.display(0);
 		qlc.displaySanPham(0);
 		cb_sapXep.addActionListener(qlc);
@@ -1530,21 +1519,7 @@ public class QuanLyView extends JFrame {
 		return txt_giaSp;
 	}
 
-	public JTextField txt_idKM() {
-		return txt_idKM;
-	}
 
-	public JTextField txt_tenKM() {
-		return txt_tenKM;
-	}
-
-	public JTextField txt_dieuKienKM() {
-		return txt_dieuKienKM;
-	}
-	
-	public JComboBox<String> cbo_tru() {
-		return cbo_tru;
-	}
 
 	public JComboBox<String> cbo_TrangThaiSP() {
 		return cbo_trangThaiSP;
@@ -1560,10 +1535,49 @@ public class QuanLyView extends JFrame {
 	}  
 	public JTable tblXepCa() {
 		return tbl_xepCa;
-	}  
+	} 
+	// ca lamm
+	public JTextField txt_idCaLam() {
+		return txt_idCaLam;
+	}
+	public JTextField txt_tenCaLam() {
+		return txt_tenCaLam;
+	}
+	public JComboBox<String> cbo_batDau() {
+		return cbo_batDau;
+	}
+	public JComboBox<String> cbo_ngay() {
+		return cbo_ngayLam;
+	}
+	// khuyen Mai
+	public JButton btn_LamMoiKM() {
+	 return btn_LamMoiKM;
+	}
+	public JButton btn_themKM() {
+		return btn_themKM;
+	}
+	public JButton btn_suaKM() {
+		return btn_suaKM;
+	}
+	public JTextField txt_idKM() {
+		return txt_idKM;
+	}
+
+	public JTextField txt_tenKM() {
+		return txt_tenKM;
+	}
+
+	public JTextField txt_dieuKienKM() {
+		return txt_dieuKienKM;
+	}
+	
+	public JComboBox<String> cbo_tru() {
+		return cbo_tru;
+	}
 	private void applyBottomBorder(JTextField textField) {
 		Border border = textField.getBorder();
 		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK); // Màu đen, độ dày là 1 pixel
 		textField.setBorder(BorderFactory.createCompoundBorder(border, bottomBorder));
 	}
+	
 }
