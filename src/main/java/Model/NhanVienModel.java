@@ -126,6 +126,6 @@ public class NhanVienModel {
 				+ ngaySinh + ", gioiTinh=" + gioiTinh + ", soDienThoai=" + soDienThoai + ", Email=" + Email
 				+ ", chucVu=" + chucVu + ", trangThai=" + trangThai + ", luongCB=" + luongCB + ", idCaLam=" + idCaLam
 				+ "]";
-	}
+	} 
 
 }
