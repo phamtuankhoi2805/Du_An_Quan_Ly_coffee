@@ -1,17 +1,19 @@
 package View;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.GridLayout;
 
 import DAO.SanPhamDAO;
 import Model.SanPhamModel;
@@ -22,9 +24,6 @@ public class TestSP extends JFrame {
     private JPanel contentPane;
     private ArrayList<SanPhamModel> listSP;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -38,32 +37,24 @@ public class TestSP extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public TestSP() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1117, 581);
+        
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+        contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
-        contentPane.setLayout(null);
-
+        
         JPanel panel_DSSP = new JPanel();
-        panel_DSSP.setBounds(10, 10, 1083, 524);
-        contentPane.add(panel_DSSP);
-        panel_DSSP.setLayout(new GridLayout(0, 4, 10, 10));
-
+        panel_DSSP.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        
         listSP = SanPhamDAO.getInstance().selectAll();
 
         // Duyệt qua danh sách sản phẩm và tạo JPanel cho mỗi sản phẩm
-        for (int i = 0; i < listSP.size(); i++) {
-            SanPhamModel sp = listSP.get(i);
-
+        for (SanPhamModel sp : listSP) {
             JPanel panel = new JPanel();
-            panel.setBounds(10, 10 + i * 146, 320, 136);
-            panel_DSSP.add(panel);
+            panel.setPreferredSize(new Dimension(320, 136));
             panel.setLayout(null);
 
             JLabel lbl__hinhAnh = new JLabel("");
@@ -109,7 +100,11 @@ public class TestSP extends JFrame {
                 public void mouseExited(MouseEvent e) {
                 }
             });
+            
+            panel_DSSP.add(panel);
         }
+        
+        contentPane.add(panel_DSSP, BorderLayout.CENTER);
     }
 
     private void setScaledImage(JLabel label, String imagePath) {

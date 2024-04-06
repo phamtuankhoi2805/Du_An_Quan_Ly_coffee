@@ -13,7 +13,7 @@ public class JDBCUtil {
 	       String url = "jdbc:sqlserver://localhost:1433;databaseName=QLCafe;"
 	            + "encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
 	        String user = "sa"; 
-	        String passWord = "songlong";
+	        String passWord = "123";
 	        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        conn = DriverManager.getConnection(url, user, passWord);
 	    } catch (Exception e) {

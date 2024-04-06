@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Default test(failed)">
+    <classes>
+      <class name="DAO.CaLamViecDaoTest">
+        <methods>
+          <include name="selectByIdTestCaLamViecModel"/>
+          <include name="selectAllTest"/>
+          <include name="updateTest"/>
+          <include name="selectByConditionTest"/>
+          <include name="getInstanceTest"/>
+          <include name="selectByCondition1Test"/>
+          <include name="deleteTest"/>
+          <include name="insertTest"/>
+          <include name="selectByIdTestString"/>
+        </methods>
+      </class> <!-- DAO.CaLamViecDaoTest -->
+    </classes>
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

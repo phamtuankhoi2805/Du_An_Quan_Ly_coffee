@@ -79,7 +79,7 @@ CREATE TABLE HOADON(
 IDHoaDon varchar(10) not null primary key,
 DonGia float,
 SoLuong int,
-TongTien float,
+TongTien float,	
 Giam float,
 ThanhTien float,
 ThoiGianMua date,
