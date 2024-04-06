@@ -892,7 +892,54 @@ public class QuanLyController implements ActionListener {
 	    }
 	}
 	
+	public void thongKeDoanhThuThangBaoCao() {
+	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
+	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
+	    String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
 
+	    for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
+	        if (dtm.getThang().equals(selectedMonth) && dtm.getNam().equals(selectedYear)) {
+	            int doanhThuThangNam = dtm.getDoanhThu();
+//	            qlv.lbl_tongDoanhThuThang().setText("Tổng Doanh Thu Tháng " + selectedMonth);
+//	            qlv.lbl_doanhThuTien().setText(doanhThuThangNam + " VND");
+//	            qlv.lbl_tongDonHangThang().setText("Tổng Số Đơn Hàng Tháng " + selectedMonth);
+//	            qlv.lbl_tongSODon().setText(Integer.toString(dtm.getTongDon()));
+
+	            try {
+	                // Tạo tài liệu Word mới
+	                XWPFDocument document = new XWPFDocument();
+
+	                // Tạo tiêu đề
+	                XWPFParagraph title = document.createParagraph();
+	                XWPFRun titleRun = title.createRun();
+	                titleRun.setText("Báo cáo doanh thu tháng " + selectedMonth + " năm " + selectedYear);
+	                titleRun.setBold(true);
+	                titleRun.setFontSize(16);
+	                titleRun.addBreak();
+
+	                // Tạo nội dung báo cáo
+	                XWPFParagraph content = document.createParagraph();
+	                XWPFRun contentRun = content.createRun();
+	                contentRun.setText("Tổng doanh thu: " + doanhThuThangNam + " VND");
+	                contentRun.addBreak();
+	                contentRun.setText("Tổng số đơn hàng: " + dtm.getTongDon());
+	                contentRun.addBreak();
+
+	                // Lưu tệp Word
+	                String filePath = "BaoCaoDoanhThu.docx";
+	                FileOutputStream out = new FileOutputStream(filePath);
+	                document.write(out);
+	                out.close();
+	                document.close();
+
+	              JOptionPane.showMessageDialog(qlv, "Tạo Báo Cáo Thành Công");
+	            } catch (IOException e) {
+	            	JOptionPane.showMessageDialog(qlv,"không đủ dữ liệu để tạo báo cáo");
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	}
 	public void thongKeDoanhThuBieuDo1() {
 	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
 	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();

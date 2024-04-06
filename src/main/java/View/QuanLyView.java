@@ -1081,6 +1081,12 @@ public class QuanLyView extends JFrame {
 
     
 		JPanel panel_3_1_1 = new JPanel();
+		panel_3_1_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				qlc.thongKeDoanhThuThangBaoCao();
+			}
+		});
 		panel_3_1_1.setLayout(null);
 		panel_3_1_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_3_1_1.setBackground(new Color(0, 128, 128));
@@ -1092,7 +1098,7 @@ public class QuanLyView extends JFrame {
 		lbl_tongDonHangThang_1.setBounds(10, 11, 147, 24);
 		panel_3_1_1.add(lbl_tongDonHangThang_1);
 
-		JLabel lbl_soDonHangThang_1 = new JLabel("Excel");
+		JLabel lbl_soDonHangThang_1 = new JLabel("Word");
 		lbl_soDonHangThang_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lbl_soDonHangThang_1.setBounds(10, 46, 147, 60);
 		panel_3_1_1.add(lbl_soDonHangThang_1);
