@@ -33,6 +33,8 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+import java.time.YearMonth;
+import java.util.Locale;
 
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.BevelBorder;
@@ -56,8 +58,12 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
+
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -68,11 +74,15 @@ import java.awt.BorderLayout;
 import javax.swing.JTextArea;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 public class QuanLyView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -143,7 +153,6 @@ public class QuanLyView extends JFrame {
 	private JButton btn_lamMoiSP;
 	private JButton btn_themSP;
 	private JButton btn_suaSP;
-	private JPanel panel_3_2;
 	private JLabel lblNewLabel_12_1_2;
 	private JLabel lblNewLabel_12_4;
 	private JTextField txt_idCaLam;
@@ -168,13 +177,22 @@ public class QuanLyView extends JFrame {
 	private JTextField txt_soLuongTonXuat;
 	private JTextField txt_soLuongLayXuat;
 	private JButton btn_DatHang;
-       String idCaLam ;
-       
-	    private int clickCount = 0;
-	    private Timer timer;
-		private JComboBox cbo_batDau;
-		private JButton btn_themCaLam;
-		private JButton btn_xuat;
+	String idCaLam;
+
+	private int clickCount = 0;
+	private Timer timer;
+	private JComboBox cbo_batDau;
+	private JButton btn_themCaLam;
+	private JButton btn_xuat;
+	private JYearChooser yearChooser;
+	private JComboBox<String> cbo_thangTK;
+	private JComboBox<String> cbo_namTk;
+	private JLabel lbl_tongDoanhThuThang;
+	private JLabel lbl_doanhThuTien;
+	private JLabel lbl_tongDonHangThang;
+	private JLabel lbl_soDonHangThang;
+	private DefaultCategoryDataset dataset;
+
 	/**
 	 * Launch the application.
 	 */
@@ -212,48 +230,10 @@ public class QuanLyView extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JLabel lbl_hinhAnh = new JLabel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				if (g instanceof Graphics2D) {
-					int cornerRadius = Math.min(getWidth(), getHeight()); // Bán kính góc bo tròn
-					RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(),
-							cornerRadius, cornerRadius);
-
-					Graphics2D g2d = (Graphics2D) g;
-					g2d.setClip(roundedRectangle);
-				}
-
-				super.paintComponent(g);
-			}
-		};
-		lbl_hinhAnh.setBounds(10, 26, 51, 42);
-		panel.add(lbl_hinhAnh);
-
-		// Tạo một đối tượng ImageIcon từ tệp hình ảnh
-		ImageIcon imageIcon = new ImageIcon("C:\\javvaa\\DuAn1\\src\\main\\resources\\gojo.jpg");
-
-		// Lấy kích thước gốc của hình ảnh
-		int originalWidth = imageIcon.getIconWidth();
-		int originalHeight = imageIcon.getIconHeight();
-
-		// Tính toán kích thước mới dựa trên kích thước của lbl_hinhAnh
-		int desiredWidth = lbl_hinhAnh.getWidth();
-		int desiredHeight = lbl_hinhAnh.getHeight();
-
-		// Tạo một đối tượng Image từ ImageIcon và thay đổi kích thước
-		Image image = imageIcon.getImage().getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
-
-		// Tạo một ImageIcon mới từ đối tượng Image đã thay đổi kích thước
-		ImageIcon resizedImageIcon = new ImageIcon(image);
-
-		// Đặt hình ảnh đã thay đổi kích thước vào lbl_hinhAnh
-		lbl_hinhAnh.setIcon(resizedImageIcon);
-
 		lbl_ten = new JLabel("Tên");
 		lbl_ten.setForeground(new Color(255, 255, 255));
 		lbl_ten.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lbl_ten.setBounds(86, 28, 174, 20);
+		lbl_ten.setBounds(23, 11, 174, 20);
 		panel.add(lbl_ten);
 
 		btn_qLNhanVien = new JButton("Quản Lý Nhân Viên");
@@ -371,7 +351,7 @@ public class QuanLyView extends JFrame {
 				CardLayout cardLayout = (CardLayout) panel_chu.getLayout();
 				cardLayout.show(panel_chu, "Card 5");
 				qlc.fildTableCaLam();
-			
+
 				btn_trangChu.setEnabled(true);
 				btn_qLNhanVien.setEnabled(true);
 				btn_qLBanHang.setEnabled(true);
@@ -383,7 +363,7 @@ public class QuanLyView extends JFrame {
 		panel.add(btn_QlCaLam);
 
 		lbl_chucVu = new JLabel("Chức Vụ");
-		lbl_chucVu.setBounds(86, 48, 174, 20);
+		lbl_chucVu.setBounds(23, 42, 174, 20);
 		panel.add(lbl_chucVu);
 		lbl_chucVu.setForeground(new Color(255, 255, 255));
 		lbl_chucVu.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -764,9 +744,9 @@ public class QuanLyView extends JFrame {
 		scrollPane_6 = new JScrollPane(tbl_kho);
 		scrollPane_6.setBounds(10, 174, 1017, 502);
 		smallCard1.add(scrollPane_6);
-		
-		 btn_DatHang = new JButton("Đặt Hàng");
-		
+
+		btn_DatHang = new JButton("Đặt Hàng");
+
 		btn_DatHang.setForeground(Color.WHITE);
 		btn_DatHang.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btn_DatHang.setBackground(new Color(0, 0, 160));
@@ -793,7 +773,7 @@ public class QuanLyView extends JFrame {
 		btn_nhapKho.setBackground(new Color(0, 0, 160));
 		btn_nhapKho.setBounds(10, 23, 115, 23);
 		smallCard2.add(btn_nhapKho);
-		
+
 		tbl_DSNguyenLieuXuat = new JTable();
 		tbl_DSNguyenLieuXuat.addMouseListener(new MouseAdapter() {
 			@Override
@@ -801,88 +781,84 @@ public class QuanLyView extends JFrame {
 				qlc.fillcontrollXuatKho();
 			}
 		});
-		tbl_DSNguyenLieuXuat.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-			 "ID Nguy\u00EAn Li\u1EC7u", "T\u00EAn Nguy\u00EAn Li\u1EC7u", "Số Lượng Tồn","Đơn Vị Tính"
-			}
-		));
+		tbl_DSNguyenLieuXuat.setModel(new DefaultTableModel(new Object[][] {}, new String[] {
+				"ID Nguy\u00EAn Li\u1EC7u", "T\u00EAn Nguy\u00EAn Li\u1EC7u", "Số Lượng Tồn", "Đơn Vị Tính" }));
 		tbl_DSNguyenLieuXuat.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		tbl_DSNguyenLieuXuat.setBounds(501, 75, 526, 260);
 		JScrollPane scrollPane_7 = new JScrollPane(tbl_DSNguyenLieuXuat);
 		scrollPane_7.setBounds(30, 403, 985, 260);
 		smallCard2.add(scrollPane_7);
-		
+
 		JLabel lblNewLabel_19 = new JLabel("Danh Sách Nguyên Liệu");
 		lblNewLabel_19.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_19.setBounds(39, 370, 183, 23);
 		smallCard2.add(lblNewLabel_19);
-		
+
 		lblNewLabel_20 = new JLabel("Thông Tin Nguyên Liệu");
 		lblNewLabel_20.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_20.setBounds(10, 56, 192, 29);
 		smallCard2.add(lblNewLabel_20);
-		
+
 		txt_idNLXuat = new JTextField("");
 		txt_idNLXuat.setBorder(new CompoundBorder());
 		txt_idNLXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txt_idNLXuat.setBounds(243, 92, 349, 29);
 		smallCard2.add(txt_idNLXuat);
-		txt_idNLXuat.setColumns(10);;
+		txt_idNLXuat.setColumns(10);
+		;
 		applyBottomBorder(txt_idNLXuat);
-		
+
 		txt_tenNLXuat = new JTextField("");
 		txt_tenNLXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txt_tenNLXuat.setColumns(10);
 		txt_tenNLXuat.setBorder(new CompoundBorder());
 		txt_tenNLXuat.setBounds(243, 128, 349, 29);
 		smallCard2.add(txt_tenNLXuat);
-            applyBottomBorder(txt_tenNLXuat);
-            
-            txt_soLuongTonXuat = new JTextField("");
-            txt_soLuongTonXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            txt_soLuongTonXuat.setColumns(10);
-            txt_soLuongTonXuat.setBorder(new CompoundBorder());
-            txt_soLuongTonXuat.setBounds(243, 167, 349, 29);
-            applyBottomBorder(txt_soLuongTonXuat);
-            smallCard2.add(txt_soLuongTonXuat);
-            
-            txt_soLuongLayXuat = new JTextField("");
-            txt_soLuongLayXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            txt_soLuongLayXuat.setColumns(10);
-            txt_soLuongLayXuat.setBorder(new CompoundBorder());
-            txt_soLuongLayXuat.setBounds(243, 206, 349, 29);
-            smallCard2.add(txt_soLuongLayXuat);
-            applyBottomBorder(txt_soLuongLayXuat);
-            
-             btn_xuat = new JButton("Xuất");
-            btn_xuat.setForeground(Color.WHITE);
-            btn_xuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            btn_xuat.setBorder(new CompoundBorder());
-            btn_xuat.setBackground(new Color(0, 0, 64));
-            btn_xuat.setBounds(30, 268, 108, 23);
-            smallCard2.add(btn_xuat);
-           btn_xuat.addActionListener(qlc);
-            JLabel lblNewLabel_21 = new JLabel("ID Nguyên Liệu");
-            lblNewLabel_21.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            lblNewLabel_21.setBounds(20, 95, 213, 23);
-            smallCard2.add(lblNewLabel_21);
-            
-            JLabel lblNewLabel_21_1 = new JLabel("Tên Nguyên Liệu");
-            lblNewLabel_21_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            lblNewLabel_21_1.setBounds(20, 134, 213, 23);
-            smallCard2.add(lblNewLabel_21_1);
-            
-            JLabel lblNewLabel_21_1_1 = new JLabel("Số Lượng Tồn");
-            lblNewLabel_21_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            lblNewLabel_21_1_1.setBounds(20, 173, 213, 23);
-            smallCard2.add(lblNewLabel_21_1_1);
-            
-            JLabel lblNewLabel_21_1_1_1 = new JLabel("Số Lượng Lấy");
-            lblNewLabel_21_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            lblNewLabel_21_1_1_1.setBounds(20, 212, 213, 23);
-            smallCard2.add(lblNewLabel_21_1_1_1);
+		applyBottomBorder(txt_tenNLXuat);
+
+		txt_soLuongTonXuat = new JTextField("");
+		txt_soLuongTonXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txt_soLuongTonXuat.setColumns(10);
+		txt_soLuongTonXuat.setBorder(new CompoundBorder());
+		txt_soLuongTonXuat.setBounds(243, 167, 349, 29);
+		applyBottomBorder(txt_soLuongTonXuat);
+		smallCard2.add(txt_soLuongTonXuat);
+
+		txt_soLuongLayXuat = new JTextField("");
+		txt_soLuongLayXuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txt_soLuongLayXuat.setColumns(10);
+		txt_soLuongLayXuat.setBorder(new CompoundBorder());
+		txt_soLuongLayXuat.setBounds(243, 206, 349, 29);
+		smallCard2.add(txt_soLuongLayXuat);
+		applyBottomBorder(txt_soLuongLayXuat);
+
+		btn_xuat = new JButton("Xuất");
+		btn_xuat.setForeground(Color.WHITE);
+		btn_xuat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btn_xuat.setBorder(new CompoundBorder());
+		btn_xuat.setBackground(new Color(0, 0, 64));
+		btn_xuat.setBounds(30, 268, 108, 23);
+		smallCard2.add(btn_xuat);
+		btn_xuat.addActionListener(qlc);
+		JLabel lblNewLabel_21 = new JLabel("ID Nguyên Liệu");
+		lblNewLabel_21.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_21.setBounds(20, 95, 213, 23);
+		smallCard2.add(lblNewLabel_21);
+
+		JLabel lblNewLabel_21_1 = new JLabel("Tên Nguyên Liệu");
+		lblNewLabel_21_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_21_1.setBounds(20, 134, 213, 23);
+		smallCard2.add(lblNewLabel_21_1);
+
+		JLabel lblNewLabel_21_1_1 = new JLabel("Số Lượng Tồn");
+		lblNewLabel_21_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_21_1_1.setBounds(20, 173, 213, 23);
+		smallCard2.add(lblNewLabel_21_1_1);
+
+		JLabel lblNewLabel_21_1_1_1 = new JLabel("Số Lượng Lấy");
+		lblNewLabel_21_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_21_1_1_1.setBounds(20, 212, 213, 23);
+		smallCard2.add(lblNewLabel_21_1_1_1);
 		JPanel card5 = new JPanel();
 		card5.setBackground(new Color(255, 255, 255));
 		panel_chu.add(card5, "Card 5");
@@ -926,21 +902,22 @@ public class QuanLyView extends JFrame {
 		txt_tenCaLam.setBounds(133, 120, 158, 20);
 		card5.add(txt_tenCaLam);
 
-	 cbo_batDau = new JComboBox();
-		cbo_batDau.setModel(new DefaultComboBoxModel(new String[] {"08:00 - 17:00", "09:00 - 18:00", "10:00 - 19:00", "07:00 - 16:00"}));
+		cbo_batDau = new JComboBox();
+		cbo_batDau.setModel(new DefaultComboBoxModel(
+				new String[] { "08:00 - 17:00", "09:00 - 18:00", "10:00 - 19:00", "07:00 - 16:00" }));
 		cbo_batDau.setBounds(133, 167, 110, 22);
 		card5.add(cbo_batDau);
 
 		tbl_CaLam = new JTable();
 		tbl_caLam().addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseClicked(MouseEvent e) {
-	            int rowIndex = tbl_caLam().getSelectedRow();
-	             idCaLam = (String) tbl_caLam().getValueAt(rowIndex, 0);
-	               qlc.fildTableXepCa(idCaLam);
-	        
-	        }
-	    });
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = tbl_caLam().getSelectedRow();
+				idCaLam = (String) tbl_caLam().getValueAt(rowIndex, 0);
+				qlc.fildTableXepCa(idCaLam);
+
+			}
+		});
 		tbl_CaLam.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "ID", "T\u00EAn Ca L\u00E0m", "Th\u1EDDi Gian", "Ng\u00E0y", "ID NV" }));
 		tbl_CaLam.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -958,46 +935,40 @@ public class QuanLyView extends JFrame {
 		lblNewLabel_15.setBounds(23, 308, 116, 36);
 		card5.add(lblNewLabel_15);
 
-		 btn_themCaLam = new JButton("Thêm Ca Làm");
+		btn_themCaLam = new JButton("Thêm Ca Làm");
 		btn_themCaLam.setForeground(new Color(255, 255, 255));
 		btn_themCaLam.setBackground(new Color(0, 0, 128));
 		btn_themCaLam.setBounds(23, 202, 268, 23);
 		card5.add(btn_themCaLam);
-           btn_themCaLam.addActionListener(qlc);
+		btn_themCaLam.addActionListener(qlc);
 		tbl_xepCa = new JTable();
 		tbl_xepCa.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			     int rowIndex1 = tbl_xepCa.getSelectedRow();
-	           String idNhanVien = (String) tbl_xepCa.getValueAt(rowIndex1, 0);
-	           System.out.println(idNhanVien);
-	           System.out.println(idCaLam);
-	           int choice = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm nhân viên vào ca làm?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-	           
+				int rowIndex1 = tbl_xepCa.getSelectedRow();
+				String idNhanVien = (String) tbl_xepCa.getValueAt(rowIndex1, 0);
+				System.out.println(idNhanVien);
+				System.out.println(idCaLam);
+				int choice = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm nhân viên vào ca làm?", "Xác nhận",
+						JOptionPane.YES_NO_OPTION);
 
-	           if (choice == JOptionPane.YES_OPTION) {
-	            try {
-	                NhanVienDAO.getInstance().updateCaLam(idCaLam, idNhanVien);
-	                qlc.fildTableCaLam();
-	                qlc.fildTableXepCa(idCaLam);
-	               JOptionPane.showMessageDialog(null, "thành công");
-				} catch (Exception e2) {
-					e2.printStackTrace();
+				if (choice == JOptionPane.YES_OPTION) {
+					try {
+						NhanVienDAO.getInstance().updateCaLam(idCaLam, idNhanVien);
+						qlc.fildTableCaLam();
+						qlc.fildTableXepCa(idCaLam);
+						JOptionPane.showMessageDialog(null, "thành công");
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				} else if (choice == JOptionPane.NO_OPTION) {
+					System.out.println("huy");
 				}
-	           } else if (choice == JOptionPane.NO_OPTION) {
-	               System.out.println("huy");
-	           }
 			}
 		});
-		tbl_xepCa.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID NV", "T\u00EAn NV"
-			}
-		));
+		tbl_xepCa.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID NV", "T\u00EAn NV" }));
 		tbl_xepCa.setBounds(22, 356, 1005, 320);
-		
+
 		JScrollPane scrollPane_5 = new JScrollPane(tbl_xepCa);
 		scrollPane_5.setBounds(23, 355, 1004, 321);
 		card5.add(scrollPane_5);
@@ -1019,59 +990,49 @@ public class QuanLyView extends JFrame {
 		card6.add(panel_3);
 		panel_3.setLayout(null);
 
-		JLabel lblNewLabel_12 = new JLabel("Tổng Doanh Thu");
-		lblNewLabel_12.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_12.setBounds(10, 11, 147, 24);
-		panel_3.add(lblNewLabel_12);
+		 lbl_tongDoanhThuThang = new JLabel("Tổng Doanh Thu");
+		lbl_tongDoanhThuThang.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_tongDoanhThuThang.setBounds(10, 11, 290, 24);
+		panel_3.add(lbl_tongDoanhThuThang);
 
-		JLabel lblNewLabel_12_1 = new JLabel("159Tr");
-		lblNewLabel_12_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
-		lblNewLabel_12_1.setBounds(10, 46, 147, 60);
-		panel_3.add(lblNewLabel_12_1);
-
-		JLabel lblNewLabel_12_2 = new JLabel("Tăng 20%  so với tháng 2");
-		lblNewLabel_12_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_12_2.setBounds(10, 130, 303, 24);
-		panel_3.add(lblNewLabel_12_2);
+		 lbl_doanhThuTien = new JLabel("0");
+		lbl_doanhThuTien.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lbl_doanhThuTien.setBounds(10, 46, 147, 60);
+		panel_3.add(lbl_doanhThuTien);
 
 		JPanel panel_3_1 = new JPanel();
 		panel_3_1.setLayout(null);
 		panel_3_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_3_1.setBackground(new Color(255, 255, 128));
-		panel_3_1.setBounds(370, 44, 310, 165);
+		panel_3_1.setBounds(374, 44, 310, 165);
 		card6.add(panel_3_1);
 
-		JLabel lblNewLabel_12_3 = new JLabel("Tổng Số Đơn Hàng");
-		lblNewLabel_12_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_12_3.setBounds(10, 11, 147, 24);
-		panel_3_1.add(lblNewLabel_12_3);
+		 lbl_tongDonHangThang = new JLabel("Tổng Số Đơn Hàng");
+		lbl_tongDonHangThang.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_tongDonHangThang.setBounds(10, 11, 218, 24);
+		panel_3_1.add(lbl_tongDonHangThang);
 
-		JLabel lblNewLabel_12_1_1 = new JLabel("200 Đơn");
-		lblNewLabel_12_1_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
-		lblNewLabel_12_1_1.setBounds(10, 46, 147, 60);
-		panel_3_1.add(lblNewLabel_12_1_1);
-
-		JLabel lblNewLabel_12_2_1 = new JLabel("Tăng 59 đơn so với tháng 2");
-		lblNewLabel_12_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_12_2_1.setBounds(10, 130, 303, 24);
-		panel_3_1.add(lblNewLabel_12_2_1);
+		 lbl_soDonHangThang = new JLabel("0");
+		lbl_soDonHangThang.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lbl_soDonHangThang.setBounds(10, 46, 147, 60);
+		panel_3_1.add(lbl_soDonHangThang);
 
 		JPanel panel_ThongKe = new JPanel();
 		panel_ThongKe.setBounds(20, 288, 996, 370);
 		// Tạo dữ liệu cho biểu đồ đường
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.addValue(200, "Doanh thu", "1");
-		dataset.addValue(300, "Doanh thu", "2");
-		dataset.addValue(400, "Doanh thu", "3");
-		dataset.addValue(500, "Doanh thu", "4");
-		dataset.addValue(600, "Doanh thu", "5");
-		dataset.addValue(700, "Doanh thu", "6");
-		dataset.addValue(800, "Doanh thu", "7");
-		dataset.addValue(900, "Doanh thu", "8");
-		dataset.addValue(1000, "Doanh thu", "9");
-		dataset.addValue(1100, "Doanh thu", "10");
-		dataset.addValue(1200, "Doanh thu", "11");
-		dataset.addValue(1300, "Doanh thu", "12");
+		 dataset = new DefaultCategoryDataset();
+//		   dataset.addValue(200, "Doanh thu", "1");
+//	        dataset.addValue(300, "Doanh thu", "2");
+//	        dataset.addValue(400, "Doanh thu", "3");
+//	        dataset.addValue(500, "Doanh thu", "4");
+//	        dataset.addValue(600, "Doanh thu", "5");
+//	        dataset.addValue(700, "Doanh thu", "6");
+//	        dataset.addValue(800, "Doanh thu", "7");
+//	        dataset.addValue(900, "Doanh thu", "8");
+//	        dataset.addValue(1000, "Doanh thu", "9");
+//	        dataset.addValue(1100, "Doanh thu", "10");
+//	        dataset.addValue(1200, "Doanh thu", "11");
+//	        dataset.addValue(1300, "Doanh thu", "12");
 
 		// Tạo biểu đồ đường từ dữ liệu
 		JFreeChart chart = ChartFactory.createLineChart("Biểu đồ doanh thu hàng tháng", "Tháng", "Doanh thu", dataset);
@@ -1096,10 +1057,11 @@ public class QuanLyView extends JFrame {
 
 		// Thiết lập màu sắc cho các chuỗi dữ liệu trong biểu đồ
 		LineAndShapeRenderer renderer11 = (LineAndShapeRenderer) plot.getRenderer();
-		for (int i = 0; i < colors.length; i++) {
-			renderer11.setSeriesPaint(i, colors[i]);
-		}
+		renderer11.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+		renderer11.setDefaultItemLabelsVisible(true);
 		// Tạo một ChartPanel để chứa biểu đồ
+		renderer11.setDefaultPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12,
+		        TextAnchor.BASELINE_LEFT));
 		ChartPanel chartPanel = new ChartPanel(chart);
 
 		// Đặt kích thước và vị trí của chartPanel trong panel_ThongKe
@@ -1117,28 +1079,47 @@ public class QuanLyView extends JFrame {
 		panel_ThongKe.repaint();
 		card6.add(panel_ThongKe);
 
-		JComboBox<String> cbo_nam = new JComboBox();
-		cbo_nam.setModel(new DefaultComboBoxModel(new String[] { "2024", "2023", "2022" }));
-		cbo_nam.setBounds(20, 255, 109, 22);
-		card6.add(cbo_nam);
+    
+		JPanel panel_3_1_1 = new JPanel();
+		panel_3_1_1.setLayout(null);
+		panel_3_1_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_3_1_1.setBackground(new Color(0, 128, 128));
+		panel_3_1_1.setBounds(706, 44, 310, 165);
+		card6.add(panel_3_1_1);
 
-		panel_3_2 = new JPanel();
-		panel_3_2.setLayout(null);
-		panel_3_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_3_2.setBackground(new Color(128, 255, 0));
-		panel_3_2.setBounds(717, 44, 310, 165);
-		card6.add(panel_3_2);
+		JLabel lbl_tongDonHangThang_1 = new JLabel("Xuất Báo Cáo");
+		lbl_tongDonHangThang_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_tongDonHangThang_1.setBounds(10, 11, 147, 24);
+		panel_3_1_1.add(lbl_tongDonHangThang_1);
 
-		lblNewLabel_12_1_2 = new JLabel("Excel");
-		lblNewLabel_12_1_2.setBackground(new Color(0, 255, 64));
-		lblNewLabel_12_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_12_1_2.setBounds(10, 51, 203, 60);
-		panel_3_2.add(lblNewLabel_12_1_2);
-
-		lblNewLabel_12_4 = new JLabel("Xuất Báo Cáo");
-		lblNewLabel_12_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_12_4.setBounds(10, 11, 147, 24);
-		panel_3_2.add(lblNewLabel_12_4);
+		JLabel lbl_soDonHangThang_1 = new JLabel("Excel");
+		lbl_soDonHangThang_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lbl_soDonHangThang_1.setBounds(10, 46, 147, 60);
+		panel_3_1_1.add(lbl_soDonHangThang_1);
+		
+	 cbo_namTk = new JComboBox();
+	 cbo_namTk.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+             qlc.thongKeDoanhThuThang(); 
+             qlc.thongKeDoanhThuBieuDo1();
+         }
+     });
+		cbo_namTk.setModel(new DefaultComboBoxModel(new String[] {"2024", "2023"}));
+		cbo_namTk.setBounds(20, 263, 74, 22);
+		card6.add(cbo_namTk);
+		
+		cbo_thangTK = new JComboBox();
+	      cbo_thangTK.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                qlc.thongKeDoanhThuThang(); 
+	            }
+	        });
+		cbo_thangTK.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		cbo_thangTK.setBounds(103, 263, 74, 22);
+		card6.add(cbo_thangTK);
+		
 		// Hiển thị card đầu tiên
 
 		txt_tim = new PlaceholderTextField("Tìm Kiếm");
@@ -1277,7 +1258,7 @@ public class QuanLyView extends JFrame {
 		panel_2.add(txt_dieuKienKM);
 
 		btn_LamMoiKM = new JButton("Làm Mới KM");
-		
+
 		btn_LamMoiKM.setForeground(Color.WHITE);
 		btn_LamMoiKM.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btn_LamMoiKM.setBackground(new Color(0, 0, 128));
@@ -1285,7 +1266,7 @@ public class QuanLyView extends JFrame {
 		panel_2.add(btn_LamMoiKM);
 
 		btn_themKM = new JButton("Thêm KM");
-	
+
 		btn_themKM.setForeground(Color.WHITE);
 		btn_themKM.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btn_themKM.setEnabled(false);
@@ -1318,13 +1299,8 @@ public class QuanLyView extends JFrame {
 			}
 		});
 		tbl_KhuyenMai.setBackground(new Color(255, 255, 255));
-		tbl_KhuyenMai.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID KM", "T\u00EAn KM", "\u0110i\u1EC1u Ki\u1EC7n KM", "T\u1ED5ng Tr\u1EEB"
-			}
-		));
+		tbl_KhuyenMai.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "ID KM", "T\u00EAn KM", "\u0110i\u1EC1u Ki\u1EC7n KM", "T\u1ED5ng Tr\u1EEB" }));
 		tbl_KhuyenMai.setBounds(399, 352, 628, 239);
 
 		lblNewLabel_11 = new JLabel("Bảng Khuyến Mãi");
@@ -1381,19 +1357,19 @@ public class QuanLyView extends JFrame {
 		panel_1.add(cbo_trangThaiSP);
 		applyBottomBorder(txt_idCaLam);
 		applyBottomBorder(txt_tenCaLam);
-		
+
 		JLabel lblNewLabel_18 = new JLabel("Danh Sách Ca Làm ");
 		lblNewLabel_18.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_18.setBounds(319, 41, 166, 20);
 		card5.add(lblNewLabel_18);
-		
-		 cbo_ngayLam = new JComboBox();
-		 cbo_ngayLam.addActionListener(new ActionListener() {
-		        @Override
-		        public void actionPerformed(ActionEvent e) {
-		           qlc.fildTableCaLam();
-		        }
-		    });
+
+		cbo_ngayLam = new JComboBox();
+		cbo_ngayLam.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				qlc.fildTableCaLam();
+			}
+		});
 		cbo_ngayLam.setBounds(874, 40, 153, 21);
 		card5.add(cbo_ngayLam);
 
@@ -1402,7 +1378,7 @@ public class QuanLyView extends JFrame {
 		applyBottomBorder(txt_dieuKienKM);
 
 		cbo_tru = new JComboBox();
-		cbo_tru.setModel(new DefaultComboBoxModel(new String[] {"10%", "20%", "15%", "30%"}));
+		cbo_tru.setModel(new DefaultComboBoxModel(new String[] { "10%", "20%", "15%", "30%" }));
 		cbo_tru.setEditable(true);
 		cbo_tru.setBounds(96, 108, 99, 21);
 		panel_2.add(cbo_tru);
@@ -1419,13 +1395,15 @@ public class QuanLyView extends JFrame {
 		btn_themNV.addActionListener(qlc);
 		btn_sua.addActionListener(qlc);
 		qlc.fildTable();
-	      qlc.disPlayKhuyenMai(0);
+		qlc.disPlayKhuyenMai(0);
 		qlc.display(0);
 		qlc.displaySanPham(0);
 		cb_sapXep.addActionListener(qlc);
 		qlc.loadNgay();
 		qlc.fildTableNguyenLieu();
-		
+         qlc.setNamThangO();
+qlc.thongKeDoanhThuThang();
+qlc.thongKeDoanhThuBieuDo1();
 	}
 
 	public JLabel lbl_tenNV() {
@@ -1548,46 +1526,56 @@ public class QuanLyView extends JFrame {
 		return txt_giaSp;
 	}
 
-
-
 	public JComboBox<String> cbo_TrangThaiSP() {
 		return cbo_trangThaiSP;
 	}
+
 	public JComboBox<String> cbo_ngayLam() {
 		return cbo_ngayLam;
 	}
+
 	public JTable tbl_kho() {
 		return tbl_kho;
 	}
+
 	public JTable tbl_caLam() {
 		return tbl_CaLam;
-	}  
+	}
+
 	public JTable tblXepCa() {
 		return tbl_xepCa;
-	} 
+	}
+
 	// ca lamm
 	public JTextField txt_idCaLam() {
 		return txt_idCaLam;
 	}
+
 	public JTextField txt_tenCaLam() {
 		return txt_tenCaLam;
 	}
+
 	public JComboBox<String> cbo_batDau() {
 		return cbo_batDau;
 	}
+
 	public JComboBox<String> cbo_ngay() {
 		return cbo_ngayLam;
 	}
+
 	// khuyen Mai
 	public JButton btn_LamMoiKM() {
-	 return btn_LamMoiKM;
+		return btn_LamMoiKM;
 	}
+
 	public JButton btn_themKM() {
 		return btn_themKM;
 	}
+
 	public JButton btn_suaKM() {
 		return btn_suaKM;
 	}
+
 	public JTextField txt_idKM() {
 		return txt_idKM;
 	}
@@ -1599,26 +1587,62 @@ public class QuanLyView extends JFrame {
 	public JTextField txt_dieuKienKM() {
 		return txt_dieuKienKM;
 	}
-	
+
 	public JComboBox<String> cbo_tru() {
 		return cbo_tru;
 	}
-	
+
 	// xuat kho
 	public JTextField txt_idNguyenLieuXuat() {
 		return txt_idNLXuat;
 	}
+
 	public JTextField txt_tenNLXuat() {
 		return txt_tenNLXuat;
 	}
+
 	public JTextField txt_soLuongTonXuat() {
-		return  txt_soLuongTonXuat ;
+		return txt_soLuongTonXuat;
 	}
+
 	public JTextField txt_soLuongLayXuat() {
 		return txt_soLuongLayXuat;
 	}
+
 	public JTable tbl_DSNguyenLieuXuat() {
 		return tbl_DSNguyenLieuXuat;
+	}
+
+	// form thong ke
+
+
+
+public JLabel lbl_tongDoanhThuThang() {
+		
+		return lbl_tongDoanhThuThang;
+	}
+
+public JLabel lbl_doanhThuTien() {
+		
+		return lbl_doanhThuTien;
+	}
+
+public JLabel lbl_tongDonHangThang() {
+	
+	return lbl_tongDonHangThang;
+}
+public JLabel lbl_tongSODon() {
+	
+	return lbl_soDonHangThang;
+}
+	public JComboBox<String> cbo_namTK() {
+		return cbo_namTk;
+	}
+	public JComboBox<String> cbo_thangTK() {
+		return cbo_thangTK;
+	}
+	public DefaultCategoryDataset dataset() {
+		return dataset;
 	}
 	private void applyBottomBorder(JTextField textField) {
 		Border border = textField.getBorder();

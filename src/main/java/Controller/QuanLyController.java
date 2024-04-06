@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import DAO.CaLamViecDao;
+import DAO.DoanhThuThangDAO;
 import DAO.KhuyenMaiDAO;
 import DAO.NguyenLieuDAO;
 import DAO.NhanVienDAO;
@@ -42,6 +44,7 @@ import Model.KhuyenMaiModel;
 import Model.NguyenLieuModel;
 import Model.NhanVienModel;
 import Model.SanPhamModel;
+import Model.ThongKeDoanhThuTheoThangModel;
 import Model.tableNhapModel;
 import View.QuanLyView;
 import View.ThemChiTietView;
@@ -869,4 +872,64 @@ public class QuanLyController implements ActionListener {
 		e.printStackTrace();
 	}
 	}
+// from thống kê
+	
+	
+	public void thongKeDoanhThuThang() {
+	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
+	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
+	    String selectedYear =(String) qlv.cbo_namTK().getSelectedItem();
+	
+	    for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
+	    	
+	        if (dtm.getThang().equals(selectedMonth) ==true&& dtm.getNam().equals(selectedYear)==true) {
+	            int doanhThuThangNam = dtm.getDoanhThu();
+	         qlv.lbl_tongDoanhThuThang().setText("Tổng Doanh Thu Tháng "+selectedMonth);
+	         qlv.lbl_doanhThuTien().setText(doanhThuThangNam+" VND");
+	          qlv.lbl_tongDonHangThang().setText("Tổng Số Đơn Hàng Tháng "+selectedMonth);
+	          qlv.lbl_tongSODon().setText(Integer.toString(dtm.getTongDon()));
+	        }
+	    }
+	}
+	
+
+	public void thongKeDoanhThuBieuDo1() {
+	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
+	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
+	    String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
+	    boolean yearMatched = false;
+
+	    // Xóa tất cả các giá trị hiện có trong dataset
+	    qlv.dataset().clear();
+
+	    for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
+	        if (dtm.getNam().equals(selectedYear)) {
+	            yearMatched = true;
+	            int doanhThuThangNam = dtm.getDoanhThu();
+	            qlv.dataset().addValue(doanhThuThangNam, "Doanh thu", dtm.getThang());
+	        }
+	    }
+
+	    if (!yearMatched) {
+	       System.out.println("không có");
+	    }
+
+	    // Cập nhật lại biểu đồ
+	 
+	}
+	public void setNamThangO() {
+		YearMonth yearMonth = YearMonth.now();
+        int currentYear = yearMonth.getYear();
+        int currentMonth = yearMonth.getMonthValue();
+       
+       qlv.cbo_thangTK().setSelectedItem(Integer.toString(currentMonth));
+      qlv.cbo_namTK().setSelectedItem(Integer.toString(currentYear));
+    
+	}
+	
+	
+	
+	
+	
+	
 }
