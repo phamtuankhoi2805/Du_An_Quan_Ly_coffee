@@ -9,34 +9,34 @@ import java.util.ArrayList;
 
 import Database.JDBCUtil;
 import Model.NhanVienModel;
-import Model.tableNhapModel;
+import Model.TableNhapModel;
 
-public class TableNhapDAO implements DAOInterface<tableNhapModel> {
+public class TableNhapDAO implements DAOInterface<TableNhapModel> {
 	public static TableNhapDAO getInstance() {
 		return new TableNhapDAO();
 	}
 	
 	@Override
-	public int insert(tableNhapModel t) {
+	public int insert(TableNhapModel t) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int update(tableNhapModel t) {
+	public int update(TableNhapModel t) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete(tableNhapModel t) {
+	public int delete(TableNhapModel t) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public ArrayList<tableNhapModel> selectAll() {
-		  ArrayList<tableNhapModel> ketQua = new ArrayList<>();
+	public ArrayList<TableNhapModel> selectAll() {
+		  ArrayList<TableNhapModel> ketQua = new ArrayList<>();
 		    try {
 		        // Bước 1: Kết nối CSDL
 		        Connection con = JDBCUtil.getConnection();
@@ -60,7 +60,7 @@ public class TableNhapDAO implements DAOInterface<tableNhapModel> {
 
 		            String SDT = rs.getString("SDT");
 		           
-		      tableNhapModel tbln =  new tableNhapModel(idNguyenLieu, TenNguyenLieu, soLuongTon, soLuongNhap, TenNhaCC, SDT);
+		      TableNhapModel tbln =  new TableNhapModel(idNguyenLieu, TenNguyenLieu, soLuongTon, soLuongNhap, TenNhaCC, SDT);
 		            ketQua.add(tbln);
 		        }
 
@@ -73,13 +73,13 @@ public class TableNhapDAO implements DAOInterface<tableNhapModel> {
 	}
 
 	@Override
-	public tableNhapModel selectById(tableNhapModel t) {
+	public TableNhapModel selectById(TableNhapModel t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<tableNhapModel> selectByCondition(String condition) {
+	public ArrayList<TableNhapModel> selectByCondition(String condition) {
 		// TODO Auto-generated method stub
 		return null;
 	}

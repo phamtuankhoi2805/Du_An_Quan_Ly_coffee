@@ -45,7 +45,7 @@ import Model.NguyenLieuModel;
 import Model.NhanVienModel;
 import Model.SanPhamModel;
 import Model.ThongKeDoanhThuTheoThangModel;
-import Model.tableNhapModel;
+import Model.TableNhapModel;
 import View.QuanLyView;
 import View.ThemChiTietView;
 
@@ -587,9 +587,9 @@ public class QuanLyController implements ActionListener {
 	public void fildTableNguyenLieu() {
 		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
 		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
-		ArrayList<tableNhapModel> listSP = TableNhapDAO.getInstance().selectAll();
+		ArrayList<TableNhapModel> listSP = TableNhapDAO.getInstance().selectAll();
 
-		for (tableNhapModel sp : listSP) {
+		for (TableNhapModel sp : listSP) {
 			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getSoLuongNhap(),
 					sp.getTenNhaCC(), sp.getSDT() };
 			model.addRow(rowData);

@@ -1,16 +1,16 @@
 package Model;
 
-public class tableNhapModel {
+public class TableNhapModel {
 private String idNguyenLieu;
 private String tenNguyenLieu;
 private int soLuongTon;
 private int soLuongNhap;
 private String TenNhaCC;
 private String SDT;
-public tableNhapModel() {
+public TableNhapModel() {
 
 }
-public tableNhapModel(String idNguyenLieu, String tenNguyenLieu, int soLuongTon, int soLuongNhap, String tenNhaCC,
+public TableNhapModel(String idNguyenLieu, String tenNguyenLieu, int soLuongTon, int soLuongNhap, String tenNhaCC,
 		String sDT) {
 
 	this.idNguyenLieu = idNguyenLieu;

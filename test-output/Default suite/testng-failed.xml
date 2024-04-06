@@ -5,15 +5,7 @@
     <classes>
       <class name="DAO.CaLamViecDaoTest">
         <methods>
-          <include name="selectByIdTestCaLamViecModel"/>
-          <include name="selectAllTest"/>
-          <include name="updateTest"/>
-          <include name="selectByConditionTest"/>
-          <include name="getInstanceTest"/>
-          <include name="selectByCondition1Test"/>
-          <include name="deleteTest"/>
           <include name="insertTest"/>
-          <include name="selectByIdTestString"/>
         </methods>
       </class> <!-- DAO.CaLamViecDaoTest -->
     </classes>
