@@ -3,27 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="DAO.CaLamViecDaoTest">
+      <class name="DAO.TableNhapDAOTest">
         <methods>
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <include name="selectByIdTestCaLamViecModel"/>
           <include name="selectAllTest"/>
-          <include name="updateTest"/>
-          <include name="selectByConditionTest"/>
-          <include name="getInstanceTest"/>
-          <include name="selectByCondition1Test"/>
-          <include name="deleteTest"/>
-          <include name="insertTest"/>
-          <include name="selectByIdTestString"/>
-=======
-          <include name="selectByCondition1Test"/>
->>>>>>> ef21df8dd880483940b08b536efb70bf3337417a
-=======
-          <include name="insertTest"/>
->>>>>>> bf52cf5daaf5c78b6f499f84da339746932bd8bd
         </methods>
-      </class> <!-- DAO.CaLamViecDaoTest -->
+      </class> <!-- DAO.TableNhapDAOTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
