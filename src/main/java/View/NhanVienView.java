@@ -7,11 +7,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.LayoutManager;
+import java.awt.Panel;
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +24,7 @@ import javax.swing.border.LineBorder;
 
 import com.github.sarxos.webcam.util.ImageUtils;
 
+import Controller.NhanVienController;
 import DAO.SanPhamDAO;
 import Model.SanPhamModel;
 
@@ -42,8 +46,8 @@ public class NhanVienView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private PlaceholderTextField txt_timKiem;
-    private ArrayList<SanPhamModel> listSP;
+   private ArrayList<SanPhamModel> listSP;
+	private JPanel panel_DSSP;
 	/**
 	 * Launch the application.
 	 */
@@ -64,6 +68,9 @@ public class NhanVienView extends JFrame {
 	 * Create the frame.
 	 */
 	public NhanVienView() {
+		
+		  listSP = SanPhamDAO.getInstance().selectAll();
+		NhanVienController nvc =  new NhanVienController(this, null);
 		setTitle("Bán Hàng");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1320, 718);
@@ -75,7 +82,7 @@ public class NhanVienView extends JFrame {
 		contentPane.setLayout(null);
 
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, 1320, 718);
+		layeredPane.setBounds(0, 0, 1320, 679);
 		contentPane.add(layeredPane);
 
 		JPanel panel = new JPanel();
@@ -84,36 +91,7 @@ public class NhanVienView extends JFrame {
 		panel.setLayout(null);
 		panel.setBorder(createGrayBorder());
 
-		JPanel panel_SP_6 = new JPanel();
-		panel_SP_6.setLayout(null);
-		panel_SP_6.setBorder(createGrayBorder());
-		panel_SP_6.setBounds(0, 84, 400, 94);
-		panel.add(panel_SP_6);
-
-		JLabel lb_anhSP1_6 = new JLabel("");
-		lb_anhSP1_6.setBounds(10, 11, 56, 72);
-		panel_SP_6.add(lb_anhSP1_6);
-		setScaledImage(lb_anhSP1_6, "C:\\javvaa\\DuAn1.2\\src\\main\\resources\\Cà phê đen.jpg");
-		JLabel lbl_tenSP1_6 = new JLabel("Cafe Đen");
-		lbl_tenSP1_6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbl_tenSP1_6.setBounds(75, 11, 190, 22);
-		panel_SP_6.add(lbl_tenSP1_6);
-
-		JLabel lbl_giaSP1_6 = new JLabel("25000");
-		lbl_giaSP1_6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbl_giaSP1_6.setBounds(76, 61, 66, 22);
-		panel_SP_6.add(lbl_giaSP1_6);
-
-		JLabel lblNewLabel_2 = new JLabel("Số Lượng: 1");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_2.setBounds(196, 61, 100, 20);
-		panel_SP_6.add(lblNewLabel_2);
-
-		JButton btn_xoaSP = new JButton("");
-		btn_xoaSP.setBackground(new Color(255, 255, 255));
-		btn_xoaSP.setIcon(new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\View\\ThungRac.png"));
-		btn_xoaSP.setBounds(345, 52, 46, 33);
-		panel_SP_6.add(btn_xoaSP);
+	
 
 		JLabel lblNewLabel_3 = new JLabel("Tổng Cộng");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -170,7 +148,7 @@ public class NhanVienView extends JFrame {
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(0, 0, 160));
-		panel_3.setBounds(0, 0, 410, 81);
+		panel_3.setBounds(0, 0, 410, 59);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		JLabel lblNewLabel = new JLabel("Chi Tiết Đặt Hàng");
@@ -178,127 +156,64 @@ public class NhanVienView extends JFrame {
 		panel_3.add(lblNewLabel);
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 64, 390, 427);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new CompoundBorder());
-		panel_1.setBounds(430, 11, 864, 41);
-		layeredPane.add(panel_1);
-		panel_1.setLayout(null);
-		panel_1.setBorder(createGrayBorder());
+		// Tạo một JPanel để chứa các panel con
+		JPanel panelCon = new JPanel();
+		panelCon.setLayout(new BoxLayout(panelCon, BoxLayout.Y_AXIS));
 
-		txt_timKiem = new PlaceholderTextField("Tìm Kiếm");
-		txt_timKiem.setBorder(new CompoundBorder());
-		txt_timKiem.setBounds(10, 10, 844, 27);
-		panel_1.add(txt_timKiem);
-		txt_timKiem.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
-		JPanel panel_DSSP = new JPanel();
-		panel_DSSP.setBounds(430, 131, 874, 539);
+		// Đặt panelCon làm nội dung của scrollPane
+		scrollPane.setViewportView(panelCon);
+
+		panel.add(scrollPane);
+		 panel_DSSP = new JPanel();
+		panel_DSSP.setBounds(430, 88, 874, 580);
 		layeredPane.add(panel_DSSP);
 		panel_DSSP.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT, 10, 10));
 		panel_DSSP.setBorder(createGrayBorder());
-
-		listSP = SanPhamDAO.getInstance().selectAll();
-
-		for (SanPhamModel sp : listSP) {
-		    JPanel panel_SP = new JPanel();
-		    panel_SP.setPreferredSize(new Dimension(276, 94));
-		    panel_SP.setLayout(null);
-		    panel_SP.setBorder(createGrayBorder());
-
-		    JLabel lb_anhSP1 = new JLabel("");
-		    lb_anhSP1.setBounds(10, 11, 56, 72);
-		    panel_SP.add(lb_anhSP1);
-
-		    // Ảnh
-		    setScaledImage(lb_anhSP1, sp.getHinh()); // Đường dẫn ảnh từ đối tượng SanPham
-
-		    JLabel lbl_tenSP1 = new JLabel(sp.getTenSP()); // Tên sản phẩm từ đối tượng SanPham
-		    lbl_tenSP1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		    lbl_tenSP1.setBounds(76, 10, 190, 22);
-		    panel_SP.add(lbl_tenSP1);
-
-		    JLabel lbl_giaSP1 = new JLabel(String.valueOf(sp.getGiaBan())); // Giá sản phẩm từ đối tượng SanPham
-		    lbl_giaSP1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		    lbl_giaSP1.setBounds(76, 61, 66, 22);
-		    panel_SP.add(lbl_giaSP1);
-
-		    JSpinner spinner = new JSpinner();
-		    spinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-		    spinner.setBounds(236, 63, 30, 20);
-		    panel_SP.add(spinner);
-		    panel_SP.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    // Lấy tên sản phẩm và giá và in ra màn hình
-                    System.out.println("Tên sản phẩm: " + sp.getTenSP());
-                    System.out.println("Giá: " + sp.getGiaBan());
-                    
-                }
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}   
-                
-                });
-		    panel_DSSP.add(panel_SP);
-		}
-
-		JButton btn_tatCa = new JButton("Tất Cả");
-		btn_tatCa.setBounds(430, 92, 102, 29);
-		layeredPane.add(btn_tatCa);
-		btn_tatCa.setBorder(new CompoundBorder());
-		btn_tatCa.setForeground(new Color(255, 255, 255));
-		btn_tatCa.setBackground(new Color(0, 0, 160));
-
-		JButton btn_nuocNgot = new JButton("Nước Ngọt");
-		btn_nuocNgot.setBounds(542, 92, 102, 29);
-		layeredPane.add(btn_nuocNgot);
-		btn_nuocNgot.setForeground(Color.WHITE);
-		btn_nuocNgot.setBorder(new CompoundBorder());
-		btn_nuocNgot.setBackground(new Color(0, 0, 160));
-
-		JButton btn_nuocTraiCay = new JButton("Nước Trái Cây");
-		btn_nuocTraiCay.setBounds(654, 92, 102, 29);
-		layeredPane.add(btn_nuocTraiCay);
-		btn_nuocTraiCay.setForeground(Color.WHITE);
-		btn_nuocTraiCay.setBorder(new CompoundBorder());
-		btn_nuocTraiCay.setBackground(new Color(0, 0, 160));
-
-		JButton btn_cafe = new JButton("Cafe");
-		btn_cafe.setBounds(766, 92, 102, 29);
-		layeredPane.add(btn_cafe);
-		btn_cafe.setForeground(Color.WHITE);
-		btn_cafe.setBorder(new CompoundBorder());
-		btn_cafe.setBackground(new Color(0, 0, 160));
-
+		
 		JLabel lblNewLabel_1 = new JLabel("Thể Loại");
-		lblNewLabel_1.setBounds(430, 62, 82, 20);
-		layeredPane.add(lblNewLabel_1);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_1.setBounds(434, 11, 96, 21);
+		layeredPane.add(lblNewLabel_1);
+		
+		JButton btn_All = new JButton("ALL");
+		btn_All.setForeground(Color.WHITE);
+		btn_All.setBackground(new Color(0, 0, 160));
+		btn_All.setBounds(430, 43, 111, 34);
+		layeredPane.add(btn_All);
+		
+		JButton btn_Coffe = new JButton("Coffee");
+		btn_Coffe.setForeground(Color.WHITE);
+		btn_Coffe.setBackground(new Color(0, 0, 160));
+		btn_Coffe.setBounds(551, 43, 111, 34);
+		layeredPane.add(btn_Coffe);
+		
+		JButton btn_TraiCay = new JButton("Nước Trái Cây");
+		btn_TraiCay.setForeground(Color.WHITE);
+		btn_TraiCay.setBackground(new Color(0, 0, 160));
+		btn_TraiCay.setBounds(672, 43, 122, 34);
+		layeredPane.add(btn_TraiCay);
+		
+		JButton btn_tangLuc = new JButton("Tăng Lực");
+		btn_tangLuc.setForeground(Color.WHITE);
+		btn_tangLuc.setBackground(new Color(0, 0, 160));
+		btn_tangLuc.setBounds(804, 43, 122, 34);
+		layeredPane.add(btn_tangLuc);
+        nvc.addSanPhamToPanel(listSP);
+		
+        btn_All.addActionListener(nvc);
+        btn_Coffe.addActionListener(nvc);
+        btn_TraiCay.addActionListener(nvc);
+		btn_tangLuc.addActionListener(nvc);
 
 	}
-
+   public JPanel panel_DSSP(){
+	   return panel_DSSP;
+   }
 	private void applyBottomBorder(JTextField textField) {
 		Border border = textField.getBorder();
 		Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK); // Màu đen, độ dày là 1 pixel

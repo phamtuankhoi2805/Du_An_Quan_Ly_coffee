@@ -1203,7 +1203,7 @@ public class QuanLyView extends JFrame {
 		});
 		tbl_SanPham.setBackground(new Color(255, 255, 255));
 		tbl_SanPham.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID S\u1EA3n Ph\u1EA9m",
-				"T\u00EAn S\u1EA3n Ph\u1EA9m", "Gi\u00E1 B\u00E1n", "Trạng Thái" }));
+				"T\u00EAn S\u1EA3n Ph\u1EA9m", "Gi\u00E1 B\u00E1n", "Loại Sản Phẩm" }));
 		tbl_SanPham.setBounds(523, 51, 504, 240);
 		JScrollPane scrollPane_2 = new JScrollPane(tbl_SanPham);
 		scrollPane_2.setBounds(523, 51, 504, 240);
@@ -1358,7 +1358,7 @@ public class QuanLyView extends JFrame {
 		panel_1.add(lblNewLabel_2_1_1_1);
 
 		cbo_trangThaiSP = new JComboBox();
-		cbo_trangThaiSP.setModel(new DefaultComboBoxModel(new String[] { "Hoạt Động", "Không Hoạt Động" }));
+		cbo_trangThaiSP.setModel(new DefaultComboBoxModel(new String[] {"Coffee", "Tăng Lực", "Nước Trái Cây"}));
 		cbo_trangThaiSP.setBounds(119, 105, 135, 22);
 		panel_1.add(cbo_trangThaiSP);
 		applyBottomBorder(txt_idCaLam);

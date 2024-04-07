@@ -2,14 +2,14 @@ package Model;
 
 public class ThongKeDoanhThuTheoNamModel {
 private String nam;
-private int doạnhThu;
+private int doanhThu;
 public ThongKeDoanhThuTheoNamModel() {
 
 }
-public ThongKeDoanhThuTheoNamModel(String nam, int doạnhThu) {
+public ThongKeDoanhThuTheoNamModel(String nam, int doanhThu) {
 
 	this.nam = nam;
-	this.doạnhThu = doạnhThu;
+	this.doanhThu = doanhThu;
 }
 public String getNam() {
 	return nam;
@@ -17,11 +17,12 @@ public String getNam() {
 public void setNam(String nam) {
 	this.nam = nam;
 }
-public int getDoạnhThu() {
-	return doạnhThu;
+public int getDoanhThu() {
+	return doanhThu;
 }
-public void setDoạnhThu(int doạnhThu) {
-	this.doạnhThu = doạnhThu;
+public void setDoanhThu(int doanhThu) {
+	this.doanhThu = doanhThu;
 }
+
 
 }

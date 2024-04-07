@@ -25,13 +25,13 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 	            Connection con = Database.JDBCUtil.getConnection();
 
 	            // Bước 2: Tạo prepared statement
-	            String sql="INSERT INTO SANPHAM (IDSanPham, TenSP, GiaBan,Hinh,TrangThai) VALUES(?, ?, ?,?,?)";
+	            String sql="INSERT INTO SANPHAM (IDSanPham, TenSP, GiaBan,Hinh,LoaiSP) VALUES(?, ?, ?,?,?)";
 	            PreparedStatement statement = con.prepareStatement(sql);
 	            statement.setString(1, t.getIdSanPham());
 	            statement.setString(2, t.getTenSP());
 	            statement.setDouble(3, t.getGiaBan());
 	            statement.setString(4, t.getHinh());
-	            statement.setString(5, t.getTrangThai());
+	            statement.setString(5, t.getLoaiSP());
 	            // Bước 3: Thực thi truy vấn
 	            ketQua = statement.executeUpdate();
 
@@ -53,13 +53,13 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 	            Connection con = JDBCUtil.getConnection();
 
 	            // Bước 2: Tạo prepared statement
-	            String sql="UPDATE SANPHAM SET  TenSP=?, GiaBan=?,Hinh=?,TrangThai =?  WHERE IDSanPham=?";
+	            String sql="UPDATE SANPHAM SET  TenSP=?, GiaBan=?,Hinh=?,LoaiSP =?  WHERE IDSanPham=?";
 	            PreparedStatement statement = con.prepareStatement(sql);
 	           
 	            statement.setString(1, t.getTenSP());
 	            statement.setDouble(2, t.getGiaBan());
 	            statement.setString(3, t.getHinh());
-	            statement.setString(4, t.getTrangThai());
+	            statement.setString(4, t.getLoaiSP());
 	            statement.setString(5, t.getIdSanPham());
 	            // Bước 3: Thực thi truy vấn
 	            ketQua = statement.executeUpdate();
@@ -84,7 +84,7 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 	            PreparedStatement statement = con.prepareStatement(sql);
 	            statement.setString(1, t.getTenSP());
 	            statement.setDouble(2, t.getGiaBan());
-	            statement.setString(3, t.getTrangThai());
+	            statement.setString(3, t.getLoaiSP());
 	            statement.setString(4, t.getIdSanPham());
 	            // Bước 3: Thực thi truy vấn
 	            ketQua = statement.executeUpdate();
@@ -142,8 +142,8 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 		            String tenSP = rs.getString("TenSP");
 		            double giaBan = rs.getDouble("GiaBan");
 		            String Hinh = rs.getString("Hinh");
-		            String TrangThai = rs.getString("TrangThai");
-		       SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh,TrangThai);
+		            String LoaiSP = rs.getString("LoaiSP");
+		       SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh,LoaiSP);
 		            ketQua.add(sp);
 		        }
 
@@ -174,8 +174,8 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 	            String tenSP = rs.getString("TenSP");
 	            double giaBan = rs.getDouble("GiaBan");
 	            String Hinh = rs.getString("Hinh");
-	            String TrangThai = rs.getString("TrangThai");
-	       SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh,TrangThai);
+	            String LoaiSP = rs.getString("LoaiSP");
+	       SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh,LoaiSP);
 
                 ketQua = sp;
             }
@@ -206,8 +206,8 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 	            String tenSP = rs.getString("TenSP");
 	            double giaBan = rs.getDouble("GiaBan");
 	            String Hinh = rs.getString("Hinh");
-	            String TrangThai = rs.getString("TrangThai");
-	       SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh,TrangThai);
+	            String LoaiSP = rs.getString("LoaiSP");
+	       SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh,LoaiSP);
 				ketQua.add(sp);
 			}
 
@@ -219,6 +219,37 @@ public class SanPhamDAO implements DAOInterface<SanPhamModel> {
 		return ketQua;
 	}
 	
+	public ArrayList<SanPhamModel> selectByLoaiSP(String LoaiSp) {
+	    ArrayList<SanPhamModel> ketQua = new ArrayList<>();
+	    try {
+	        // Bước 1: Kết nối CSDL
+	        Connection con = JDBCUtil.getConnection();
 
+	        // Bước 2: Tạo prepared statement
+	        String sql = "SELECT * FROM SANPHAM WHERE LoaiSP = N?";
+	        PreparedStatement statement = con.prepareStatement(sql);
+	        statement.setString(1, "'" + LoaiSp + "'");
+
+	        ResultSet rs = statement.executeQuery();
+
+	        while (rs.next()) {
+	            // Lấy giá trị cột từ result set
+	            String idSanPham = rs.getString("IDSanPham");
+	            String tenSP = rs.getString("TenSP");
+	            double giaBan = rs.getDouble("GiaBan");
+	            String Hinh = rs.getString("Hinh");
+	            String loaiSP = rs.getString("LoaiSP");
+
+	            SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, Hinh, loaiSP);
+	            ketQua.add(sp);
+	        }
+
+	        // Bước 3: Đóng kết nối
+	        JDBCUtil.closeConnection(con);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return ketQua;
+	}
 	
 }

@@ -97,7 +97,7 @@ public class QuanLyController implements ActionListener {
 
 		} else if (src.equals("Thêm SP")) {
 			themSP();
-			JOptionPane.showMessageDialog(qlv, "Mời Bạn Thêm Nguyên Liệu Sản Phẩm");
+		
 		} else if (src.equals("Sửa SP")) {
 			suaSP();
 		} else if (src.equals("Đặt Hàng")) {
@@ -150,7 +150,7 @@ public class QuanLyController implements ActionListener {
 
 		for (SanPhamModel sp : listSP) {
 
-			Object[] rowData = { sp.getIdSanPham(), sp.getTenSP(), sp.getGiaBan(), sp.getTrangThai() };
+			Object[] rowData = { sp.getIdSanPham(), sp.getTenSP(), sp.getGiaBan(), sp.getLoaiSP() };
 			model.addRow(rowData);
 
 		}
@@ -162,7 +162,7 @@ public class QuanLyController implements ActionListener {
 		qlv.txt_idSP().setText(sp.getIdSanPham());
 		qlv.txt_tenSP().setText(sp.getTenSP());
 		qlv.txt_gia().setText(Double.toString(sp.getGiaBan()));
-		qlv.cbo_TrangThaiSP().setSelectedItem(sp.getTrangThai());
+		qlv.cbo_TrangThaiSP().setSelectedItem(sp.getLoaiSP());
 		hienHinhSanPham(sp.getHinh());
 	}
 

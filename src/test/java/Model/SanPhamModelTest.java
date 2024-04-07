@@ -54,15 +54,15 @@ public class SanPhamModelTest {
     }
 
     @Test
-    public void testGetTrangThai() {
+    public void testGetLoaiSP() {
         // Arrange
-        SanPhamModel sanPham = new SanPhamModel("SP001", "Sản phẩm A", 1000000.0, "hinh_sanpham.jpg", "Hoạt động");
+        SanPhamModel sanPham = new SanPhamModel("SP001", "Sản phẩm A", 1000000.0, "hinh_sanpham.jpg", "Tăng Lực");
         
         // Act
-        String trangThai = sanPham.getTrangThai();
+        String LoaiSP = sanPham.getLoaiSP();
         
         // Assert
-        Assert.assertEquals(trangThai, "Hoạt động");
+        Assert.assertEquals(LoaiSP, "Tăng Lực");
     }
 
     // Similarly, write test methods for other getters and setters...

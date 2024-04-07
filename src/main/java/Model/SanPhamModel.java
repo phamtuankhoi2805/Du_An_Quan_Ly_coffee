@@ -3,17 +3,17 @@ package Model;
 public class SanPhamModel {
 private String idSanPham,tenSP;
 private double giaBan;
-private String hinh,TrangThai;
+private String hinh,LoaiSP;
 public SanPhamModel() {
 
 }
-public SanPhamModel(String idSanPham, String tenSP, double giaBan, String hinh, String trangThai) {
-
+public SanPhamModel(String idSanPham, String tenSP, double giaBan, String hinh, String loaiSP) {
+	
 	this.idSanPham = idSanPham;
 	this.tenSP = tenSP;
 	this.giaBan = giaBan;
 	this.hinh = hinh;
-	TrangThai = trangThai;
+	LoaiSP = loaiSP;
 }
 public String getIdSanPham() {
 	return idSanPham;
@@ -39,12 +39,18 @@ public String getHinh() {
 public void setHinh(String hinh) {
 	this.hinh = hinh;
 }
-public String getTrangThai() {
-	return TrangThai;
+public String getLoaiSP() {
+	return LoaiSP;
 }
-public void setTrangThai(String trangThai) {
-	TrangThai = trangThai;
+public void setLoaiSP(String loaiSP) {
+	LoaiSP = loaiSP;
 }
+@Override
+public String toString() {
+	return "SanPhamModel [idSanPham=" + idSanPham + ", tenSP=" + tenSP + ", giaBan=" + giaBan + ", hinh=" + hinh
+			+ ", LoaiSP=" + LoaiSP + "]";
+}
+
 
 
 

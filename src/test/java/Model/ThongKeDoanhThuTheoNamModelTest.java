@@ -23,7 +23,7 @@ public class ThongKeDoanhThuTheoNamModelTest {
         ThongKeDoanhThuTheoNamModel thongKe = new ThongKeDoanhThuTheoNamModel("2023", 10000000);
         
         // Act
-        int doanhThu = thongKe.getDoạnhThu();
+        int doanhThu = thongKe.getDoanhThu();
         
         // Assert
         Assert.assertEquals(doanhThu, 10000000);
@@ -47,10 +47,10 @@ public class ThongKeDoanhThuTheoNamModelTest {
         ThongKeDoanhThuTheoNamModel thongKe = new ThongKeDoanhThuTheoNamModel("2023", 10000000);
         
         // Act
-        thongKe.setDoạnhThu(15000000);
+        thongKe.setDoanhThu(15000000);
         
         // Assert
-        Assert.assertEquals(thongKe.getDoạnhThu(), 15000000);
+        Assert.assertEquals(thongKe.getDoanhThu(), 15000000);
     }
 }
 

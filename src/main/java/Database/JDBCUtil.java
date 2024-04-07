@@ -10,12 +10,13 @@ public class JDBCUtil {
 	public static Connection getConnection() {
 	    Connection conn = null;
 	    try {
-	       String url = "jdbc:sqlserver://localhost:1433;databaseName=QLCafe;"
-	            + "encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
-	        String user = "sa"; 
-	        String passWord = "123";
-	        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-	        conn = DriverManager.getConnection(url, user, passWord);
+	    	String url = "jdbc:sqlserver://localhost:1433;databaseName=QLCafe;"
+	                + "encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2;"
+	                + "characterEncoding=UTF-8";
+	   String user = "sa"; 
+	   String password = "123";
+	   Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	        conn = DriverManager.getConnection(url, user, password);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }

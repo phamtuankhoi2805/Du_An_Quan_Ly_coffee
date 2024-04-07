@@ -38,7 +38,7 @@ public class DoanhThuNamDAOTest {
 
         // In kết quả
         for (ThongKeDoanhThuTheoNamModel item : result) {
-            System.out.println("Năm: " + item.getNam() + ", Doanh thu: " + item.getDoạnhThu());
+            System.out.println("Năm: " + item.getNam() + ", Doanh thu: " + item.getDoanhThu());
         }
     }
 }
