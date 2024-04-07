@@ -1,9 +1,15 @@
 package View;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -14,6 +20,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.github.sarxos.webcam.util.ImageUtils;
+
+import DAO.SanPhamDAO;
+import Model.SanPhamModel;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -34,7 +43,7 @@ public class NhanVienView extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private PlaceholderTextField txt_timKiem;
-
+    private ArrayList<SanPhamModel> listSP;
 	/**
 	 * Launch the application.
 	 */
@@ -183,43 +192,77 @@ public class NhanVienView extends JFrame {
 		panel_1.add(txt_timKiem);
 		txt_timKiem.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(430, 131, 874, 539);
-		layeredPane.add(panel_2);
-		panel_2.setLayout(null);
+		JPanel panel_DSSP = new JPanel();
+		panel_DSSP.setBounds(430, 131, 874, 539);
+		layeredPane.add(panel_DSSP);
+		panel_DSSP.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT, 10, 10));
+		panel_DSSP.setBorder(createGrayBorder());
 
-		JLabel lblNewLabel_1_1 = new JLabel("Phổ Biến");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1_1.setBounds(10, 10, 82, 20);
-		panel_2.add(lblNewLabel_1_1);
-		panel_2.setBorder(createGrayBorder());
+		listSP = SanPhamDAO.getInstance().selectAll();
 
-		JPanel panel_SP = new JPanel();
-		panel_SP.setBounds(10, 40, 276, 94);
-		panel_2.add(panel_SP);
-		panel_SP.setLayout(null);
-		panel_SP.setBorder(createGrayBorder());
+		for (SanPhamModel sp : listSP) {
+		    JPanel panel_SP = new JPanel();
+		    panel_SP.setPreferredSize(new Dimension(276, 94));
+		    panel_SP.setLayout(null);
+		    panel_SP.setBorder(createGrayBorder());
 
-		JLabel lb_anhSP1 = new JLabel("");
-		lb_anhSP1.setBounds(10, 11, 56, 72);
-		panel_SP.add(lb_anhSP1);
-		// ảnh
-		setScaledImage(lb_anhSP1, "C:\\javvaa\\DuAn1.2\\src\\main\\resources\\Cà phê đen.jpg");
+		    JLabel lb_anhSP1 = new JLabel("");
+		    lb_anhSP1.setBounds(10, 11, 56, 72);
+		    panel_SP.add(lb_anhSP1);
 
-		JLabel lbl_tenSP1 = new JLabel("Cafe Đen");
-		lbl_tenSP1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbl_tenSP1.setBounds(76, 10, 190, 22);
-		panel_SP.add(lbl_tenSP1);
+		    // Ảnh
+		    setScaledImage(lb_anhSP1, sp.getHinh()); // Đường dẫn ảnh từ đối tượng SanPham
 
-		JLabel lbl_giaSP1 = new JLabel("25000");
-		lbl_giaSP1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbl_giaSP1.setBounds(76, 61, 66, 22);
-		panel_SP.add(lbl_giaSP1);
+		    JLabel lbl_tenSP1 = new JLabel(sp.getTenSP()); // Tên sản phẩm từ đối tượng SanPham
+		    lbl_tenSP1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		    lbl_tenSP1.setBounds(76, 10, 190, 22);
+		    panel_SP.add(lbl_tenSP1);
 
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-		spinner.setBounds(236, 63, 30, 20);
-		panel_SP.add(spinner);
+		    JLabel lbl_giaSP1 = new JLabel(String.valueOf(sp.getGiaBan())); // Giá sản phẩm từ đối tượng SanPham
+		    lbl_giaSP1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		    lbl_giaSP1.setBounds(76, 61, 66, 22);
+		    panel_SP.add(lbl_giaSP1);
+
+		    JSpinner spinner = new JSpinner();
+		    spinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+		    spinner.setBounds(236, 63, 30, 20);
+		    panel_SP.add(spinner);
+		    panel_SP.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    // Lấy tên sản phẩm và giá và in ra màn hình
+                    System.out.println("Tên sản phẩm: " + sp.getTenSP());
+                    System.out.println("Giá: " + sp.getGiaBan());
+                    
+                }
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}   
+                
+                });
+		    panel_DSSP.add(panel_SP);
+		}
 
 		JButton btn_tatCa = new JButton("Tất Cả");
 		btn_tatCa.setBounds(430, 92, 102, 29);

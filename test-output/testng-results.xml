@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="0" total="9" passed="0" failed="9" skipped="0">
   <reporter-output>
   </reporter-output>
@@ -386,6 +387,49 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 ]]>
             </full-stacktrace>
           </exception> <!-- java.lang.RuntimeException -->
+=======
+<testng-results ignored="0" total="9" passed="9" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-04-06T20:58:57 WIB" name="Default suite" finished-at="2024-04-06T20:58:58 WIB" duration-ms="470">
+    <groups>
+    </groups>
+    <test started-at="2024-04-06T20:58:57 WIB" name="Default test" finished-at="2024-04-06T20:58:58 WIB" duration-ms="470">
+      <class name="DAO.CaLamViecDaoTest">
+        <test-method signature="deleteTest()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:57 WIB" name="deleteTest" finished-at="2024-04-06T20:58:58 WIB" duration-ms="258" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteTest -->
+        <test-method signature="getInstanceTest()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="getInstanceTest" finished-at="2024-04-06T20:58:58 WIB" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getInstanceTest -->
+        <test-method signature="insertTest()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="insertTest" finished-at="2024-04-06T20:58:58 WIB" duration-ms="23" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- insertTest -->
+        <test-method signature="selectAllTest()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="selectAllTest" finished-at="2024-04-06T20:58:58 WIB" duration-ms="36" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- selectAllTest -->
+        <test-method signature="selectByCondition1Test()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="selectByCondition1Test" finished-at="2024-04-06T20:58:58 WIB" duration-ms="25" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- selectByCondition1Test -->
+        <test-method signature="selectByConditionTest()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="selectByConditionTest" finished-at="2024-04-06T20:58:58 WIB" duration-ms="23" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- selectByConditionTest -->
+        <test-method signature="selectByIdTestCaLamViecModel()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="selectByIdTestCaLamViecModel" finished-at="2024-04-06T20:58:58 WIB" duration-ms="21" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- selectByIdTestCaLamViecModel -->
+        <test-method signature="selectByIdTestString()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="selectByIdTestString" finished-at="2024-04-06T20:58:58 WIB" duration-ms="21" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- selectByIdTestString -->
+        <test-method signature="updateTest()[pri:0, instance:DAO.CaLamViecDaoTest@1a451d4d]" started-at="2024-04-06T20:58:58 WIB" name="updateTest" finished-at="2024-04-06T20:58:58 WIB" duration-ms="22" status="PASS">
+>>>>>>> ef21df8dd880483940b08b536efb70bf3337417a
           <reporter-output>
           </reporter-output>
         </test-method> <!-- updateTest -->

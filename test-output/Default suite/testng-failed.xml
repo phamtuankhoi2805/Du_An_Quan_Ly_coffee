@@ -5,6 +5,7 @@
     <classes>
       <class name="DAO.CaLamViecDaoTest">
         <methods>
+<<<<<<< HEAD
           <include name="selectByIdTestCaLamViecModel"/>
           <include name="selectAllTest"/>
           <include name="updateTest"/>
@@ -14,6 +15,9 @@
           <include name="deleteTest"/>
           <include name="insertTest"/>
           <include name="selectByIdTestString"/>
+=======
+          <include name="selectByCondition1Test"/>
+>>>>>>> ef21df8dd880483940b08b536efb70bf3337417a
         </methods>
       </class> <!-- DAO.CaLamViecDaoTest -->
     </classes>
