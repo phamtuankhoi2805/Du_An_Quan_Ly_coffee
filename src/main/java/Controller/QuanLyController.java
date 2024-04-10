@@ -47,7 +47,7 @@ import Model.SanPhamModel;
 import Model.ThongKeDoanhThuTheoThangModel;
 import Model.TableNhapModel;
 import View.QuanLyView;
-import View.ThemChiTietView;
+import View.ThanhToanView;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -104,7 +104,7 @@ public class QuanLyController implements ActionListener {
 
 			createWordTemplate();
 		} else if (src.equals("Thêm SP Đặt Hàng")) {
-			ThemChiTietView tctv = new ThemChiTietView();
+			ThanhToanView tctv = new ThanhToanView();
 			tctv.setVisible(true);
 		} else if (src.equals("Thêm Ca Làm")) {
 			themCalam();
@@ -122,7 +122,7 @@ public class QuanLyController implements ActionListener {
 			}
 
 	}
-
+//  nhân viên
 	public void fildTable() {
 		DefaultTableModel model = (DefaultTableModel) qlv.tbl_nhanVien().getModel();
 		model.setRowCount(0); // làm sạch dòng

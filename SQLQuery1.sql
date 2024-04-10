@@ -71,9 +71,14 @@ CREATE TABLE CHITIETDONHANG(
 IDSanPham varchar(10) not null,
 IDDonHang varchar(10) not null,
 SoLuongMua int,
+IDHoaDon varchar(10), 
 primary key(IDSanPham,IDDonHang)
+
 )
-GO
+ALTER TABLE ChiTietDonHang
+ADD IDHoaDon varchar(10),
+ADD CONSTRAINT FK_ChiTietDonHang_HoaDon
+FOREIGN KEY (IDHoaDon) REFERENCES HoaDon(IDHoaDon);
 -- Bảng Hoá Đơn
 CREATE TABLE HOADON(
 IDHoaDon varchar(10) not null primary key,
@@ -220,7 +225,7 @@ AS
 BEGIN
     SELECT 
         MONTH(ThoiGianMua) AS Thang,
-        YEAR(ThoiGianMua) AS Nam,
+        YEAR(NgayLapHD) AS Nam,
         SUM(ThanhTien) AS DoanhThu
     FROM HOADON
     GROUP BY YEAR(ThoiGianMua), MONTH(ThoiGianMua)
@@ -341,7 +346,7 @@ GO
 
 
 -- Chèn dữ liệu vào bảng CHITIETDONHANG
-INSERT INTO CHITIETDONHANG (IDSanPham, IDDonHang, SoLuongMua)
+INSERT INTO CHITIETDONHANG (IDSanPham, IDDonHang, SoLuongMua, IDHoaDon)
 VALUES 
 ('SP001', 'DH001', 3),
 ('SP002', 'DH002', 2),

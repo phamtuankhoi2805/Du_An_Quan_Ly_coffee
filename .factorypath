@@ -88,5 +88,4 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/seleniumhq/selenium/selenium-http/4.0.0/selenium-http-4.0.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/seleniumhq/selenium/selenium-safari-driver/4.0.0/selenium-safari-driver-4.0.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/seleniumhq/selenium/selenium-support/4.0.0/selenium-support-4.0.0.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="PLUGIN" id="org.eclipse.jst.ws.annotations.core" enabled="false" runInBatchMode="false"/>
 </factorypath>

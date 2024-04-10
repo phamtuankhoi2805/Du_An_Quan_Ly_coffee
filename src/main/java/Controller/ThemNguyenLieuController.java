@@ -12,16 +12,16 @@ import DAO.SoLuongNguyenLieuDAO;
 import Model.NguyenLieuModel;
 import Model.NhanVienModel;
 import Model.SoLuongNguyenLieuModel;
-import View.ThemChiTietView;
+import View.ThanhToanView;
 
 public class ThemNguyenLieuController implements ActionListener {
-private ThemChiTietView tctv;
+private ThanhToanView tctv;
 private NguyenLieuModel nlm;
 private SoLuongNguyenLieuModel slnlm ;
 int i;
  ArrayList<NguyenLieuModel> ListNl = NguyenLieuDAO.getInstance().selectAll();
  ArrayList<SoLuongNguyenLieuModel> ListSoLuongNL = SoLuongNguyenLieuDAO.getInstance().selectAll(); 
-	public ThemNguyenLieuController(ThemChiTietView tctv, NguyenLieuModel nlm, SoLuongNguyenLieuModel slnlm) {
+	public ThemNguyenLieuController(ThanhToanView tctv, NguyenLieuModel nlm, SoLuongNguyenLieuModel slnlm) {
 
 	this.tctv = tctv;
 	this.nlm = nlm;

@@ -69,6 +69,8 @@ public class DangNhapController implements ActionListener {
 	                        dnv.setVisible(false);
 	                        NhanVienView nv = new NhanVienView();
 	                        nv.setVisible(true);
+	                        nv.lbl_tenNV().setText(nhanVienModel.getTenNV());
+		                    nv.lbl_IDNhanVien().setText(nhanVienModel.getIdNhanVien());
 	                    }
 	                    loggedIn = true;
 	                    break;
@@ -101,10 +103,12 @@ public class DangNhapController implements ActionListener {
 	                    ql.lbl_tenNV().setText("Tên: "+nhanVienModel.getTenNV());
 	                    ql.lbl_chucVu().setText("Chức Vụ: "+nhanVienModel.getChucVu());
 	                    break;
-	                } else if (nhanVienModel.getChucVu().equals("Nhân viên")) {
-	                	NhanVienView nvv = new NhanVienView();
-	                	nvv.setVisible(true);
-	                	
+	                }else if (nhanVienModel.getChucVu().equals("Nhân viên")) {
+	                  
+	                    NhanVienView nvv = new NhanVienView();
+	                    nvv.setVisible(true);
+	                    nvv.lbl_tenNV().setText(nhanVienModel.getTenNV());
+	                    nvv.lbl_IDNhanVien().setText(nhanVienModel.getIdNhanVien());
 	                    loggedIn = true;
 	                    break;
 	                }

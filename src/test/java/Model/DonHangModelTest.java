@@ -13,10 +13,10 @@ public class DonHangModelTest {
         Date ngayMua = new Date(System.currentTimeMillis());
         String idNhanVien = "NV001";
 
-        DonHangModel donHangModel = new DonHangModel(idDonHang, tenDonHang, ngayMua, idNhanVien);
+        DonHangModel donHangModel = new DonHangModel(idDonHang, ngayMua, idNhanVien);
 
         Assert.assertEquals(donHangModel.getIdDonHang(), idDonHang);
-        Assert.assertEquals(donHangModel.getTenDonHang(), tenDonHang);
+       
         Assert.assertEquals(donHangModel.getNgayMua(), ngayMua);
         Assert.assertEquals(donHangModel.getIdNhanVien(), idNhanVien);
     }
@@ -31,12 +31,12 @@ public class DonHangModelTest {
         String idNhanVien = "NV002";
 
         donHangModel.setIdDonHang(idDonHang);
-        donHangModel.setTenDonHang(tenDonHang);
+  
         donHangModel.setNgayMua(ngayMua);
         donHangModel.setIdNhanVien(idNhanVien);
 
         Assert.assertEquals(donHangModel.getIdDonHang(), idDonHang);
-        Assert.assertEquals(donHangModel.getTenDonHang(), tenDonHang);
+      
         Assert.assertEquals(donHangModel.getNgayMua(), ngayMua);
         Assert.assertEquals(donHangModel.getIdNhanVien(), idNhanVien);
     }

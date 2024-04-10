@@ -9,13 +9,9 @@ public class HoaDonModelTest {
     @Test
     public void testConstructorAndGetters() {
         String idHoaDon = "HD001";
-        int soLuong = 2;
-        double donGia = 100.0;
-        String khuyenMai = "KM001";
-        Date thoiGianMua = new Date(System.currentTimeMillis());
+      
         double thanhTien = 200.0;
-        String idSanPham = "SP001";
-        String idDonHang = "DH001";
+        Date thoiGianMua = 26/05/2003;
         String idKhuyenMai = "KM001";
 
         HoaDonModel hoaDonModel = new HoaDonModel(idHoaDon, soLuong, donGia, khuyenMai, thoiGianMua, thanhTien, idSanPham, idDonHang, idKhuyenMai);

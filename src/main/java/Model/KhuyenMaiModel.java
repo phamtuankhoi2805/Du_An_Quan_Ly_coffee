@@ -38,6 +38,11 @@ public float getTongTru() {
 public void setTongTru(float tongTru) {
 	this.tongTru = tongTru;
 }
+@Override
+public String toString() {
+	return "KhuyenMaiModel [idKhuyenMai=" + idKhuyenMai + ", tenKhuyenMai=" + tenKhuyenMai + ", dieuKienKM="
+			+ dieuKienKM + ", tongTru=" + tongTru + "]";
+}
 
 
 }

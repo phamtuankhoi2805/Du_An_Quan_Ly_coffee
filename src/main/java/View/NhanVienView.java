@@ -41,6 +41,8 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class NhanVienView extends JFrame {
 
@@ -53,7 +55,10 @@ public class NhanVienView extends JFrame {
 	private JLabel lbl_tongCong;
 	private JLabel lbl_khuyenMai;
 	private JLabel lbl_tongTien;
+	private JLabel lbl_idNhanVien;
+	private JLabel lbl_tenNV;
 
+     
 	/**
 	 * Launch the application.
 	 */
@@ -145,11 +150,12 @@ public class NhanVienView extends JFrame {
 		panel.add(btnXutHan);
 
 		JButton btnThanhTon_1_1 = new JButton("Thanh Toán");
+	
 		btnThanhTon_1_1.setForeground(new Color(255, 255, 255));
 		btnThanhTon_1_1.setBackground(new Color(0, 0, 160));
 		btnThanhTon_1_1.setBounds(10, 613, 184, 46);
 		panel.add(btnThanhTon_1_1);
-
+         btnThanhTon_1_1.addActionListener(nvc);
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(0, 0, 160));
 		panel_3.setBounds(0, 0, 410, 59);
@@ -208,6 +214,19 @@ public class NhanVienView extends JFrame {
 		btn_tangLuc.setBackground(new Color(0, 0, 160));
 		btn_tangLuc.setBounds(804, 43, 122, 34);
 		layeredPane.add(btn_tangLuc);
+		
+		 lbl_idNhanVien = new JLabel("ID NV");
+		lbl_idNhanVien.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl_idNhanVien.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_idNhanVien.setBounds(1234, 56, 60, 21);
+		layeredPane.add(lbl_idNhanVien);
+		
+		 lbl_tenNV = new JLabel("Tên NV");
+		lbl_tenNV.setIcon(new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\View\\bell.png"));
+		lbl_tenNV.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl_tenNV.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_tenNV.setBounds(1091, 56, 133, 21);
+		layeredPane.add(lbl_tenNV);
 		nvc.addSanPhamToPanel(listSP);
 
 		btn_All.addActionListener(nvc);
@@ -216,7 +235,12 @@ public class NhanVienView extends JFrame {
 		btn_tangLuc.addActionListener(nvc);
 
 	}
-
+     public JLabel lbl_IDNhanVien() {
+    	 return lbl_idNhanVien;
+     }
+     public JLabel lbl_tenNV() {
+    	 return lbl_tenNV;
+     }
 	public JPanel panel_DSSP() {
 		return panel_DSSP;
 	}
@@ -233,7 +257,10 @@ public class NhanVienView extends JFrame {
    public JLabel lbl_tongTien() {
 	   return lbl_tongTien;
    }
-//   public JScrollPane JScrollPane() {
+
+
+
+	//   public JScrollPane JScrollPane() {
 //	   return scrollPane;
 //   }
 	private void applyBottomBorder(JTextField textField) {

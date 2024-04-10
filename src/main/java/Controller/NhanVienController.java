@@ -12,7 +12,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -33,10 +41,29 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
+
 import com.graphbuilder.math.DivNode;
 
+import DAO.ChiTietDonHangDAO;
+import DAO.DonHangDAO;
+import DAO.HoaDonDAO;
 import DAO.KhuyenMaiDAO;
 import DAO.SanPhamDAO;
+import Model.DonHangChiTietModel;
+import Model.DonHangModel;
+import Model.HoaDonModel;
 import Model.KhuyenMaiModel;
 import Model.SanPhamHDModel;
 import Model.SanPhamModel;
@@ -49,6 +76,8 @@ public class NhanVienController implements ActionListener {
 	private SanPhamModel spm;
 	ArrayList<SanPhamHDModel> listSPHD = new ArrayList<SanPhamHDModel>();
 	private double khuyenMaii = 0.0;
+	private String idKM;
+
 	public NhanVienController(NhanVienView nvv, SanPhamModel spm) {
 
 		this.nvv = nvv;
@@ -80,6 +109,9 @@ public class NhanVienController implements ActionListener {
 			ArrayList<SanPhamModel> ListSP = SanPhamDAO.getInstance().selectByCondition("LoaiSP = N'" + src + "'");
 			addSanPhamToPanel(ListSP);
 
+		} else if (src.equals("Thanh Toán")) {
+	   System.out.println(idKM);
+			ThanhToan();
 		}
 	}
 
@@ -153,13 +185,14 @@ public class NhanVienController implements ActionListener {
 			listSPHD.add(spmoi);
 //			System.out.println(listSPHD.toString());
 			String totalPrice = calculateTotalPrice(listSPHD);
-			nvv.lbl_tongCong().setText(totalPrice+" VND");
-			setKhuyenMai(totalPrice);
-		
-			double tongCong = Double.parseDouble(totalPrice);
+			nvv.lbl_tongCong().setText(totalPrice + " VND");
 
-			nvv.lbl_tongTien().setText(Double.toString(tongCong-khuyenMaii)+"00 VND");
+			double tongCong = Double.parseDouble(totalPrice);
+			setKhuyenMai(totalPrice);
+			nvv.lbl_tongTien().setText(Double.toString(tongCong - khuyenMaii) + "00 VND");
 			loadProductsToScrollPane(listSPHD);
+			
+
 		} else {
 			JOptionPane.showMessageDialog(nvv, "sản phẩm đã tồn tại trong danh sách");
 		}
@@ -201,186 +234,309 @@ public class NhanVienController implements ActionListener {
 	}
 
 	public void loadProductsToScrollPane(ArrayList<SanPhamHDModel> ListSPHD) {
-	    nvv.panelcon().removeAll();
-	    for (SanPhamHDModel sp : ListSPHD) {
-	        JPanel panel_SP = new JPanel();
-	        panel_SP.setLayout(null);
-	        panel_SP.setBorder(createGrayBorder());
-	        panel_SP.setPreferredSize(new Dimension(380, 84));
-	        nvv.panelcon().add(panel_SP);
+		nvv.panelcon().removeAll();
+		for (SanPhamHDModel sp : ListSPHD) {
+			JPanel panel_SP = new JPanel();
+			panel_SP.setLayout(null);
+			panel_SP.setBorder(createGrayBorder());
+			panel_SP.setPreferredSize(new Dimension(380, 84));
+			nvv.panelcon().add(panel_SP);
 
-	        JLabel lb_anhSP = new JLabel("");
-	        lb_anhSP.setBounds(10, 11, 56, 72);
-	        panel_SP.add(lb_anhSP);
-	        setScaledImage(lb_anhSP, sp.getHinh());
+			JLabel lb_anhSP = new JLabel("");
+			lb_anhSP.setBounds(10, 11, 56, 72);
+			panel_SP.add(lb_anhSP);
+			setScaledImage(lb_anhSP, sp.getHinh());
 
-	        JLabel lbl_tenSP = new JLabel(sp.getTenSP());
-	        lbl_tenSP.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	        lbl_tenSP.setBounds(75, 11, 190, 22);
-	        panel_SP.add(lbl_tenSP);
+			JLabel lbl_tenSP = new JLabel(sp.getTenSP());
+			lbl_tenSP.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			lbl_tenSP.setBounds(75, 11, 190, 22);
+			panel_SP.add(lbl_tenSP);
 
-	        JLabel lbl_giaSP = new JLabel(String.valueOf(sp.getGiaBan()));
-	        lbl_giaSP.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	        lbl_giaSP.setBounds(76, 61, 66, 22);
-	        panel_SP.add(lbl_giaSP);
+			JLabel lbl_giaSP = new JLabel(String.valueOf(sp.getGiaBan()));
+			lbl_giaSP.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			lbl_giaSP.setBounds(76, 61, 66, 22);
+			panel_SP.add(lbl_giaSP);
 
-	        JLabel lbl_soLuong = new JLabel("Số Lượng: ");
-	        lbl_soLuong.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	        lbl_soLuong.setBounds(170, 61, 100, 20);
-	        panel_SP.add(lbl_soLuong);
+			JLabel lbl_soLuong = new JLabel("Số Lượng: ");
+			lbl_soLuong.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			lbl_soLuong.setBounds(170, 61, 100, 20);
+			panel_SP.add(lbl_soLuong);
 
-	        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(sp.getSoLuong(), 1, 100, 1);
-	        JSpinner spinner = new JSpinner(spinnerModel);
-	        spinner.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	        spinner.setBounds(250, 58, 60, 26);
-	        panel_SP.add(spinner);
-	        spinner.addChangeListener(new ChangeListener() {
-	            @Override
-	            public void stateChanged(ChangeEvent e) {
-	                JSpinner source = (JSpinner) e.getSource();
-	                SpinnerModel spinnerModel = source.getModel();
-	                int quantity = (int) spinnerModel.getValue();
+			SpinnerNumberModel spinnerModel = new SpinnerNumberModel(sp.getSoLuong(), 1, 100, 1);
+			JSpinner spinner = new JSpinner(spinnerModel);
+			spinner.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			spinner.setBounds(250, 58, 60, 26);
+			panel_SP.add(spinner);
+			spinner.addChangeListener(new ChangeListener() {
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					JSpinner source = (JSpinner) e.getSource();
+					SpinnerModel spinnerModel = source.getModel();
+					int quantity = (int) spinnerModel.getValue();
 
-	                sp.setSoLuong(quantity);
+					sp.setSoLuong(quantity);
 
-	                String totalPrice = calculateTotalPrice(ListSPHD);
-	                double tongCong = Double.parseDouble(totalPrice);
+					String totalPrice = calculateTotalPrice(ListSPHD);
+					double tongCong = Double.parseDouble(totalPrice);
 
-	                setKhuyenMai(totalPrice);
-	                nvv.lbl_tongCong().setText(totalPrice + " VND");
+					setKhuyenMai(totalPrice);
+					nvv.lbl_tongCong().setText(totalPrice + " VND");
 
-	                nvv.lbl_tongTien().setText(Double.toString(tongCong - khuyenMaii) + "00 VND");
+					nvv.lbl_tongTien().setText(Double.toString(tongCong - khuyenMaii) + "00 VND");
+                
+					if (khuyenMaii == 0.0) {
+						nvv.lbl_khuyenMai().setText("0 VND");
+					} else {
+						String t = Double.toString(khuyenMaii) + "00";
+						nvv.lbl_khuyenMai().setText(t + " VND");
+					}
 
-	                if (khuyenMaii == 0.0) {
-	                    nvv.lbl_khuyenMai().setText("0 VND");
-	                } else {
-	                    String t = Double.toString(khuyenMaii) + "00";
-	                    nvv.lbl_khuyenMai().setText(t + " VND");
-	                }
+					loadProductsToScrollPane(ListSPHD);
+				}
+			});
 
-	                loadProductsToScrollPane(ListSPHD);
-	            }
-	        });
+			JButton btn_xoaSP = new JButton("");
+			btn_xoaSP.setBackground(new Color(255, 255, 255));
+			btn_xoaSP.setIcon(new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\View\\ThungRac.png"));
+			btn_xoaSP.setBounds(330, 52, 46, 33);
+			panel_SP.add(btn_xoaSP);
 
-	        JButton btn_xoaSP = new JButton("");
-	        btn_xoaSP.setBackground(new Color(255, 255, 255));
-	        btn_xoaSP.setIcon(new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\View\\ThungRac.png"));
-	        btn_xoaSP.setBounds(330, 52, 46, 33);
-	        panel_SP.add(btn_xoaSP);
+			btn_xoaSP.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JPanel parentPanel = (JPanel) btn_xoaSP.getParent();
+					int index = nvv.panelcon().getComponentZOrder(parentPanel);
+					ListSPHD.remove(index);
 
-	        btn_xoaSP.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                JPanel parentPanel = (JPanel) btn_xoaSP.getParent();
-	                int index = nvv.panelcon().getComponentZOrder(parentPanel);
-	                ListSPHD.remove(index);
+					if (ListSPHD.isEmpty()) {
+						khuyenMaii = 0;
+						nvv.lbl_khuyenMai().setText("0 VND");
+					}
 
-	                if (ListSPHD.isEmpty()) {
-	                    khuyenMaii = 0;
-	                    nvv.lbl_khuyenMai().setText("0 VND");
-	                }
+					String totalPrice = calculateTotalPrice(ListSPHD);
+					double tongCong = Double.parseDouble(totalPrice);
 
-	                String totalPrice = calculateTotalPrice(ListSPHD);
-	                double tongCong = Double.parseDouble(totalPrice);
+					setKhuyenMai(totalPrice);
+					nvv.lbl_tongCong().setText(totalPrice + " VND");
 
-	                setKhuyenMai(totalPrice);
-	                nvv.lbl_tongCong().setText(totalPrice + " VND");
+					nvv.lbl_tongTien().setText(Double.toString(tongCong - khuyenMaii) + "00 VND");
 
-	                nvv.lbl_tongTien().setText(Double.toString(tongCong - khuyenMaii) + "00 VND");
+					if (khuyenMaii == 0.0) {
+						nvv.lbl_khuyenMai().setText("0 VND");
+					} else {
+						String t = Double.toString(khuyenMaii) + "00";
+						nvv.lbl_khuyenMai().setText(t + " VND");
+					}
 
-	                if (khuyenMaii == 0.0) {
-	                    nvv.lbl_khuyenMai().setText("0 VND");
-	                } else {
-	                    String t = Double.toString(khuyenMaii) + "00";
-	                    nvv.lbl_khuyenMai().setText(t + " VND");
-	                }
+					loadProductsToScrollPane(ListSPHD);
+				}
+			});
 
-	                loadProductsToScrollPane(ListSPHD);
-	            }
-	        });
+			nvv.panelcon().add(panel_SP);
+		}
 
-	        nvv.panelcon().add(panel_SP);
-	    }
-
-	    nvv.panelcon().revalidate();
-	    nvv.panelcon().repaint();
-	    nvv.JScrollPane().setViewportView(nvv.panelcon());
+		nvv.panelcon().revalidate();
+		nvv.panelcon().repaint();
+		nvv.JScrollPane().setViewportView(nvv.panelcon());
 	}
-	public void tinhTongTien() {
-//	    double tongTien = tongCong - khuyenMaii;
-//	    return tongTien;
-		System.out.println(khuyenMaii);
-	}
+
+
+
 	public String calculateTotalPrice(ArrayList<SanPhamHDModel> listDSHD) {
-	    double totalPrice = 0.0;
+		double totalPrice = 0.0;
 
-	    for (SanPhamHDModel sp : listDSHD) {
-	        int quantity = sp.getSoLuong();
-	        double price = sp.getGiaBan();
-	        totalPrice += quantity * price;
-	    }
+		for (SanPhamHDModel sp : listDSHD) {
+			int quantity = sp.getSoLuong();
+			double price = sp.getGiaBan();
+			totalPrice += quantity * price;
+		}
 
-	    long roundedTotalPrice = Math.round(totalPrice);
-	    DecimalFormat decimalFormat = new DecimalFormat("#,###");
-	    String formattedTotalPrice = decimalFormat.format(roundedTotalPrice);
+		long roundedTotalPrice = Math.round(totalPrice);
+		DecimalFormat decimalFormat = new DecimalFormat("#,###");
+		String formattedTotalPrice = decimalFormat.format(roundedTotalPrice);
 
-	    return formattedTotalPrice;
+		return formattedTotalPrice;
 	}
+
 	public void setKhuyenMai(String gia) {
-	    ArrayList<KhuyenMaiModel> listKM = KhuyenMaiDAO.getInstance().selectAll();
-	    double giaCanTru = Double.parseDouble(gia);
+		ArrayList<KhuyenMaiModel> listKM = KhuyenMaiDAO.getInstance().selectAll();
+		double giaCanTru = Double.parseDouble(gia);
+//        System.out.println(listKM.toString());
+		double closestPrice = findClosestPrice(listKM, giaCanTru);
+		boolean khuyenMaiUpdated = false;
 
-	    double closestPrice = findClosestPrice(listKM, giaCanTru);
-	    boolean khuyenMaiUpdated = false;
+		for (KhuyenMaiModel kmm : listKM) {
+			String input = kmm.getDieuKienKM();
+			String regex = "\\d+(\\.\\d+)?";
 
-	    for (KhuyenMaiModel kmm : listKM) {
-	        String input = kmm.getDieuKienKM();
-	        String regex = "\\d+(\\.\\d+)?";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(input);
+			while (matcher.find()) {
+				String numberString = matcher.group();
+				double number = Double.parseDouble(numberString);
+				if (number == closestPrice) {
+					double km = Math.floor(giaCanTru * kmm.getTongTru());
+					khuyenMaii = km;
 
-	        Pattern pattern = Pattern.compile(regex);
-	        Matcher matcher = pattern.matcher(input);
-	        while (matcher.find()) {
-	            String numberString = matcher.group();
-	            double number = Double.parseDouble(numberString);
-	            if (number == closestPrice) {
-	                double km = Math.floor(giaCanTru * kmm.getTongTru());
-	                khuyenMaii = km;
+					String t = Double.toString(km) + "00";
+					nvv.lbl_khuyenMai().setText(t + " VND");
 
-	                String t = Double.toString(km) + "00";
-	                nvv.lbl_khuyenMai().setText(t + " VND");
+					khuyenMaiUpdated = true;
+					idKM = kmm.getIdKhuyenMai();
+				}
+			}
+		}
 
-	                khuyenMaiUpdated = true;
-	            }
-	        }
-	    }
-
-	    if (!khuyenMaiUpdated) {
-	        khuyenMaii = 0.0;
-	        nvv.lbl_khuyenMai().setText("0 VND");
-	    }
+		if (!khuyenMaiUpdated) {
+			khuyenMaii = 0.0;
+			nvv.lbl_khuyenMai().setText("0 VND");
+		}
 	}
+
 	private String formatCurrency(double amount) {
-	    DecimalFormat decimalFormat = new DecimalFormat("#,### VND");
-	    return decimalFormat.format(amount);
+		DecimalFormat decimalFormat = new DecimalFormat("#,### VND");
+		return decimalFormat.format(amount);
 	}
+
 	private double findClosestPrice(ArrayList<KhuyenMaiModel> list, double targetPrice) {
-	    double closestPrice = Double.MAX_VALUE;
-	    double minDifference = Double.MAX_VALUE;
+		double closestPrice = Double.MAX_VALUE;
+		double minDifference = Double.MAX_VALUE;
 
-	    for (KhuyenMaiModel kmm : list) {
-	        double price = extractNumber(kmm.getDieuKienKM());
-	        double difference = Math.abs(targetPrice - price);
-	        if (difference < minDifference) {
-	            closestPrice = price;
-	            minDifference = difference;
-	        }
-	    }
+		for (KhuyenMaiModel kmm : list) {
+			double price = extractNumber(kmm.getDieuKienKM());
+			double difference = Math.abs(targetPrice - price);
+			if (difference < minDifference) {
+				closestPrice = price;
+				minDifference = difference;
+			}
+		}
 
-	    return closestPrice;
+		return closestPrice;
 	}
 
 	private double extractNumber(String input) {
-	    String numberString = input.replaceAll("[^\\d.]", "");
-	    return Double.parseDouble(numberString);
+		String numberString = input.replaceAll("[^\\d.]", "");
+		return Double.parseDouble(numberString);
 	}
+
+	public void ThanhToan() {
+	    // insert Donhang
+	    ArrayList<DonHangModel> listDH = DonHangDAO.getInstance().selectAll();
+	    ArrayList<HoaDonModel> listHD = HoaDonDAO.getInstance().selectAll();
+	    String idNhanVien = nvv.lbl_IDNhanVien().getText();
+	    String IDDh = Integer.toString((listDH.size() + 1));
+	    String IdDonHang = "DH" + IDDh;
+	    long millis = System.currentTimeMillis();
+	    Date ngayHienTai = new Date(millis);
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	    String ngayThangNamString = formatter.format(ngayHienTai);
+	    Date ngayMua = Date.valueOf(ngayThangNamString);
+	    DonHangModel dh = new DonHangModel(IdDonHang, ngayMua, idNhanVien);
+	    DonHangDAO.getInstance().insert(dh);
+	    
+	    // insert HoaDon Rỗng
+	    String IDHD = Integer.toString(listHD.size()+1);
+	    String IDHoaDon = "HD"+IDHD;
+	    HoaDonModel hd = new HoaDonModel(IDHoaDon, 0, ngayMua, null);
+	    HoaDonDAO.getInstance().insert(hd);
+	    
+	    // insert table chitietDonHang
+	    for (SanPhamHDModel sphd : listSPHD) {
+	        String idSP = sphd.getIdSanPham();
+	        int soLuongMua = sphd.getSoLuong();
+	        DonHangChiTietModel dhct = new DonHangChiTietModel(idSP, IdDonHang, soLuongMua, IDHoaDon);
+	        // Thêm dhct vào cơ sở dữ liệu
+	        ChiTietDonHangDAO.getInstance().insert(dhct);
+	    }
+	    
+	    // update bảng HoaDon
+	    String chuoi = nvv.lbl_tongTien().getText();
+	    String[] parts = chuoi.split(" ");
+	    String tong = parts[0].replaceAll("[^0-9]", "");
+	    int tongTien = Integer.parseInt(tong);
+	    HoaDonModel hdupdate = new HoaDonModel(IDHoaDon, tongTien, ngayMua, idKM);
+	    HoaDonDAO.getInstance().update(hdupdate);
+	    
+	    // In bill
+	    // Tạo tệp Word mới
+      taoBill(listSPHD);
+	}
+	public void taoBill(ArrayList<SanPhamHDModel> listSPHD) {
+	    // In bill
+	    // Tạo tệp Word mới
+	    XWPFDocument document = new XWPFDocument();
+	    // Thêm tiêu đề "Hóa Đơn Bán Lẻ"
+	    XWPFParagraph title = document.createParagraph();
+	    title.setAlignment(ParagraphAlignment.CENTER);
+	    XWPFRun titleRun = title.createRun();
+	    titleRun.setText("Hóa Đơn Bán Lẻ");
+	    titleRun.setBold(true);
+	    titleRun.setFontSize(16);
+	    titleRun.addBreak();
+	    // Tạo đối tượng bảng
+	    XWPFTable table = document.createTable();
+
+	    // Thiết lập thông tin định dạng bảng
+	    CTTblPr tblPr = table.getCTTbl().getTblPr();
+	    tblPr.addNewTblW().setW(BigInteger.valueOf(8000)); // Định dạng chiều rộng bảng
+	    tblPr.getTblW().setType(STTblWidth.PCT);
+	    tblPr.getTblW().setW(BigInteger.valueOf(100));
+
+	
+
+	    // Thiết lập thông tin định dạng tiêu đề hàng đầu
+	    XWPFTableRow titleRow = table.getRow(0);
+	    titleRow.getCell(0).setText("Tên sản phẩm");
+	    titleRow.addNewTableCell().setText("Đơn giá");
+	    titleRow.addNewTableCell().setText("Số lượng");
+	    titleRow.addNewTableCell().setText("Tổng cộng");
+	    titleRow.addNewTableCell().setText("Khuyến mãi");
+	    titleRow.addNewTableCell().setText("Tổng Tiền");
+
+	    // Thiết lập thông tin định dạng tiêu đề hàng đầu
+	    for (int i = 0; i < titleRow.getTableCells().size(); i++) {
+	        XWPFTableCell cell = titleRow.getCell(i);
+	        CTTcPr tcpr = cell.getCTTc().addNewTcPr();
+	        CTTcBorders borders = tcpr.addNewTcBorders();
+	        borders.addNewTop().setVal(STBorder.SINGLE);
+	        borders.addNewBottom().setVal(STBorder.SINGLE);
+	        borders.addNewLeft().setVal(STBorder.SINGLE);
+	        borders.addNewRight().setVal(STBorder.SINGLE);
+	        cell.setColor("B0C4DE"); // Màu nền tiêu đề
+	        cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER); // Căn giữa theo chiều dọc
+	        cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER); // Căn giữa theo chiều ngang
+	        XWPFParagraph paragraph = cell.getParagraphs().get(0);
+	        paragraph.setAlignment(ParagraphAlignment.CENTER); // Căn giữa theo chiều ngang
+	        XWPFRun run = paragraph.createRun();
+	        run.setBold(true); // Chữ in đậm
+	    }
+
+	    // Thêm dữ liệu từ danh sách listSPHD vào bảng
+	    for (SanPhamHDModel sp : listSPHD) {
+	        String tenSanPham = sp.getTenSP();
+	        double donGia = sp.getGiaBan();
+	        int soLuong = sp.getSoLuong();
+
+	        // Tạo hàng dữ liệu
+	        XWPFTableRow dataRow = table.createRow();
+	        dataRow.getCell(0).setText(tenSanPham);
+	        dataRow.getCell(1).setText(Double.toString(donGia));
+	        dataRow.getCell(2).setText(Integer.toString(soLuong));
+	    }
+
+	    // Tạo hàng dữ liệu cho tổng cộng, khuyến mãi và tổng tiền
+	    XWPFTableRow summaryRow = table.createRow();
+	    summaryRow.getCell(3).setText(nvv.lbl_tongCong().getText());
+	    summaryRow.getCell(4).setText(nvv.lbl_khuyenMai().getText());
+	    summaryRow.getCell(5).setText(nvv.lbl_tongTien().getText());
+
+	    // Lưu tệp Word
+	    try (FileOutputStream out = new FileOutputStream("Bill.docX")) {
+	        document.write(out);
+	        System.out.println("Hóa đơn đã được lưu thành công vào tệp Bill.docx");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 }

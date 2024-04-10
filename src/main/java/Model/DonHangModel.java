@@ -3,16 +3,15 @@ package Model;
 import java.sql.Date;
 
 public class DonHangModel {
-private String idDonHang,tenDonHang;
+private String idDonHang;
 private Date ngayMua;
 private String idNhanVien;
 public DonHangModel() {
 
 }
-public DonHangModel(String idDonHang, String tenDonHang, Date ngayMua, String idNhanVien) {
+public DonHangModel(String idDonHang, Date ngayMua, String idNhanVien) {
 
 	this.idDonHang = idDonHang;
-	this.tenDonHang = tenDonHang;
 	this.ngayMua = ngayMua;
 	this.idNhanVien = idNhanVien;
 }
@@ -21,12 +20,6 @@ public String getIdDonHang() {
 }
 public void setIdDonHang(String idDonHang) {
 	this.idDonHang = idDonHang;
-}
-public String getTenDonHang() {
-	return tenDonHang;
-}
-public void setTenDonHang(String tenDonHang) {
-	this.tenDonHang = tenDonHang;
 }
 public Date getNgayMua() {
 	return ngayMua;
