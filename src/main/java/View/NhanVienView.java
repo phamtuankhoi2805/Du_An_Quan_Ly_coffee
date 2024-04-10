@@ -57,6 +57,7 @@ public class NhanVienView extends JFrame {
 	private JLabel lbl_tongTien;
 	private JLabel lbl_idNhanVien;
 	private JLabel lbl_tenNV;
+	private JButton btn_resetForm;
 
      
 	/**
@@ -143,22 +144,16 @@ public class NhanVienView extends JFrame {
 		lbl_tongTien.setBounds(117, 576, 283, 26);
 		panel.add(lbl_tongTien);
 
-		JButton btnXutHan = new JButton("Xuát Hóa Đơn");
-		btnXutHan.setForeground(new Color(255, 255, 255));
-		btnXutHan.setBackground(new Color(0, 0, 160));
-		btnXutHan.setBounds(204, 613, 196, 46);
-		panel.add(btnXutHan);
-
 		JButton btnThanhTon_1_1 = new JButton("Thanh Toán");
 	
 		btnThanhTon_1_1.setForeground(new Color(255, 255, 255));
 		btnThanhTon_1_1.setBackground(new Color(0, 0, 160));
-		btnThanhTon_1_1.setBounds(10, 613, 184, 46);
+		btnThanhTon_1_1.setBounds(10, 613, 390, 46);
 		panel.add(btnThanhTon_1_1);
          btnThanhTon_1_1.addActionListener(nvc);
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(0, 0, 160));
-		panel_3.setBounds(0, 0, 410, 59);
+		panel_3.setBounds(0, 0, 410, 37);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		JLabel lblNewLabel = new JLabel("Chi Tiết Đặt Hàng");
@@ -179,6 +174,17 @@ public class NhanVienView extends JFrame {
 		scrollPane.setViewportView(panelCon);
 
 		panel.add(scrollPane);
+		
+		 btn_resetForm = new JButton("");
+		 btn_resetForm.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		nvc.reset();
+		 	}
+		 });
+		btn_resetForm.setBackground(new Color(255, 255, 255));
+		btn_resetForm.setIcon(new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\View\\Plus Circle.png"));
+		btn_resetForm.setBounds(362, 41, 38, 23);
+		panel.add(btn_resetForm);
 
 		panel_DSSP = new JPanel();
 		panel_DSSP.setBounds(430, 88, 874, 580);
@@ -258,7 +264,9 @@ public class NhanVienView extends JFrame {
 	   return lbl_tongTien;
    }
 
-
+public JButton btn_reset() {
+	return btn_resetForm;
+}
 
 	//   public JScrollPane JScrollPane() {
 //	   return scrollPane;

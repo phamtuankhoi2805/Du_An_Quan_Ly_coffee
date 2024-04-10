@@ -110,8 +110,15 @@ public class NhanVienController implements ActionListener {
 			addSanPhamToPanel(ListSP);
 
 		} else if (src.equals("Thanh Toán")) {
-	   System.out.println(idKM);
-			ThanhToan();
+	        int option = JOptionPane.showConfirmDialog(null, "Bạn có muốn in hóa đon?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+	        
+	        if (option == JOptionPane.YES_OPTION) {
+	 
+	        	ThanhToan();
+	        } else if (option == JOptionPane.NO_OPTION) {
+	        	ThanhToan();
+	        }
+		
 		}
 	}
 
@@ -538,5 +545,13 @@ public class NhanVienController implements ActionListener {
 	        e.printStackTrace();
 	    }
 	}
-
+public void reset() {
+	listSPHD.clear();
+	loadProductsToScrollPane(listSPHD);
+	nvv.lbl_tongCong().setText("0 VND");
+	nvv.lbl_khuyenMai().setText("0 VND");
+	nvv.lbl_tongTien().setText("0 VND");
+   khuyenMaii = 0.0;
+   idKM =null;
+}
 }
