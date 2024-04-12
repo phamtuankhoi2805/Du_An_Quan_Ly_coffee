@@ -42,7 +42,7 @@ public class TableNhapDAO implements DAOInterface<TableNhapModel> {
 		        Connection con = JDBCUtil.getConnection();
 
 		        // Bước 2: Tạo prepared statement
-		        String sql = "SELECT NguyenLieu.IDNguyenLieu, NguyenLieu.TenNguyenLieu, NguyenLieu.SoLuongTon, 0 AS SoLuongNhap, NhaCungCap.TenNhaCC, NhaCungCap.SDT\r\n"
+		        String sql = "SELECT NguyenLieu.IDNguyenLieu, NguyenLieu.TenNguyenLieu, NguyenLieu.SoLuongTon, NhaCungCap.TenNhaCC, NhaCungCap.SDT\r\n"
 		        		+ "FROM NguyenLieu\r\n"
 		        		+ "JOIN PhieuGiaoHangChiTiet ON NguyenLieu.IDNguyenLieu = PhieuGiaoHangChiTiet.IDNguyenLieu\r\n"
 		        		+ "JOIN PhieuGiaoHang ON PhieuGiaoHangChiTiet.IDPhieuGiao = PhieuGiaoHang.IDPhieuGiao\r\n"
@@ -55,12 +55,12 @@ public class TableNhapDAO implements DAOInterface<TableNhapModel> {
 		            String idNguyenLieu = rs.getString("IDNguyenLieu");
 		            String TenNguyenLieu = rs.getString("TenNguyenLieu");
 		            int soLuongTon = rs.getInt("SoLuongTon");
-		            int soLuongNhap = rs.getInt("soLuongNhap");
+		
 		            String TenNhaCC = rs.getString("TenNhaCC");
 
 		            String SDT = rs.getString("SDT");
 		           
-		      TableNhapModel tbln =  new TableNhapModel(idNguyenLieu, TenNguyenLieu, soLuongTon, soLuongNhap, TenNhaCC, SDT);
+		      TableNhapModel tbln =  new TableNhapModel(idNguyenLieu, TenNguyenLieu, soLuongTon, TenNhaCC, SDT);
 		            ketQua.add(tbln);
 		        }
 

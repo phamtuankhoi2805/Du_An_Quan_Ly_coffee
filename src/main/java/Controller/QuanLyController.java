@@ -100,10 +100,7 @@ public class QuanLyController implements ActionListener {
 		
 		} else if (src.equals("Sửa SP")) {
 			suaSP();
-		} else if (src.equals("Đặt Hàng")) {
-
-			createWordTemplate();
-		} else if (src.equals("Thêm Ca Làm")) {
+		}  else if (src.equals("Thêm Ca Làm")) {
 			themCalam();
 		}
 		 else if (src.equals("Làm Mới KM")) {
@@ -587,100 +584,80 @@ public class QuanLyController implements ActionListener {
 		ArrayList<TableNhapModel> listSP = TableNhapDAO.getInstance().selectAll();
 
 		for (TableNhapModel sp : listSP) {
-			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getSoLuongNhap(),
+			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(),
 					sp.getTenNhaCC(), sp.getSDT() };
 			model.addRow(rowData);
 		}
 
-		// Thêm trình lắng nghe sự kiện cho bảng tbl_kho
-		qlv.tbl_kho().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int selectedRow = qlv.tbl_kho().getSelectedRow();
-				int selectedColumn = qlv.tbl_kho().getSelectedColumn();
-
-				// Kiểm tra nếu người dùng nhấp chuột vào cột SoLuongNhap
-				if (selectedColumn == 3) {
-					String inputValue = JOptionPane.showInputDialog("Nhập giá trị SoLuongNhap mới:");
-
-					// Kiểm tra nếu người dùng nhập giá trị
-					if (inputValue != null && !inputValue.isEmpty()) {
-						int newSoLuongNhap = Integer.parseInt(inputValue);
-
-						// Cập nhật giá trị SoLuongNhap tại vị trí đã chọn
-						model.setValueAt(newSoLuongNhap, selectedRow, selectedColumn);
-					}
-				}
-			}
-		});
+	
 	}
 
-	public void createWordTemplate() {
-		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
-
-		// Tạo tệp Word mới
-		XWPFDocument document = new XWPFDocument();
-
-		// Tạo một đoạn văn bản trong tài liệu Word
-		XWPFParagraph paragraph = document.createParagraph();
-		paragraph.setAlignment(ParagraphAlignment.CENTER);
-
-		// Tạo mẫu Word tùy chỉnh
-		XWPFRun run = paragraph.createRun();
-		run.setText("Báo Cáo Nhập Hàng");
-		run.setBold(true);
-		run.setFontSize(20);
-		run.setColor("FF0000"); // Màu đỏ
-
-		// Thêm ngày tháng hiện tại vào tài liệu Word
-		XWPFParagraph dateParagraph = document.createParagraph();
-		dateParagraph.setAlignment(ParagraphAlignment.RIGHT);
-		XWPFRun dateRun = dateParagraph.createRun();
-		String pattern = "dd/MM/yyyy";
-		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-		String currentDate = dateFormat.format(new Date(i));
-		dateRun.setText("Ngày: " + currentDate);
-
-		// Tạo một bảng trong tài liệu Word
-		XWPFTable table = document.createTable();
-
-		// Thêm tiêu đề cho bảng
-		XWPFTableRow headerRow = table.getRow(0);
-		headerRow.getCell(0).setText("ID Nguyên Liệu");
-		headerRow.addNewTableCell().setText("Tên Nguyên Liệu");
-		headerRow.addNewTableCell().setText("Số Lượng Nhập");
-		headerRow.addNewTableCell().setText("Tên Nhà CC");
-		headerRow.addNewTableCell().setText("Số Điện Thoại");
-
-		for (int row = 0; row < model.getRowCount(); row++) {
-			Object selectedSoLuongNhap = model.getValueAt(row, 3);
-			if (selectedSoLuongNhap != null) {
-				int soLuongNhap = Integer.parseInt(selectedSoLuongNhap.toString());
-				if (soLuongNhap > 0) {
-					Object idNguyenLieu = model.getValueAt(row, 0);
-					Object tenNguyenLieu = model.getValueAt(row, 1);
-					Object tenNhaCC = model.getValueAt(row, 4);
-					Object sdt = model.getValueAt(row, 5);
-
-					// Thêm dữ liệu vào bảng Word
-					XWPFTableRow tableRow = table.createRow();
-					tableRow.getCell(0).setText(idNguyenLieu.toString());
-					tableRow.getCell(1).setText(tenNguyenLieu.toString());
-					tableRow.getCell(2).setText(selectedSoLuongNhap.toString());
-					tableRow.getCell(3).setText(tenNhaCC.toString());
-					tableRow.getCell(4).setText(sdt.toString());
-				}
-			}
-		}
-
-		// Lưu tài liệu Word thành file
-		try (FileOutputStream out = new FileOutputStream("data.docx")) {
-			document.write(out);
-			JOptionPane.showMessageDialog(qlv, "Tạo Thành Công Đơn Nhập Hàng");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void createWordTemplate() {
+//		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
+//
+//		// Tạo tệp Word mới
+//		XWPFDocument document = new XWPFDocument();
+//
+//		// Tạo một đoạn văn bản trong tài liệu Word
+//		XWPFParagraph paragraph = document.createParagraph();
+//		paragraph.setAlignment(ParagraphAlignment.CENTER);
+//
+//		// Tạo mẫu Word tùy chỉnh
+//		XWPFRun run = paragraph.createRun();
+//		run.setText("Báo Cáo Nhập Hàng");
+//		run.setBold(true);
+//		run.setFontSize(20);
+//		run.setColor("FF0000"); // Màu đỏ
+//
+//		// Thêm ngày tháng hiện tại vào tài liệu Word
+//		XWPFParagraph dateParagraph = document.createParagraph();
+//		dateParagraph.setAlignment(ParagraphAlignment.RIGHT);
+//		XWPFRun dateRun = dateParagraph.createRun();
+//		String pattern = "dd/MM/yyyy";
+//		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+//		String currentDate = dateFormat.format(new Date(i));
+//		dateRun.setText("Ngày: " + currentDate);
+//
+//		// Tạo một bảng trong tài liệu Word
+//		XWPFTable table = document.createTable();
+//
+//		// Thêm tiêu đề cho bảng
+//		XWPFTableRow headerRow = table.getRow(0);
+//		headerRow.getCell(0).setText("ID Nguyên Liệu");
+//		headerRow.addNewTableCell().setText("Tên Nguyên Liệu");
+//		headerRow.addNewTableCell().setText("Số Lượng Nhập");
+//		headerRow.addNewTableCell().setText("Tên Nhà CC");
+//		headerRow.addNewTableCell().setText("Số Điện Thoại");
+//
+//		for (int row = 0; row < model.getRowCount(); row++) {
+//			Object selectedSoLuongNhap = model.getValueAt(row, 3);
+//			if (selectedSoLuongNhap != null) {
+//				int soLuongNhap = Integer.parseInt(selectedSoLuongNhap.toString());
+//				if (soLuongNhap > 0) {
+//					Object idNguyenLieu = model.getValueAt(row, 0);
+//					Object tenNguyenLieu = model.getValueAt(row, 1);
+//					Object tenNhaCC = model.getValueAt(row, 4);
+//					Object sdt = model.getValueAt(row, 5);
+//
+//					// Thêm dữ liệu vào bảng Word
+//					XWPFTableRow tableRow = table.createRow();
+//					tableRow.getCell(0).setText(idNguyenLieu.toString());
+//					tableRow.getCell(1).setText(tenNguyenLieu.toString());
+//					tableRow.getCell(2).setText(selectedSoLuongNhap.toString());
+//					tableRow.getCell(3).setText(tenNhaCC.toString());
+//					tableRow.getCell(4).setText(sdt.toString());
+//				}
+//			}
+//		}
+//
+//		// Lưu tài liệu Word thành file
+//		try (FileOutputStream out = new FileOutputStream("data.docx")) {
+//			document.write(out);
+//			JOptionPane.showMessageDialog(qlv, "Tạo Thành Công Đơn Nhập Hàng");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 // ca Làm Việc -------------------------------------------------------------------------------
 	public void fildTableCaLam() {
