@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-04-07T14:24:17 WIB" name="Default suite" finished-at="2024-04-07T14:24:17 WIB" duration-ms="289">
+  <suite started-at="2024-04-11T10:31:48 ICT" name="Default suite" finished-at="2024-04-11T10:31:48 ICT" duration-ms="353">
     <groups>
     </groups>
-    <test started-at="2024-04-07T14:24:17 WIB" name="Default test" finished-at="2024-04-07T14:24:17 WIB" duration-ms="289">
-      <class name="DAO.TableNhapDAOTest">
-        <test-method signature="getInstanceTest()[pri:0, instance:DAO.TableNhapDAOTest@1d9b7cce]" started-at="2024-04-07T14:24:17 WIB" name="getInstanceTest" finished-at="2024-04-07T14:24:17 WIB" duration-ms="9" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getInstanceTest -->
-        <test-method signature="selectAllTest()[pri:0, instance:DAO.TableNhapDAOTest@1d9b7cce]" started-at="2024-04-07T14:24:17 WIB" name="selectAllTest" finished-at="2024-04-07T14:24:17 WIB" duration-ms="259" status="PASS">
+    <test started-at="2024-04-11T10:31:48 ICT" name="Default test" finished-at="2024-04-11T10:31:48 ICT" duration-ms="353">
+      <class name="DAO.DoanhThuNamDAOTest">
+        <test-method signature="selectAllTest()[pri:0, instance:DAO.DoanhThuNamDAOTest@2805d709]" started-at="2024-04-11T10:31:48 ICT" name="selectAllTest" finished-at="2024-04-11T10:31:48 ICT" duration-ms="328" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- selectAllTest -->
-      </class> <!-- DAO.TableNhapDAOTest -->
+      </class> <!-- DAO.DoanhThuNamDAOTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
