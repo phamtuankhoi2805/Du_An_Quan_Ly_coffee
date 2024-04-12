@@ -10,7 +10,7 @@ public TableNhapModel() {
 
 }
 public TableNhapModel(String idNguyenLieu, String tenNguyenLieu, int soLuongTon, String tenNhaCC, String sDT) {
-	super();
+
 	this.idNguyenLieu = idNguyenLieu;
 	this.tenNguyenLieu = tenNguyenLieu;
 	this.soLuongTon = soLuongTon;
@@ -47,6 +47,7 @@ public String getSDT() {
 public void setSDT(String sDT) {
 	SDT = sDT;
 }
+
 
 
 }

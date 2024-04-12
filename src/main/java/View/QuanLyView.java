@@ -726,7 +726,7 @@ public class QuanLyView extends JFrame {
 		btn_themSPKhoExcel.setBackground(new Color(0, 0, 160));
 		btn_themSPKhoExcel.setBounds(888, 130, 139, 23);
 		smallCard1.add(btn_themSPKhoExcel);
-
+            btn_themSPKhoExcel.addActionListener(qlc);
 		tbl_kho = new JTable();
 		tbl_kho.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID Nguyên Liệu", "Tên Nguyên Liệu",
 				"Số Lượng Tồn", "Tên Nhà Cung Câp", "SDT" }));

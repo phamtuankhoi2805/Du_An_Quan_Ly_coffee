@@ -42,10 +42,10 @@ public class TableNhapDAO implements DAOInterface<TableNhapModel> {
 		        Connection con = JDBCUtil.getConnection();
 
 		        // Bước 2: Tạo prepared statement
-		        String sql = "SELECT NguyenLieu.IDNguyenLieu, NguyenLieu.TenNguyenLieu, NguyenLieu.SoLuongTon, NhaCungCap.TenNhaCC, NhaCungCap.SDT\r\n"
-		        		+ "FROM NguyenLieu\r\n"
-		        		+ "JOIN PhieuGiaoHangChiTiet ON NguyenLieu.IDNguyenLieu = PhieuGiaoHangChiTiet.IDNguyenLieu\r\n"
-		        		+ "JOIN PhieuGiaoHang ON PhieuGiaoHangChiTiet.IDPhieuGiao = PhieuGiaoHang.IDPhieuGiao\r\n"
+		        String sql = "SELECT DISTINCT NguyenLieu.IDNguyenLieu, NguyenLieu.TenNguyenLieu, NguyenLieu.SoLuongTon, NhaCungCap.TenNhaCC, NhaCungCap.SDT\n"
+		        		+ "FROM NguyenLieu\n"
+		        		+ "JOIN PhieuGiaoHangChiTiet ON NguyenLieu.IDNguyenLieu = PhieuGiaoHangChiTiet.IDNguyenLieu\n"
+		        		+ "JOIN PhieuGiaoHang ON PhieuGiaoHangChiTiet.IDPhieuGiao = PhieuGiaoHang.IDPhieuGiao\n"
 		        		+ "JOIN NhaCungCap ON PhieuGiaoHang.IDNhaCC = NhaCungCap.IDNhaCC;";
 		        PreparedStatement statement = con.prepareStatement(sql);
 

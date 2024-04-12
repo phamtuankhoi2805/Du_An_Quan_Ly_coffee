@@ -1,15 +1,16 @@
 package Model;
 
 public class NhaCungCapModel {
-private String idNhaCC,diaChi,soDienThoai;
+private String idNhaCC,tenNhaCC,diaChi,soDienThoai;
 
 public NhaCungCapModel() {
 
 }
 
-public NhaCungCapModel(String idNhaCC, String diaChi, String soDienThoai) {
-	
+public NhaCungCapModel(String idNhaCC, String tenNhaCC, String diaChi, String soDienThoai) {
+
 	this.idNhaCC = idNhaCC;
+	this.tenNhaCC = tenNhaCC;
 	this.diaChi = diaChi;
 	this.soDienThoai = soDienThoai;
 }
@@ -20,6 +21,14 @@ public String getIdNhaCC() {
 
 public void setIdNhaCC(String idNhaCC) {
 	this.idNhaCC = idNhaCC;
+}
+
+public String getTenNhaCC() {
+	return tenNhaCC;
+}
+
+public void setTenNhaCC(String tenNhaCC) {
+	this.tenNhaCC = tenNhaCC;
 }
 
 public String getDiaChi() {
@@ -37,5 +46,7 @@ public String getSoDienThoai() {
 public void setSoDienThoai(String soDienThoai) {
 	this.soDienThoai = soDienThoai;
 }
+
+
 
 }

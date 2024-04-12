@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
@@ -25,6 +27,14 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -36,18 +46,25 @@ import DAO.CaLamViecDao;
 import DAO.DoanhThuThangDAO;
 import DAO.KhuyenMaiDAO;
 import DAO.NguyenLieuDAO;
+import DAO.NhaCungCapDAO;
 import DAO.NhanVienDAO;
+import DAO.PhieuGiaoHangChiTietDAO;
+import DAO.PhieuGiaoHangDAO;
 import DAO.SanPhamDAO;
 import DAO.TableNhapDAO;
 import Model.CaLamViecModel;
 import Model.KhuyenMaiModel;
 import Model.NguyenLieuModel;
+import Model.NhaCungCapModel;
 import Model.NhanVienModel;
+import Model.PhieuGiaoHangChiTietModel;
+import Model.PhieuGiaoHangModel;
+import Model.RowData;
 import Model.SanPhamModel;
 import Model.ThongKeDoanhThuTheoThangModel;
 import Model.TableNhapModel;
 import View.QuanLyView;
-
+import io.ous.jtoml.ParseException;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -97,25 +114,24 @@ public class QuanLyController implements ActionListener {
 
 		} else if (src.equals("Thêm SP")) {
 			themSP();
-		
+
 		} else if (src.equals("Sửa SP")) {
 			suaSP();
-		}  else if (src.equals("Thêm Ca Làm")) {
+		} else if (src.equals("Thêm Ca Làm")) {
 			themCalam();
+		} else if (src.equals("Làm Mới KM")) {
+			lamMoiKM();
+		} else if (src.equals("Thêm KM")) {
+			themKM();
+		} else if (src.equals("Sửa KM")) {
+			suaKM();
+		} else if (src.equals("Xuất")) {
+			xuaHang();
+		} else if (src.equals("Thêm SP Qua Excel")) {
+			docExcel();
 		}
-		 else if (src.equals("Làm Mới KM")) {
-				lamMoiKM();
-			}
-		 else if (src.equals("Thêm KM")) {
-				themKM();
-			}
-		 else if (src.equals("Sửa KM")) {
-				suaKM();
-			}else if (src.equals("Xuất")) {
-				xuaHang();
-			}
-
 	}
+
 //  nhân viên
 	public void fildTable() {
 		DefaultTableModel model = (DefaultTableModel) qlv.tbl_nhanVien().getModel();
@@ -576,7 +592,7 @@ public class QuanLyController implements ActionListener {
 		}
 
 	}
-// Form Nhập Nguyên liệu -------------------------------------------------------------------------------------------
+// Form Nhập Nguyên liệu ------------------------------------------------------------------------------------------------------------------------------
 
 	public void fildTableNguyenLieu() {
 		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
@@ -584,80 +600,236 @@ public class QuanLyController implements ActionListener {
 		ArrayList<TableNhapModel> listSP = TableNhapDAO.getInstance().selectAll();
 
 		for (TableNhapModel sp : listSP) {
-			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(),
-					sp.getTenNhaCC(), sp.getSDT() };
+			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getTenNhaCC(),
+					sp.getSDT() };
 			model.addRow(rowData);
 		}
 
-	
 	}
 
-//	public void createWordTemplate() {
-//		DefaultTableModel model = (DefaultTableModel) qlv.tbl_kho().getModel();
-//
-//		// Tạo tệp Word mới
-//		XWPFDocument document = new XWPFDocument();
-//
-//		// Tạo một đoạn văn bản trong tài liệu Word
-//		XWPFParagraph paragraph = document.createParagraph();
-//		paragraph.setAlignment(ParagraphAlignment.CENTER);
-//
-//		// Tạo mẫu Word tùy chỉnh
-//		XWPFRun run = paragraph.createRun();
-//		run.setText("Báo Cáo Nhập Hàng");
-//		run.setBold(true);
-//		run.setFontSize(20);
-//		run.setColor("FF0000"); // Màu đỏ
-//
-//		// Thêm ngày tháng hiện tại vào tài liệu Word
-//		XWPFParagraph dateParagraph = document.createParagraph();
-//		dateParagraph.setAlignment(ParagraphAlignment.RIGHT);
-//		XWPFRun dateRun = dateParagraph.createRun();
-//		String pattern = "dd/MM/yyyy";
-//		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-//		String currentDate = dateFormat.format(new Date(i));
-//		dateRun.setText("Ngày: " + currentDate);
-//
-//		// Tạo một bảng trong tài liệu Word
-//		XWPFTable table = document.createTable();
-//
-//		// Thêm tiêu đề cho bảng
-//		XWPFTableRow headerRow = table.getRow(0);
-//		headerRow.getCell(0).setText("ID Nguyên Liệu");
-//		headerRow.addNewTableCell().setText("Tên Nguyên Liệu");
-//		headerRow.addNewTableCell().setText("Số Lượng Nhập");
-//		headerRow.addNewTableCell().setText("Tên Nhà CC");
-//		headerRow.addNewTableCell().setText("Số Điện Thoại");
-//
-//		for (int row = 0; row < model.getRowCount(); row++) {
-//			Object selectedSoLuongNhap = model.getValueAt(row, 3);
-//			if (selectedSoLuongNhap != null) {
-//				int soLuongNhap = Integer.parseInt(selectedSoLuongNhap.toString());
-//				if (soLuongNhap > 0) {
-//					Object idNguyenLieu = model.getValueAt(row, 0);
-//					Object tenNguyenLieu = model.getValueAt(row, 1);
-//					Object tenNhaCC = model.getValueAt(row, 4);
-//					Object sdt = model.getValueAt(row, 5);
-//
-//					// Thêm dữ liệu vào bảng Word
-//					XWPFTableRow tableRow = table.createRow();
-//					tableRow.getCell(0).setText(idNguyenLieu.toString());
-//					tableRow.getCell(1).setText(tenNguyenLieu.toString());
-//					tableRow.getCell(2).setText(selectedSoLuongNhap.toString());
-//					tableRow.getCell(3).setText(tenNhaCC.toString());
-//					tableRow.getCell(4).setText(sdt.toString());
-//				}
-//			}
-//		}
-//
-//		// Lưu tài liệu Word thành file
-//		try (FileOutputStream out = new FileOutputStream("data.docx")) {
-//			document.write(out);
-//			JOptionPane.showMessageDialog(qlv, "Tạo Thành Công Đơn Nhập Hàng");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void docExcel() {
+		JFileChooser fileChooser = new JFileChooser();
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			String filePath = selectedFile.getAbsolutePath();
+			try {
+				FileInputStream fis = new FileInputStream(new File(filePath));
+				Workbook workbook = WorkbookFactory.create(fis);
+				Sheet sheet = workbook.getSheetAt(0);
+				DataFormatter dataFormatter = new DataFormatter();
+				List<RowData> rowDataList = new ArrayList<>();
+
+				for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+					Row row = sheet.getRow(rowIndex);
+					RowData rowData = new RowData();
+
+					Cell idNguyenLieuCell = row.getCell(0);
+					rowData.setIdNguyenLieu(idNguyenLieuCell.toString());
+
+					Cell tenNguyenLieuCell = row.getCell(1);
+					rowData.setTenNguyenLieu(tenNguyenLieuCell.toString());
+
+					Cell soLuongGiaoCell = row.getCell(2);
+					rowData.setSoLuongGiao((int) soLuongGiaoCell.getNumericCellValue());
+
+					Cell donGiaCell = row.getCell(3);
+					rowData.setDonGia(donGiaCell.getNumericCellValue());
+
+					Cell donViTinhCell = row.getCell(4);
+					rowData.setDonViTinh(donViTinhCell.toString());
+
+					Cell idNhaCCCell = row.getCell(5);
+					rowData.setIdNhaCC(idNhaCCCell.toString());
+
+					Cell tenNCCCell = row.getCell(6);
+					rowData.setTenNCC(tenNCCCell.toString());
+
+					Cell DiaChiCell = row.getCell(7);
+					rowData.setDiaChi(DiaChiCell.toString());
+
+					Cell sdtCell = row.getCell(8);
+					if (sdtCell.getCellType() == CellType.NUMERIC) {
+						rowData.setSdt(dataFormatter.formatCellValue(sdtCell));
+					} else {
+						rowData.setSdt(sdtCell.toString());
+					}
+
+					Cell ngayGiaoCell = row.getCell(9);
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+					rowData.setNgayGiao(dateFormat.format(ngayGiaoCell.getDateCellValue()));
+
+					Cell tongTienCell = row.getCell(10);
+					rowData.setTongTien(tongTienCell.getNumericCellValue());
+
+					rowDataList.add(rowData);
+				}
+
+				fis.close();
+				workbook.close();
+				ArrayList<NhaCungCapModel> ListNCC = NhaCungCapDAO.getInstance().selectAll();
+				ArrayList<NguyenLieuModel> ListNL = NguyenLieuDAO.getInstance().selectAll();
+
+				// Sử dụng danh sách rowDataList để truy cập dữ liệu theo hàng
+				for (RowData rowData : rowDataList) {
+					boolean kiemTraIDNCC = false;
+					boolean kiemTraIDNguyenLieu = false;
+					for (NguyenLieuModel NLM : ListNL) {
+
+						if (NLM.getIdNguyenLieu().equals(rowData.getIdNguyenLieu()) == true) {
+							kiemTraIDNguyenLieu = true;
+
+							break;
+						}
+					}
+					for (NhaCungCapModel NCC : ListNCC) {
+
+						if (NCC.getIdNhaCC().equals(rowData.getIdNhaCC()) == true) {
+
+							kiemTraIDNCC = true;
+
+							break;
+						}
+					}
+					if (kiemTraIDNCC == true && kiemTraIDNguyenLieu == true) {
+						System.out.println("có cả 2");
+						// insert Phiếu giao hàng
+						String IDPhieuGiao = "PGH" + (ListNL.size() + 1);
+						String ngayGiao = rowData.getNgayGiao();
+						double tongTienGiaoHang = rowData.getTongTien();
+						String idNCC = rowData.getIdNhaCC();
+						PhieuGiaoHangModel PGH = new PhieuGiaoHangModel(IDPhieuGiao, ngayGiao, tongTienGiaoHang, idNCC);
+						PhieuGiaoHangDAO.getInstance().insert(PGH);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert phiếu giao hàng chi tiết
+						String idNguyenLieu = rowData.getIdNguyenLieu();
+						int soLuongGiao = rowData.getSoLuongGiao();
+						double donGiaNL = rowData.getDonGia();
+						PhieuGiaoHangChiTietModel PGHCT = new PhieuGiaoHangChiTietModel(idNguyenLieu, IDPhieuGiao,soLuongGiao, donGiaNL);
+						PhieuGiaoHangChiTietDAO.getInstance().insert(PGHCT);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						fildTableNguyenLieu();
+					} else if (kiemTraIDNCC == false && kiemTraIDNguyenLieu == true) {
+						// ínsert bản nhà cung cấp
+						System.out.println("ko có Nhà cc");
+						String idNhaCC = rowData.getIdNhaCC();
+						String tenNhaCC = rowData.getTenNCC();
+						String DiaChi = rowData.getDiaChi();
+						String sdt = rowData.getSdt();
+						NhaCungCapModel NCC = new NhaCungCapModel(idNhaCC, tenNhaCC, DiaChi, sdt);
+						NhaCungCapDAO.getInstance().insert(NCC);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert nguyenlieu moi
+						String IDNguyenLieu = "NL"+(ListNL.size()+1);
+						String tenNguyenLieu = rowData.getTenNguyenLieu()+""+(ListNL.size()+1);
+						String donViTinh = rowData.getDonViTinh();
+						int soLuongGiao = rowData.getSoLuongGiao();
+						NguyenLieuModel NguyenLieu = new NguyenLieuModel(IDNguyenLieu, tenNguyenLieu, 0, donViTinh);
+						NguyenLieuDAO.getInstance().insert(NguyenLieu);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert Phiếu giao hàng
+						String IDPhieuGiao = "PGH" + (ListNL.size() + 1);
+						String ngayGiao = rowData.getNgayGiao();
+						double tongTienGiaoHang = rowData.getTongTien();
+						String idNCC = rowData.getIdNhaCC();
+						PhieuGiaoHangModel PGH = new PhieuGiaoHangModel(IDPhieuGiao, ngayGiao, tongTienGiaoHang, idNCC);
+						PhieuGiaoHangDAO.getInstance().insert(PGH);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert phiếu giao hàng chi tiết
+						
+					
+						double donGiaNL = rowData.getDonGia();
+						PhieuGiaoHangChiTietModel PGHCT = new PhieuGiaoHangChiTietModel(IDNguyenLieu, IDPhieuGiao,
+								soLuongGiao, donGiaNL);
+						PhieuGiaoHangChiTietDAO.getInstance().insert(PGHCT);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						fildTableNguyenLieu();
+					} else if (kiemTraIDNCC == true && kiemTraIDNguyenLieu == false) {
+						// insert bảng nguyenLieu
+						System.out.println("ko có nguyen lieu");
+						String IDNguyenLieu = rowData.getIdNguyenLieu();
+						System.out.println(IDNguyenLieu);
+						String tenNguyenLieu = rowData.getTenNguyenLieu();
+						String donViTinh = rowData.getDonViTinh();
+						int soLuongGiao = rowData.getSoLuongGiao();
+						NguyenLieuModel NguyenLieu = new NguyenLieuModel(IDNguyenLieu, tenNguyenLieu, 0, donViTinh);
+						NguyenLieuDAO.getInstance().insert(NguyenLieu);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert Phiếu giao hàng
+						String IDPhieuGiao = "PGH" + (ListNL.size() + 1);
+						String ngayGiao = rowData.getNgayGiao();
+						double tongTienGiaoHang = rowData.getTongTien();
+						String idNCC = rowData.getIdNhaCC();
+						PhieuGiaoHangModel PGH = new PhieuGiaoHangModel(IDPhieuGiao, ngayGiao, tongTienGiaoHang, idNCC);
+						PhieuGiaoHangDAO.getInstance().insert(PGH);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert phiếu giao hàng chi tiết
+						String idNguyenLieu = rowData.getIdNguyenLieu();
+
+						double donGiaNL = rowData.getDonGia();
+						PhieuGiaoHangChiTietModel PGHCT = new PhieuGiaoHangChiTietModel(idNguyenLieu, IDPhieuGiao,
+								soLuongGiao, donGiaNL);
+						PhieuGiaoHangChiTietDAO.getInstance().insert(PGHCT);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						fildTableNguyenLieu();
+
+					} else if (kiemTraIDNCC == false && kiemTraIDNguyenLieu == false) {
+						// insert bảng nguyenLieu
+						System.out.println("ko có cả 2");
+						String IDNguyenLieu = rowData.getIdNguyenLieu();
+						String tenNguyenLieu = rowData.getTenNguyenLieu();
+						String donViTinh = rowData.getDonViTinh();
+						int soLuongGiao = rowData.getSoLuongGiao();
+						NguyenLieuModel NguyenLieu = new NguyenLieuModel(IDNguyenLieu, tenNguyenLieu, 0, donViTinh);
+						NguyenLieuDAO.getInstance().insert(NguyenLieu);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// ínsert bản nhà cung cấp
+						String idNhaCC = rowData.getIdNhaCC();
+						String tenNhaCC = rowData.getTenNCC();
+						String DiaChi = rowData.getDiaChi();
+						String sdt = rowData.getSdt();
+						NhaCungCapModel NCC = new NhaCungCapModel(idNhaCC, tenNhaCC, DiaChi, sdt);
+						NhaCungCapDAO.getInstance().insert(NCC);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert Phiếu giao hàng
+						
+						String IDPhieuGiao = "PGH" + (ListNL.size() + 1);
+						String ngayGiao = rowData.getNgayGiao();
+						double tongTienGiaoHang = rowData.getTongTien();
+						String idNCC = rowData.getIdNhaCC();
+						PhieuGiaoHangModel PGH = new PhieuGiaoHangModel(IDPhieuGiao, ngayGiao, tongTienGiaoHang, idNCC);
+						PhieuGiaoHangDAO.getInstance().insert(PGH);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						// insert phiếu giao hàng chi tiết
+						String idNguyenLieu = rowData.getIdNguyenLieu();
+
+						double donGiaNL = rowData.getDonGia();
+						PhieuGiaoHangChiTietModel PGHCT = new PhieuGiaoHangChiTietModel(idNguyenLieu, IDPhieuGiao,
+								soLuongGiao, donGiaNL);
+						PhieuGiaoHangChiTietDAO.getInstance().insert(PGHCT);
+						ListNL = NguyenLieuDAO.getInstance().selectAll();
+						 ListNCC = NhaCungCapDAO.getInstance().selectAll();
+						fildTableNguyenLieu();
+					}
+
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 // ca Làm Việc -------------------------------------------------------------------------------
 	public void fildTableCaLam() {
@@ -744,13 +916,13 @@ public class QuanLyController implements ActionListener {
 	}
 
 	public void lamMoiKM() {
-	
+
 		qlv.txt_idKM().setText("");
 		qlv.txt_tenKM().setText("");
 		qlv.txt_dieuKienKM().setText("");
 		qlv.btn_themKM().setEnabled(true);
 		qlv.txt_idKM().setEditable(true);
-	
+
 		qlv.btn_suaKM().setEnabled(false);
 
 	}
@@ -763,20 +935,20 @@ public class QuanLyController implements ActionListener {
 			String selectedItem = qlv.cbo_tru().getSelectedItem().toString();
 			int percentIndex = selectedItem.indexOf("%");
 			String tachChuoi = selectedItem.substring(0, percentIndex);
-			float t =  Float.parseFloat(tachChuoi);
-			float tru  =  t/100;
+			float t = Float.parseFloat(tachChuoi);
+			float tru = t / 100;
 			KhuyenMaiModel km = new KhuyenMaiModel(idKM, tenKM, dieuKienKM, tru);
 			KhuyenMaiDAO.getInstance().insert(km);
 			qlv.btn_themKM().setEnabled(false);
 			qlv.txt_idKM().setEditable(false);
-	
-		
+
 			fileTabelkhuyenMai();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
+
 	public void suaKM() {
 		try {
 			String idKM = qlv.txt_idKM().getText();
@@ -785,8 +957,8 @@ public class QuanLyController implements ActionListener {
 			String selectedItem = qlv.cbo_tru().getSelectedItem().toString();
 			int percentIndex = selectedItem.indexOf("%");
 			String tachChuoi = selectedItem.substring(0, percentIndex);
-			float t =  Float.parseFloat(tachChuoi);
-			float tru  =  t/100;
+			float t = Float.parseFloat(tachChuoi);
+			float tru = t / 100;
 			KhuyenMaiModel km = new KhuyenMaiModel(idKM, tenKM, dieuKienKM, tru);
 			KhuyenMaiDAO.getInstance().update(km);
 			qlv.btn_themKM().setEnabled(false);
@@ -797,29 +969,32 @@ public class QuanLyController implements ActionListener {
 		}
 
 	}
-	// from xuất kho -------------------------------------------------------------------------------
-	
+	// from xuất kho
+	// -------------------------------------------------------------------------------
+
 	public void fileTabelDSXuat() {
 		DefaultTableModel model = (DefaultTableModel) qlv.tbl_DSNguyenLieuXuat().getModel();
 		model.setRowCount(0); // Xóa tất cả các dòng trong bảng
 		ArrayList<NguyenLieuModel> ListNL = NguyenLieuDAO.getInstance().selectAll();
 
 		for (NguyenLieuModel sp : ListNL) {
-			
+
 			Object[] rowData = { sp.getIdNguyenLieu(), sp.getTenNguyenLieu(), sp.getSoLuongTon(), sp.getDonViTinh() };
 			model.addRow(rowData);
 
 		}
 
 	}
+
 	public void disPlayfromXuatHang(int b) {
 		ArrayList<NguyenLieuModel> ListNL = NguyenLieuDAO.getInstance().selectAll();
 		NguyenLieuModel sp = ListNL.get(b);
 		qlv.txt_idNguyenLieuXuat().setText(sp.getIdNguyenLieu());
 		qlv.txt_tenNLXuat().setText(sp.getTenNguyenLieu());
 		qlv.txt_soLuongTonXuat().setText(Integer.toString(sp.getSoLuongTon()));
-		
+
 	}
+
 	public void fillcontrollXuatKho() {
 		try {
 
@@ -830,127 +1005,124 @@ public class QuanLyController implements ActionListener {
 			// TODO: handle exception
 		}
 	}
+
 	public void xuaHang() {
-	try {
-		String idNguyenLieuXuat  =  qlv.txt_idNguyenLieuXuat().getText();
-		String tenNguyenLieuXuat =  qlv.txt_tenNLXuat().getText();
-		int SoLuongTon = Integer.parseInt(qlv.txt_soLuongTonXuat().getText());
-		int soLuongLay = Integer.parseInt(qlv.txt_soLuongLayXuat().getText());
-		int tru  = SoLuongTon-soLuongLay;
-		NguyenLieuModel nl = new NguyenLieuModel(idNguyenLieuXuat, tenNguyenLieuXuat, tru,null);
-		NguyenLieuDAO.getInstance().updateSoLuongTon(nl);
-		JOptionPane.showMessageDialog(qlv, "thành công");
-		fileTabelDSXuat();
-		disPlayfromXuatHang(b);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+		try {
+			String idNguyenLieuXuat = qlv.txt_idNguyenLieuXuat().getText();
+			String tenNguyenLieuXuat = qlv.txt_tenNLXuat().getText();
+			int SoLuongTon = Integer.parseInt(qlv.txt_soLuongTonXuat().getText());
+			int soLuongLay = Integer.parseInt(qlv.txt_soLuongLayXuat().getText());
+			int tru = SoLuongTon - soLuongLay;
+			NguyenLieuModel nl = new NguyenLieuModel(idNguyenLieuXuat, tenNguyenLieuXuat, tru, null);
+			NguyenLieuDAO.getInstance().updateSoLuongTon(nl);
+			JOptionPane.showMessageDialog(qlv, "thành công");
+			fileTabelDSXuat();
+			disPlayfromXuatHang(b);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 // from thống kê
-	
-	
-	public void thongKeDoanhThuThang() {
-	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
-	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
-	    String selectedYear =(String) qlv.cbo_namTK().getSelectedItem();
-	
-	    for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
-	    	
-	        if (dtm.getThang().equals(selectedMonth) ==true&& dtm.getNam().equals(selectedYear)==true) {
-	            int doanhThuThangNam = dtm.getDoanhThu();
-	         qlv.lbl_tongDoanhThuThang().setText("Tổng Doanh Thu Tháng "+selectedMonth);
-	         qlv.lbl_doanhThuTien().setText(doanhThuThangNam+" VND");
-	          qlv.lbl_tongDonHangThang().setText("Tổng Số Đơn Hàng Tháng "+selectedMonth);
-	          qlv.lbl_tongSODon().setText(Integer.toString(dtm.getTongDon()));
-	        }
-	    }
-	}
-	
-	public void thongKeDoanhThuThangBaoCao() {
-	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
-	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
-	    String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
 
-	    for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
-	        if (dtm.getThang().equals(selectedMonth) && dtm.getNam().equals(selectedYear)) {
-	            int doanhThuThangNam = dtm.getDoanhThu();
+	public void thongKeDoanhThuThang() {
+		ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
+		String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
+		String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
+
+		for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
+
+			if (dtm.getThang().equals(selectedMonth) == true && dtm.getNam().equals(selectedYear) == true) {
+				int doanhThuThangNam = dtm.getDoanhThu();
+				qlv.lbl_tongDoanhThuThang().setText("Tổng Doanh Thu Tháng " + selectedMonth);
+				qlv.lbl_doanhThuTien().setText(doanhThuThangNam + " VND");
+				qlv.lbl_tongDonHangThang().setText("Tổng Số Đơn Hàng Tháng " + selectedMonth);
+				qlv.lbl_tongSODon().setText(Integer.toString(dtm.getTongDon()));
+			}
+		}
+	}
+
+	public void thongKeDoanhThuThangBaoCao() {
+		ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
+		String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
+		String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
+
+		for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
+			if (dtm.getThang().equals(selectedMonth) && dtm.getNam().equals(selectedYear)) {
+				int doanhThuThangNam = dtm.getDoanhThu();
 //	            qlv.lbl_tongDoanhThuThang().setText("Tổng Doanh Thu Tháng " + selectedMonth);
 //	            qlv.lbl_doanhThuTien().setText(doanhThuThangNam + " VND");
 //	            qlv.lbl_tongDonHangThang().setText("Tổng Số Đơn Hàng Tháng " + selectedMonth);
 //	            qlv.lbl_tongSODon().setText(Integer.toString(dtm.getTongDon()));
 
-	            try {
-	                // Tạo tài liệu Word mới
-	                XWPFDocument document = new XWPFDocument();
+				try {
+					// Tạo tài liệu Word mới
+					XWPFDocument document = new XWPFDocument();
 
-	                // Tạo tiêu đề
-	                XWPFParagraph title = document.createParagraph();
-	                XWPFRun titleRun = title.createRun();
-	                titleRun.setText("Báo cáo doanh thu tháng " + selectedMonth + " năm " + selectedYear);
-	                titleRun.setBold(true);
-	                titleRun.setFontSize(16);
-	                titleRun.addBreak();
+					// Tạo tiêu đề
+					XWPFParagraph title = document.createParagraph();
+					XWPFRun titleRun = title.createRun();
+					titleRun.setText("Báo cáo doanh thu tháng " + selectedMonth + " năm " + selectedYear);
+					titleRun.setBold(true);
+					titleRun.setFontSize(16);
+					titleRun.addBreak();
 
-	                // Tạo nội dung báo cáo
-	                XWPFParagraph content = document.createParagraph();
-	                XWPFRun contentRun = content.createRun();
-	                contentRun.setText("Tổng doanh thu: " + doanhThuThangNam + " VND");
-	                contentRun.addBreak();
-	                contentRun.setText("Tổng số đơn hàng: " + dtm.getTongDon());
-	                contentRun.addBreak();
+					// Tạo nội dung báo cáo
+					XWPFParagraph content = document.createParagraph();
+					XWPFRun contentRun = content.createRun();
+					contentRun.setText("Tổng doanh thu: " + doanhThuThangNam + " VND");
+					contentRun.addBreak();
+					contentRun.setText("Tổng số đơn hàng: " + dtm.getTongDon());
+					contentRun.addBreak();
 
-	                // Lưu tệp Word
-	                String filePath = "BaoCaoDoanhThu.docx";
-	                FileOutputStream out = new FileOutputStream(filePath);
-	                document.write(out);
-	                out.close();
-	                document.close();
+					// Lưu tệp Word
+					String filePath = "BaoCaoDoanhThu.docx";
+					FileOutputStream out = new FileOutputStream(filePath);
+					document.write(out);
+					out.close();
+					document.close();
 
-	              JOptionPane.showMessageDialog(qlv, "Tạo Báo Cáo Thành Công");
-	            } catch (IOException e) {
-	            	JOptionPane.showMessageDialog(qlv,"không đủ dữ liệu để tạo báo cáo");
-	                e.printStackTrace();
-	            }
-	        }
-	    }
+					JOptionPane.showMessageDialog(qlv, "Tạo Báo Cáo Thành Công");
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(qlv, "không đủ dữ liệu để tạo báo cáo");
+					e.printStackTrace();
+				}
+			}
+		}
 	}
+
 	public void thongKeDoanhThuBieuDo1() {
-	    ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
-	    String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
-	    String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
-	    boolean yearMatched = false;
+		ArrayList<ThongKeDoanhThuTheoThangModel> listThang = DoanhThuThangDAO.getInstance().selectAll();
+		String selectedMonth = (String) qlv.cbo_thangTK().getSelectedItem();
+		String selectedYear = (String) qlv.cbo_namTK().getSelectedItem();
+		boolean yearMatched = false;
 
-	    // Xóa tất cả các giá trị hiện có trong dataset
-	    qlv.dataset().clear();
+		// Xóa tất cả các giá trị hiện có trong dataset
+		qlv.dataset().clear();
 
-	    for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
-	        if (dtm.getNam().equals(selectedYear)) {
-	            yearMatched = true;
-	            int doanhThuThangNam = dtm.getDoanhThu();
-	            qlv.dataset().addValue(doanhThuThangNam, "Doanh thu", dtm.getThang());
-	        }
-	    }
+		for (ThongKeDoanhThuTheoThangModel dtm : listThang) {
+			if (dtm.getNam().equals(selectedYear)) {
+				yearMatched = true;
+				int doanhThuThangNam = dtm.getDoanhThu();
+				qlv.dataset().addValue(doanhThuThangNam, "Doanh thu", dtm.getThang());
+			}
+		}
 
-	    if (!yearMatched) {
-	       System.out.println("không có");
-	    }
+		if (!yearMatched) {
+			System.out.println("không có");
+		}
 
-	    // Cập nhật lại biểu đồ
-	 
+		// Cập nhật lại biểu đồ
+
 	}
+
 	public void setNamThangO() {
 		YearMonth yearMonth = YearMonth.now();
-        int currentYear = yearMonth.getYear();
-        int currentMonth = yearMonth.getMonthValue();
-       
-       qlv.cbo_thangTK().setSelectedItem(Integer.toString(currentMonth));
-      qlv.cbo_namTK().setSelectedItem(Integer.toString(currentYear));
-    
+		int currentYear = yearMonth.getYear();
+		int currentMonth = yearMonth.getMonthValue();
+
+		qlv.cbo_thangTK().setSelectedItem(Integer.toString(currentMonth));
+		qlv.cbo_namTK().setSelectedItem(Integer.toString(currentYear));
+
 	}
-	
-	
-	
-	
-	
-	
+
 }

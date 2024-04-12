@@ -4,15 +4,17 @@ import java.sql.Date;
 
 public class PhieuGiaoHangModel {
 private String idPhieuGiao;
-private Date ngayGiaoHang;
+private String ngayGiaoHang;
+private double tongTienGiaoHang;
 private String idNhaCC;
 public PhieuGiaoHangModel() {
-	super();
+
 }
-public PhieuGiaoHangModel(String idPhieuGiao, Date ngayGiaoHang, String idNhaCC) {
-	super();
+public PhieuGiaoHangModel(String idPhieuGiao, String ngayGiaoHang, double tongTienGiaoHang, String idNhaCC) {
+
 	this.idPhieuGiao = idPhieuGiao;
 	this.ngayGiaoHang = ngayGiaoHang;
+	this.tongTienGiaoHang = tongTienGiaoHang;
 	this.idNhaCC = idNhaCC;
 }
 public String getIdPhieuGiao() {
@@ -21,11 +23,17 @@ public String getIdPhieuGiao() {
 public void setIdPhieuGiao(String idPhieuGiao) {
 	this.idPhieuGiao = idPhieuGiao;
 }
-public Date getNgayGiaoHang() {
+public String getNgayGiaoHang() {
 	return ngayGiaoHang;
 }
-public void setNgayGiaoHang(Date ngayGiaoHang) {
+public void setNgayGiaoHang(String ngayGiaoHang) {
 	this.ngayGiaoHang = ngayGiaoHang;
+}
+public double getTongTienGiaoHang() {
+	return tongTienGiaoHang;
+}
+public void setTongTienGiaoHang(double tongTienGiaoHang) {
+	this.tongTienGiaoHang = tongTienGiaoHang;
 }
 public String getIdNhaCC() {
 	return idNhaCC;
@@ -33,5 +41,6 @@ public String getIdNhaCC() {
 public void setIdNhaCC(String idNhaCC) {
 	this.idNhaCC = idNhaCC;
 }
+
 
 }

@@ -281,23 +281,15 @@ VALUES
 ('NV005', 'nhanvien', N'Phạm Văn E', '1997-09-30', 1, '0966666666', 'epv@gmail.com', N'Nhân viên', N'Đang làm việc', 20000, 'CL002')
 GO
 
--- Chèn dữ liệu vào bảng LOAINGUYENLIEU
-INSERT INTO LOAINGUYENLIEU (IDLoaiNguyenLieu, TenLoaiNguyenLieu)
-VALUES 
-('NL001', N'Nguyên liệu thô'),
-('NL002', N'Đồ uống'),
-('NL003', N'Dinh dưỡng'),
-('NL004', N'Vật liệu bao bì'),
-('NL005', N'Phụ gia')
-GO
+
 -- Chèn dữ liệu vào bảng NGUYENLIEU
-INSERT INTO NGUYENLIEU (IDNguyenLieu, TenNguyenLieu, SoLuongTon, IDLoaiNguyenLieu)
+INSERT INTO NGUYENLIEU (IDNguyenLieu, TenNguyenLieu, SoLuongTon,DonViTinh)
 VALUES 
-('NL001', N'Ca cao', 100, 'NL002'),
-('NL002', N'Cam', 50, 'NL001'),
-('NL003', N'Dưa hấu', 200, 'NL001'),
-('NL004', N'Nước khoáng', 300, 'NL003'),
-('NL005', N'Ly nhựa', 150, 'NL004')
+('NL1', N'Ca cao', 100,'Bao'),
+('NL2', N'Cam', 50, 'Bao'),
+('NL3', N'Dưa hấu', 200, 'Bao'),
+('NL4', N'Nước khoáng', 300, 'Bao'),
+('NL5', N'Ly nhựa', 150, 'Bao')
 GO
 -- Chèn dữ liệu vào bảng SANPHAM
 INSERT INTO SANPHAM (IDSanPham, TenSP, GiaBan, Hinh)
@@ -498,29 +490,29 @@ VALUES
 -- Chèn dữ liệu vào bảng NHACUNGCAP
 INSERT INTO NHACUNGCAP (IDNhaCC, TenNhaCC, DiaChi, SDT)
 VALUES 
-('NCC001', N'Nhà cung cấp 1', N'123 Đường ABC, Quận 1, TP.HCM', '0987654321'),
-('NCC002', N'Nhà cung cấp 2', N'456 Đường XYZ, Quận 2, TP.HCM', '0123456789'),
-('NCC003', N'Nhà cung cấp 3', N'789 Đường DEF, Quận 3, TP.HCM', '0999999999'),
-('NCC004', N'Nhà cung cấp 4', N'1011 Đường GHI, Quận 4, TP.HCM', '0977777777'),
-('NCC005', N'Nhà cung cấp 5', N'1213 Đường JKL, Quận 5, TP.HCM', '0966666666')
+('NCC1', N'Nhà cung cấp 1', N'123 Đường ABC, Quận 1, TP.HCM', '0987654321'),
+('NCC2', N'Nhà cung cấp 2', N'456 Đường XYZ, Quận 2, TP.HCM', '0123456789'),
+('NCC3', N'Nhà cung cấp 3', N'789 Đường DEF, Quận 3, TP.HCM', '0999999999'),
+('NCC4', N'Nhà cung cấp 4', N'1011 Đường GHI, Quận 4, TP.HCM', '0977777777'),
+('NCC5', N'Nhà cung cấp 5', N'1213 Đường JKL, Quận 5, TP.HCM', '0966666666')
 GO
 -- Chèn dữ liệu vào bảng PHIEUGIAOHANG
 INSERT INTO PHIEUGIAOHANG (IDPhieuGiao, NgayGiaoHang, TongTienGiaoHang, IDNhaCC)
 VALUES 
-('PGH001', '2024-03-01', 200000, 'NCC001'),
-('PGH002', '2024-03-01', 50000, 'NCC002'),
-('PGH003', '2024-03-01', 240000, 'NCC003'),
-('PGH004', '2024-03-01', 750000, 'NCC004' ),
-('PGH005', '2024-03-01', 400000, 'NCC005')
+('PGH1', '2024-03-01', 200000, 'NCC1'),
+('PGH2', '2024-03-01', 50000, 'NCC2'),
+('PGH3', '2024-03-01', 240000, 'NCC3'),
+('PGH4', '2024-03-01', 750000, 'NCC4' ),
+('PGH5', '2024-03-01', 400000, 'NCC5')
 GO
 -- Chèn dữ liệu vào bảng PHIEUGIAOHANGCHITIET
 INSERT INTO PHIEUGIAOHANGCHITIET (IDNguyenLieu, IDPhieuGiao, SoLuongNLGiao, DonGiaNL)
 VALUES 
-('NL001', 'PGH001', 10, 20000),
-('NL002', 'PGH002', 5, 10000),
-('NL003', 'PGH003', 8, 30000),
-('NL004', 'PGH004', 15, 50000),
-('NL005', 'PGH005', 20, 20000)
+('NL1', 'PGH1', 10, 20000),
+('NL2', 'PGH2', 5, 10000),
+('NL3', 'PGH3', 8, 30000),
+('NL4', 'PGH4', 15, 50000),
+('NL5', 'PGH5', 20, 20000)
 GO
 -- Chèn dữ liệu vào bảng PHIEUDATHANG
 INSERT INTO PHIEUDATHANG (IDPhieuDatHang, NgayDatHang, IDNhaCC, IDNhanVien)
