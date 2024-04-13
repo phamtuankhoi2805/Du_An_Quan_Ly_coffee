@@ -125,7 +125,10 @@
             <artifactId>javafx-graphics</artifactId>
             <version>16</version>
         </dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>

@@ -7,11 +7,19 @@ public class CaLamViecModelTest {
 
     @Test
     public void testConstructorAndGetters() {
+<<<<<<< HEAD
         String idCaLam = "cl9";
         String tenCaLam = "Ca Sáng";
         String thoiGian = "8:00 - 12:00";
         String ngay = "2024-04-06";
         String idNhanVien = "NV001";
+=======
+        String idCaLam = "123";
+        String tenCaLam = "Ca Sáng";
+        String thoiGian = "8:00 - 12:00";
+        String ngay = "2024-04-06";
+        String idNhanVien = "456";
+>>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 
         CaLamViecModel caLamViecModel = new CaLamViecModel(idCaLam, tenCaLam, thoiGian, ngay, idNhanVien);
 

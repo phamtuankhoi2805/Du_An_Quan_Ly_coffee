@@ -42,10 +42,17 @@ public class TableNhapDAO implements DAOInterface<TableNhapModel> {
 		        Connection con = JDBCUtil.getConnection();
 
 		        // Bước 2: Tạo prepared statement
+<<<<<<< HEAD
 		        String sql = "SELECT DISTINCT NguyenLieu.IDNguyenLieu, NguyenLieu.TenNguyenLieu, NguyenLieu.SoLuongTon, NhaCungCap.TenNhaCC, NhaCungCap.SDT\n"
 		        		+ "FROM NguyenLieu\n"
 		        		+ "JOIN PhieuGiaoHangChiTiet ON NguyenLieu.IDNguyenLieu = PhieuGiaoHangChiTiet.IDNguyenLieu\n"
 		        		+ "JOIN PhieuGiaoHang ON PhieuGiaoHangChiTiet.IDPhieuGiao = PhieuGiaoHang.IDPhieuGiao\n"
+=======
+		        String sql = "SELECT NguyenLieu.IDNguyenLieu, NguyenLieu.TenNguyenLieu, NguyenLieu.SoLuongTon, 0 AS SoLuongNhap, NhaCungCap.TenNhaCC, NhaCungCap.SDT\r\n"
+		        		+ "FROM NguyenLieu\r\n"
+		        		+ "JOIN PhieuGiaoHangChiTiet ON NguyenLieu.IDNguyenLieu = PhieuGiaoHangChiTiet.IDNguyenLieu\r\n"
+		        		+ "JOIN PhieuGiaoHang ON PhieuGiaoHangChiTiet.IDPhieuGiao = PhieuGiaoHang.IDPhieuGiao\r\n"
+>>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		        		+ "JOIN NhaCungCap ON PhieuGiaoHang.IDNhaCC = NhaCungCap.IDNhaCC;";
 		        PreparedStatement statement = con.prepareStatement(sql);
 
@@ -55,12 +62,20 @@ public class TableNhapDAO implements DAOInterface<TableNhapModel> {
 		            String idNguyenLieu = rs.getString("IDNguyenLieu");
 		            String TenNguyenLieu = rs.getString("TenNguyenLieu");
 		            int soLuongTon = rs.getInt("SoLuongTon");
+<<<<<<< HEAD
 		
+=======
+		            int soLuongNhap = rs.getInt("soLuongNhap");
+>>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		            String TenNhaCC = rs.getString("TenNhaCC");
 
 		            String SDT = rs.getString("SDT");
 		           
+<<<<<<< HEAD
 		      TableNhapModel tbln =  new TableNhapModel(idNguyenLieu, TenNguyenLieu, soLuongTon, TenNhaCC, SDT);
+=======
+		      TableNhapModel tbln =  new TableNhapModel(idNguyenLieu, TenNguyenLieu, soLuongTon, soLuongNhap, TenNhaCC, SDT);
+>>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		            ketQua.add(tbln);
 		        }
 
