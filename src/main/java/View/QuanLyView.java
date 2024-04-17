@@ -164,10 +164,6 @@ public class QuanLyView extends JFrame {
 	private JLabel lblNewLabel_16;
 	private JButton btn_XuatKho;
 	private JLabel lblNewLabel_17;
-<<<<<<< HEAD
-=======
-	private JButton btn_themSPDat;
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 	private JButton btn_themSPKhoExcel;
 	private JScrollPane scrollPane_6;
 	private JTable tbl_kho;
@@ -179,10 +175,6 @@ public class QuanLyView extends JFrame {
 	private JTextField txt_tenNLXuat;
 	private JTextField txt_soLuongTonXuat;
 	private JTextField txt_soLuongLayXuat;
-<<<<<<< HEAD
-=======
-	private JButton btn_DatHang;
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 	String idCaLam;
 
 	private int clickCount = 0;
@@ -728,51 +720,21 @@ public class QuanLyView extends JFrame {
 		lblNewLabel_17.setBounds(10, 128, 240, 23);
 		smallCard1.add(lblNewLabel_17);
 
-<<<<<<< HEAD
-=======
-		btn_themSPDat = new JButton("Thêm SP Đặt Hàng");
-		btn_themSPDat.setForeground(Color.WHITE);
-		btn_themSPDat.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btn_themSPDat.setBackground(new Color(0, 0, 160));
-		btn_themSPDat.setBounds(739, 130, 139, 23);
-		btn_themSPDat.addActionListener(qlc);
-		smallCard1.add(btn_themSPDat);
-
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		btn_themSPKhoExcel = new JButton("Thêm SP Qua Excel");
 		btn_themSPKhoExcel.setForeground(Color.WHITE);
 		btn_themSPKhoExcel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btn_themSPKhoExcel.setBackground(new Color(0, 0, 160));
 		btn_themSPKhoExcel.setBounds(888, 130, 139, 23);
 		smallCard1.add(btn_themSPKhoExcel);
-<<<<<<< HEAD
             btn_themSPKhoExcel.addActionListener(qlc);
 		tbl_kho = new JTable();
 		tbl_kho.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID Nguyên Liệu", "Tên Nguyên Liệu",
 				"Số Lượng Tồn", "Tên Nhà Cung Câp", "SDT" }));
-=======
-
-		tbl_kho = new JTable();
-		tbl_kho.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID Nguyên Liệu", "Tên Nguyên Liệu",
-				"Số Lượng Tồn", "Số Lượng Cần Nhập", "Tên Nhà Cung Câp", "SDT" }));
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		tbl_kho.setBounds(10, 174, 1017, 502);
 		scrollPane_6 = new JScrollPane(tbl_kho);
 		scrollPane_6.setBounds(10, 174, 1017, 502);
 		smallCard1.add(scrollPane_6);
 
-<<<<<<< HEAD
-=======
-		btn_DatHang = new JButton("Đặt Hàng");
-
-		btn_DatHang.setForeground(Color.WHITE);
-		btn_DatHang.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btn_DatHang.setBackground(new Color(0, 0, 160));
-		btn_DatHang.setBounds(590, 130, 139, 23);
-		btn_DatHang.addActionListener(qlc);
-		smallCard1.add(btn_DatHang);
-
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		// Tạo card nhỏ 2
 		JPanel smallCard2 = new JPanel();
 		smallCard2.setBackground(new Color(255, 255, 255)); // Màu xanh lá cây cho card nhỏ 2

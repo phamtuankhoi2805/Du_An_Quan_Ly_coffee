@@ -57,10 +57,7 @@ public class NhanVienView extends JFrame {
 	private JLabel lbl_tongTien;
 	private JLabel lbl_idNhanVien;
 	private JLabel lbl_tenNV;
-<<<<<<< HEAD
 	private JButton btn_resetForm;
-=======
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 
      
 	/**
@@ -147,33 +144,16 @@ public class NhanVienView extends JFrame {
 		lbl_tongTien.setBounds(117, 576, 283, 26);
 		panel.add(lbl_tongTien);
 
-<<<<<<< HEAD
-=======
-		JButton btnXutHan = new JButton("Xuát Hóa Đơn");
-		btnXutHan.setForeground(new Color(255, 255, 255));
-		btnXutHan.setBackground(new Color(0, 0, 160));
-		btnXutHan.setBounds(204, 613, 196, 46);
-		panel.add(btnXutHan);
-
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		JButton btnThanhTon_1_1 = new JButton("Thanh Toán");
 	
 		btnThanhTon_1_1.setForeground(new Color(255, 255, 255));
 		btnThanhTon_1_1.setBackground(new Color(0, 0, 160));
-<<<<<<< HEAD
 		btnThanhTon_1_1.setBounds(10, 613, 390, 46);
-=======
-		btnThanhTon_1_1.setBounds(10, 613, 184, 46);
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		panel.add(btnThanhTon_1_1);
          btnThanhTon_1_1.addActionListener(nvc);
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(0, 0, 160));
-<<<<<<< HEAD
 		panel_3.setBounds(0, 0, 410, 37);
-=======
-		panel_3.setBounds(0, 0, 410, 59);
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		JLabel lblNewLabel = new JLabel("Chi Tiết Đặt Hàng");
@@ -194,7 +174,6 @@ public class NhanVienView extends JFrame {
 		scrollPane.setViewportView(panelCon);
 
 		panel.add(scrollPane);
-<<<<<<< HEAD
 		
 		 btn_resetForm = new JButton("");
 		 btn_resetForm.addActionListener(new ActionListener() {
@@ -206,8 +185,6 @@ public class NhanVienView extends JFrame {
 		btn_resetForm.setIcon(new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\View\\Plus Circle.png"));
 		btn_resetForm.setBounds(362, 41, 38, 23);
 		panel.add(btn_resetForm);
-=======
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 
 		panel_DSSP = new JPanel();
 		panel_DSSP.setBounds(430, 88, 874, 580);
@@ -287,13 +264,9 @@ public class NhanVienView extends JFrame {
 	   return lbl_tongTien;
    }
 
-<<<<<<< HEAD
 public JButton btn_reset() {
 	return btn_resetForm;
 }
-=======
-
->>>>>>> 55c9e4b1c49fdc75a318376b52e3d0ff4ab89632
 
 	//   public JScrollPane JScrollPane() {
 //	   return scrollPane;
