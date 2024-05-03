@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URL;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -68,7 +69,7 @@ import Model.KhuyenMaiModel;
 import Model.SanPhamHDModel;
 import Model.SanPhamModel;
 import View.NhanVienView;
-import View.TestSP;
+
 
 public class NhanVienController implements ActionListener {
 
@@ -218,26 +219,33 @@ public class NhanVienController implements ActionListener {
 	}
 
 	public static void setScaledImage(JLabel label, String imagePath) {
-		ImageIcon imageIcon = new ImageIcon(imagePath);
-		Image image = imageIcon.getImage();
+	    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	    URL imageURL = classLoader.getResource(imagePath);
+	    if (imageURL != null) {
+	        ImageIcon imageIcon = new ImageIcon(imageURL);
+	        Image image = imageIcon.getImage();
 
-		// Lấy kích thước của JLabel
-		int labelWidth = label.getWidth();
-		int labelHeight = label.getHeight();
+	        // Lấy kích thước của JLabel
+	        int labelWidth = label.getWidth();
+	        int labelHeight = label.getHeight();
 
-		// Tính toán tỷ lệ kích thước mới cho ảnh
-		double widthRatio = (double) labelWidth / imageIcon.getIconWidth();
-		double heightRatio = (double) labelHeight / imageIcon.getIconHeight();
-		double scaleRatio = Math.min(widthRatio, heightRatio);
+	        // Tính toán tỷ lệ kích thước mới cho ảnh
+	        double widthRatio = (double) labelWidth / imageIcon.getIconWidth();
+	        double heightRatio = (double) labelHeight / imageIcon.getIconHeight();
+	        double scaleRatio = Math.min(widthRatio, heightRatio);
 
-		// Tạo ảnh đã điều chỉnh kích thước
-		int newWidth = (int) (imageIcon.getIconWidth() * scaleRatio);
-		int newHeight = (int) (imageIcon.getIconHeight() * scaleRatio);
-		Image scaledImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+	        // Tạo ảnh đã điều chỉnh kích thước
+	        int newWidth = (int) (imageIcon.getIconWidth() * scaleRatio);
+	        int newHeight = (int) (imageIcon.getIconHeight() * scaleRatio);
+	        Image scaledImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 
-		// Thiết lập ảnh cho JLabel
-		ImageIcon resizedImageIcon = new ImageIcon(scaledImage);
-		label.setIcon(resizedImageIcon);
+	        // Thiết lập ảnh cho JLabel
+	        ImageIcon resizedImageIcon = new ImageIcon(scaledImage);
+	        label.setIcon(resizedImageIcon);
+	    } else {
+	        // Xử lý khi không tìm thấy tệp hình ảnh
+	        System.err.println("Cannot find image: " + imagePath);
+	    }
 	}
 
 	public void loadProductsToScrollPane(ArrayList<SanPhamHDModel> ListSPHD) {

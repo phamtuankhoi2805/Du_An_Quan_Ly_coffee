@@ -168,23 +168,24 @@ public class QuanLyController implements ActionListener {
 	}
 
 	public void displaySanPham(int i) {
-		SanPhamModel sp = listSP.get(i);
-		qlv.txt_idSP().setText(sp.getIdSanPham());
-		qlv.txt_tenSP().setText(sp.getTenSP());
-		qlv.txt_gia().setText(Double.toString(sp.getGiaBan()));
-		qlv.cbo_TrangThaiSP().setSelectedItem(sp.getLoaiSP());
-		hienHinhSanPham(sp.getHinh());
+	    SanPhamModel sp = listSP.get(i);
+	    qlv.txt_idSP().setText(sp.getIdSanPham());
+	    qlv.txt_tenSP().setText(sp.getTenSP());
+	    qlv.txt_gia().setText(Double.toString(sp.getGiaBan()));
+	    qlv.cbo_TrangThaiSP().setSelectedItem(sp.getLoaiSP());
+	    hienHinhSanPham(sp.getHinh());
 	}
 
 	public void hienHinhSanPham(String path) {
-		ImageIcon icon = new ImageIcon("" + path);
-		Image image = icon.getImage();
-		int labelWidth = qlv.lbl_hinh().getWidth();
-		int labelHeight = qlv.lbl_hinh().getHeight();
-		Image resizedImage = image.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon = new ImageIcon(resizedImage);
+	    String imagePath = "src/main/resources/" + path; // Đường dẫn tương đối
+	    ImageIcon icon = new ImageIcon(imagePath);
+	    Image image = icon.getImage();
+	    int labelWidth = qlv.lbl_hinh().getWidth();
+	    int labelHeight = qlv.lbl_hinh().getHeight();
+	    Image resizedImage = image.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+	    ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
-		qlv.lbl_hinh().setIcon(resizedIcon);
+	    qlv.lbl_hinh().setIcon(resizedIcon);
 	}
 
 	public void display(int i) {
@@ -548,31 +549,32 @@ public class QuanLyController implements ActionListener {
 	}
 
 	public void chooseImage() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Chọn ảnh");
-		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif");
-		fileChooser.setFileFilter(imageFilter);
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.setDialogTitle("Chọn ảnh");
+	    FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif");
+	    fileChooser.setFileFilter(imageFilter);
 
-		int returnValue = fileChooser.showOpenDialog(null);
-		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			java.io.File selectedFile = fileChooser.getSelectedFile();
-			try {
-				String imagePath = selectedFile.getCanonicalPath();
+	    int returnValue = fileChooser.showOpenDialog(null);
+	    if (returnValue == JFileChooser.APPROVE_OPTION) {
+	        java.io.File selectedFile = fileChooser.getSelectedFile();
+	        try {
+	            String imagePath = selectedFile.getCanonicalPath();
+	            String fileName = imagePath.substring(imagePath.lastIndexOf("\\") + 1);
 
-				String idSanPham = qlv.txt_idSP().getText();
-				String tenSP = qlv.txt_tenSP().getText();
-				double giaBan = Double.parseDouble(qlv.txt_gia().getText());
-				String hinh = imagePath;
-				String TrangThai = (String) qlv.cbo_TrangThaiSP().getSelectedItem();
-				SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, hinh, TrangThai);
-				SanPhamDAO.getInstance().update(sp);
-				listSP = SanPhamDAO.getInstance().selectAll();
-				displaySanPham(i);
+	            String idSanPham = qlv.txt_idSP().getText();
+	            String tenSP = qlv.txt_tenSP().getText();
+	            double giaBan = Double.parseDouble(qlv.txt_gia().getText());
+	            String hinh = fileName; 
+	            String TrangThai = (String) qlv.cbo_TrangThaiSP().getSelectedItem();
+	            SanPhamModel sp = new SanPhamModel(idSanPham, tenSP, giaBan, hinh, TrangThai);
+	            SanPhamDAO.getInstance().update(sp);
+	            listSP = SanPhamDAO.getInstance().selectAll();
+	            displaySanPham(i);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 
 	public void loadNgay() {

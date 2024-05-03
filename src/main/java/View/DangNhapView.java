@@ -75,7 +75,9 @@ public class DangNhapView extends JFrame {
 	        contentPane.add(panel_anh);
 
 	        JLabel labelAnh = new JLabel();
-	        ImageIcon icon = new ImageIcon("C:\\javvaa\\DuAn1.2\\src\\main\\resources\\Logo.png");
+	        String imagePath = "src/main/resources/Logo.png";
+	        ImageIcon icon = new ImageIcon(imagePath);
+	        labelAnh.setIcon(icon);
 
 	        // Lấy kích thước mới cho ảnh
 	        int width = 250;
