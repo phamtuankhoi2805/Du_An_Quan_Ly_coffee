@@ -9,7 +9,7 @@ public class PhieuGiaoHangModelTest {
     @Test
     public void testGetIdPhieuGiao() {
         // Arrange
-        PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001", Date.valueOf("2024-04-06"), "NCC001");
+        PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001","2024-04-06", 500.000 ,"NCC001");
 
         // Act
         String idPhieuGiao = phieuGiaoHang.getIdPhieuGiao();
@@ -19,22 +19,21 @@ public class PhieuGiaoHangModelTest {
     }
 
     @Test
-    public void testGetNgayGiaoHang() {
-        // Arrange
-        PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001", Date.valueOf("2024-04-06"), "NCC001");
-
-        // Act
-        Date ngayGiaoHang = phieuGiaoHang.getNgayGiaoHang();
-
-        // Assert
-        Assert.assertEquals(ngayGiaoHang, Date.valueOf("2024-04-06"));
-    }
+	    public void testGetNgayGiaoHang() {
+	        // Arrange
+    	   PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001","2024-04-06", 500.000 ,"NCC001");
+	
+	        // Act
+	        String ngayGiaoHang = phieuGiaoHang.getNgayGiaoHang();
+	
+	        // Assert
+	        Assert.assertEquals(ngayGiaoHang, "2024-04-06");
+	    }
 
     @Test
     public void testGetIdNhaCC() {
         // Arrange
-        PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001", Date.valueOf("2024-04-06"), "NCC001");
-
+    	   PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001","2024-04-06", 500.000 ,"NCC001");
         // Act
         String idNhaCC = phieuGiaoHang.getIdNhaCC();
 
@@ -45,13 +44,13 @@ public class PhieuGiaoHangModelTest {
     @Test
     public void testSetNgayGiaoHang() {
         // Arrange
-        PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001", Date.valueOf("2024-04-06"), "NCC001");
+    	   PhieuGiaoHangModel phieuGiaoHang = new PhieuGiaoHangModel("PG001","2024-04-06", 500.000 ,"NCC001");
 
         // Act
-        phieuGiaoHang.setNgayGiaoHang(Date.valueOf("2024-04-07"));
+        phieuGiaoHang.setNgayGiaoHang("2024-04-07");
 
         // Assert
-        Assert.assertEquals(phieuGiaoHang.getNgayGiaoHang(), Date.valueOf("2024-04-07"));
+        Assert.assertEquals(phieuGiaoHang.getNgayGiaoHang(), "2024-04-07");
     }
 
     // Similarly, write test methods for other getters and setters...

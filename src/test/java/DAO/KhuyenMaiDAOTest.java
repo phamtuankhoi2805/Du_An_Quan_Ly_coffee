@@ -25,7 +25,7 @@ public class KhuyenMaiDAOTest {
   public void insertTest() {
     // Arrange
     KhuyenMaiDAO daoInstance = KhuyenMaiDAO.getInstance();
-    KhuyenMaiModel khuyenMaiModel = new KhuyenMaiModel("ID1", "Tên khuyến mãi", "Điều kiện", 10.5f);
+    KhuyenMaiModel khuyenMaiModel = new KhuyenMaiModel("KM005", "Giảm giá 60%", "Tổng tiền lớn hơn 699k", 0.6f);
 
     // Act
     int result = daoInstance.insert(khuyenMaiModel);
@@ -52,7 +52,7 @@ public class KhuyenMaiDAOTest {
   public void updateTest() {
     // Arrange
     KhuyenMaiDAO daoInstance = KhuyenMaiDAO.getInstance();
-    KhuyenMaiModel khuyenMaiModel = new KhuyenMaiModel("ID1", "Tên khuyến mãi sửa", "Điều kiện sửa", 15.0f);
+    KhuyenMaiModel khuyenMaiModel = new KhuyenMaiModel("KM005", "Giảm giá 60%", "Tổng tiền lớn hơn 699k", 0.6f);
 
     // Act
     int result = daoInstance.update(khuyenMaiModel);

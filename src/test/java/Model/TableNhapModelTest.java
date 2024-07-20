@@ -8,7 +8,7 @@ public class TableNhapModelTest {
     @Test
     public void testGetIdNguyenLieu() {
         // Arrange
-        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, 20, "Nha Cung Cap X", "0123456789");
+        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, "Nha Cung Cap X", "0123456789");
         
         // Act
         String idNguyenLieu = tableNhap.getIdNguyenLieu();
@@ -20,7 +20,7 @@ public class TableNhapModelTest {
     @Test
     public void testGetTenNguyenLieu() {
         // Arrange
-        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, 20, "Nha Cung Cap X", "0123456789");
+        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, "Nha Cung Cap X", "0123456789");
         
         // Act
         String tenNguyenLieu = tableNhap.getTenNguyenLieu();
@@ -32,7 +32,7 @@ public class TableNhapModelTest {
     @Test
     public void testGetSoLuongTon() {
         // Arrange
-        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, 20, "Nha Cung Cap X", "0123456789");
+        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, "Nha Cung Cap X", "0123456789");
         
         // Act
         int soLuongTon = tableNhap.getSoLuongTon();
@@ -41,22 +41,12 @@ public class TableNhapModelTest {
         Assert.assertEquals(soLuongTon, 50);
     }
 
-    @Test
-    public void testGetSoLuongNhap() {
-        // Arrange
-        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, 20, "Nha Cung Cap X", "0123456789");
-        
-        // Act
-        int soLuongNhap = tableNhap.getSoLuongNhap();
-        
-        // Assert
-        Assert.assertEquals(soLuongNhap, 20);
-    }
+  
 
     @Test
     public void testGetTenNhaCC() {
         // Arrange
-        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, 20, "Nha Cung Cap X", "0123456789");
+    	  TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, "Nha Cung Cap X", "0123456789");
         
         // Act
         String tenNhaCC = tableNhap.getTenNhaCC();
@@ -68,7 +58,7 @@ public class TableNhapModelTest {
     @Test
     public void testGetSDT() {
         // Arrange
-        TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, 20, "Nha Cung Cap X", "0123456789");
+    	  TableNhapModel tableNhap = new TableNhapModel("NL001", "Nguyen Lieu A", 50, "Nha Cung Cap X", "0123456789");
         
         // Act
         String sdt = tableNhap.getSDT();

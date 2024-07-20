@@ -3,11 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="DAO.TableNhapDAOTest">
+      <class name="DAO.NhanVienDAOTest">
         <methods>
-          <include name="selectAllTest"/>
+          <include name="selectByIdTest"/>
+          <include name="selectAllDangLamViecTest"/>
         </methods>
-      </class> <!-- DAO.TableNhapDAOTest -->
+      </class> <!-- DAO.NhanVienDAOTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

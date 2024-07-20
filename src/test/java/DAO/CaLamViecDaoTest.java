@@ -12,7 +12,7 @@ public class CaLamViecDaoTest {
     @Test
     public void deleteTest() {
         // Tạo đối tượng CaLamViecModel tương ứng
-        CaLamViecModel caLamViec = new CaLamViecModel("CL11", null, null, null);
+    	 CaLamViecModel caLamViec = new CaLamViecModel("CL22", "Ca A", "8h - 16h", "2024-04-06");
 
         // Thực hiện delete
         int result = CaLamViecDao.getInstance().delete(caLamViec);

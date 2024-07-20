@@ -8,7 +8,7 @@ public class PhieuGiaoHangChiTietModelTest {
     @Test
     public void testGetIdNguyenLieu() {
         // Arrange
-        PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10);
+        PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10,300.000);
         
         // Act
         String idNguyenLieu = phieuGiaoChiTiet.getIdNguyenLieu();
@@ -20,7 +20,7 @@ public class PhieuGiaoHangChiTietModelTest {
     @Test
     public void testGetIdPhieuGiao() {
         // Arrange
-        PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10);
+    	 PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10,300.000);
         
         // Act
         String idPhieuGiao = phieuGiaoChiTiet.getIdPhieuGiao();
@@ -32,7 +32,7 @@ public class PhieuGiaoHangChiTietModelTest {
     @Test
     public void testGetSoLuongNlGiao() {
         // Arrange
-        PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10);
+    	 PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10,300.000);
         
         // Act
         int soLuongNlGiao = phieuGiaoChiTiet.getSoLuongNlGiao();
@@ -44,7 +44,7 @@ public class PhieuGiaoHangChiTietModelTest {
     @Test
     public void testSetSoLuongNlGiao() {
         // Arrange
-        PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10);
+    	 PhieuGiaoHangChiTietModel phieuGiaoChiTiet = new PhieuGiaoHangChiTietModel("NL001", "PG001", 10,300.000);
         
         // Act
         phieuGiaoChiTiet.setSoLuongNlGiao(15);

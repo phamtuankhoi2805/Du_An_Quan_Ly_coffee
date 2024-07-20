@@ -8,7 +8,7 @@ public class NhaCungCapModelTest {
     @Test
     public void testGetIdNhaCC() {
         // Arrange
-        NhaCungCapModel nhaCC = new NhaCungCapModel("1", "Dia Chi A", "123456789");
+        NhaCungCapModel nhaCC = new NhaCungCapModel("1", "tuanKhoiGroup","Dia Chi A", "123456789");
         
         // Act
         String idNhaCC = nhaCC.getIdNhaCC();
@@ -20,7 +20,8 @@ public class NhaCungCapModelTest {
     @Test
     public void testGetDiaChi() {
         // Arrange
-        NhaCungCapModel nhaCC = new NhaCungCapModel("1", "Dia Chi A", "123456789");
+    	 NhaCungCapModel nhaCC = new NhaCungCapModel("1", "tuanKhoiGroup","Dia Chi A", "123456789");
+         
         
         // Act
         String diaChi = nhaCC.getDiaChi();
@@ -32,7 +33,8 @@ public class NhaCungCapModelTest {
     @Test
     public void testGetSoDienThoai() {
         // Arrange
-        NhaCungCapModel nhaCC = new NhaCungCapModel("1", "Dia Chi A", "123456789");
+    	 NhaCungCapModel nhaCC = new NhaCungCapModel("1", "tuanKhoiGroup","Dia Chi A", "123456789");
+         
         
         // Act
         String soDienThoai = nhaCC.getSoDienThoai();
@@ -44,7 +46,8 @@ public class NhaCungCapModelTest {
     @Test
     public void testSetDiaChi() {
         // Arrange
-        NhaCungCapModel nhaCC = new NhaCungCapModel("1", "Dia Chi A", "123456789");
+    	 NhaCungCapModel nhaCC = new NhaCungCapModel("1", "tuanKhoiGroup","Dia Chi A", "123456789");
+         
         
         // Act
         nhaCC.setDiaChi("Dia Chi B");
@@ -56,7 +59,8 @@ public class NhaCungCapModelTest {
     @Test
     public void testSetSoDienThoai() {
         // Arrange
-        NhaCungCapModel nhaCC = new NhaCungCapModel("1", "Dia Chi A", "123456789");
+    	 NhaCungCapModel nhaCC = new NhaCungCapModel("1", "tuanKhoiGroup","Dia Chi A", "123456789");
+         
         
         // Act
         nhaCC.setSoDienThoai("987654321");

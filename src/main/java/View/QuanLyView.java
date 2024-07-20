@@ -930,6 +930,8 @@ public class QuanLyView extends JFrame {
 				String idNhanVien = (String) tbl_xepCa.getValueAt(rowIndex1, 0);
 				System.out.println(idNhanVien);
 				System.out.println(idCaLam);
+				
+				
 				int choice = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm nhân viên vào ca làm?", "Xác nhận",
 						JOptionPane.YES_NO_OPTION);
 
