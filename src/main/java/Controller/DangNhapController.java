@@ -45,46 +45,49 @@ public class DangNhapController implements ActionListener {
 		} 
 	}
 
-	public void DangNhap() {
-		QuanLyView qlv = new QuanLyView();
-	    try {
-	    	// load dữ liệu từ database lên 
-	        ArrayList<NhanVienModel> nhanvien = nvd.getInstance().selectAll();
-	        String userName = dnv.txt_username().getText();
-	        String passWord = String.valueOf(dnv.txt_passWord().getPassword());
-	        boolean loggedIn = false;
+		public void DangNhap() {
+			QuanLyView qlv = new QuanLyView();
+		    try {
+		    	// load dữ liệu từ database lên 
+		        ArrayList<NhanVienModel> nhanvien = nvd.getInstance().selectAll();
+		        String userName = dnv.txt_username().getText();
+		        String passWord = String.valueOf(dnv.txt_passWord().getPassword());
+		        boolean loggedIn = false;
+	
+		        if (userName.isEmpty() || passWord.isEmpty()) {
+		        	  JOptionPane.showMessageDialog(dnv, "Vui lòng nhập tên đăng nhập và mật khẩu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		        } else {
+		            for (NhanVienModel nhanVienModel : nhanvien) {
+		                if (nhanVienModel.getIdNhanVien().equals(userName) && nhanVienModel.getMatKhau().equals(passWord)) {
+		                	qlv.lbl_tenNV().setText(nhanVienModel.getTenNV());
+		                    if (nhanVienModel.getChucVu().equals("Quản lý")) {
+		                    	qlv.setVisible(true);
+		                        qlv.lbl_chucVu().setText(nhanVienModel.getChucVu());
+		                        dnv.setVisible(false);
+		                    } else if (nhanVienModel.getChucVu().equals("Nhân viên")) {
+		                    	 qlv.lbl_chucVu().setText(nhanVienModel.getChucVu());
+		                        dnv.setVisible(false);
+		                        NhanVienView nv = new NhanVienView();
+		                        nv.setVisible(true);
+		                        nv.lbl_tenNV().setText(nhanVienModel.getTenNV());
+			                    nv.lbl_IDNhanVien().setText(nhanVienModel.getIdNhanVien());
+		                    }
+		                    loggedIn = true;
+		          
+		                    break;
+		                }
+		            }
+	
+		            if (!loggedIn) {
+		            	   JOptionPane.showMessageDialog(dnv, "Đăng nhập thất bại, sai tài khoản hoặc mật khẩu", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		            }
+		            
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
 
-	        if (userName.isEmpty() || passWord.isEmpty()) {
-	            JOptionPane.showMessageDialog(dnv, "Vui lòng nhập tên đăng nhập và mật khẩu.");
-	        } else {
-	            for (NhanVienModel nhanVienModel : nhanvien) {
-	                if (nhanVienModel.getIdNhanVien().equals(userName) && nhanVienModel.getMatKhau().equals(passWord)) {
-	                	qlv.lbl_tenNV().setText(nhanVienModel.getTenNV());
-	                    if (nhanVienModel.getChucVu().equals("Quản lý")) {
-	                    	qlv.setVisible(true);
-	                        qlv.lbl_chucVu().setText(nhanVienModel.getChucVu());
-	                        dnv.setVisible(false);
-	                    } else if (nhanVienModel.getChucVu().equals("Nhân viên")) {
-	                    	 qlv.lbl_chucVu().setText(nhanVienModel.getChucVu());
-	                        dnv.setVisible(false);
-	                        NhanVienView nv = new NhanVienView();
-	                        nv.setVisible(true);
-	                        nv.lbl_tenNV().setText(nhanVienModel.getTenNV());
-		                    nv.lbl_IDNhanVien().setText(nhanVienModel.getIdNhanVien());
-	                    }
-	                    loggedIn = true;
-	                    break;
-	                }
-	            }
-
-	            if (!loggedIn) {
-	                JOptionPane.showMessageDialog(dnv, "Đăng nhập thất bại, sai tài khoản hoặc mật khẩu");
-	            }
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
+		}
 	public boolean DangNhapQR(String taiKhoang, String matKhau) {
 	
 	    boolean loggedIn = false;

@@ -202,7 +202,7 @@ public class NhanVienDAO implements DAOInterface<NhanVienModel> {
 		        Connection con = JDBCUtil.getConnection();
 
 		        // Bước 2: Tạo prepared statement
-		        String sql = "SELECT * FROM NHANVIEN WHERE TrangThai = 'Đang làm việc';";
+		        String sql = "SELECT * FROM NHANVIEN WHERE TrangThai = N'Đang làm việc';";
 		        PreparedStatement statement = con.prepareStatement(sql);
 
 		        ResultSet rs = statement.executeQuery();

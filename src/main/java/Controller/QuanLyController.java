@@ -1,5 +1,6 @@
 package Controller;
 
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -251,49 +252,149 @@ public class QuanLyController implements ActionListener {
 
 	}
 
+//	public void them() {
+//	
+//			try {
+//				String idNhanVien = qlv.txt_id().getText();
+//				if (!idNhanVien.startsWith("NV")) {
+//					 throw new Exception("ID nhân viên phải bắt đầu là NV");
+//					 
+//				} 
+//				String matKhau = generateRandomPassword(10);
+//				String tenNV = qlv.txt_ten().getText();
+//				String ngaySinhText = qlv.txt_ngaySinh().getText();
+//				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//				java.util.Date ngaySinhUtil = dateFormat.parse(ngaySinhText);
+//
+//				// Chuyển đổi java.util.Date thành java.sql.Date
+//				java.sql.Date ngaySinhSql = new java.sql.Date(ngaySinhUtil.getTime());
+//				boolean gioiTinh = false;
+//				if (qlv.rdo_nam().isSelected() == true) {
+//					gioiTinh = true;
+//				} else if (qlv.rdo_nu().isSelected() == true) {
+//					gioiTinh = false;
+//				}
+//				String SDT = qlv.txt_sdt().getText();
+//				String email = qlv.txt_email().getText();
+//				String chucVu = "";
+//				if (qlv.cb_quanLy().isSelected() == true) {
+//					chucVu = "Quản lý";
+//				} else if (qlv.cb_nhanVien().isSelected() == true) {
+//					chucVu = "Nhân viên";
+//				}
+//				String trangThai = qlv.txt_trangThai().getText();
+//				double luongCB = Double.parseDouble(qlv.txt_luongCB().getText());
+//				NhanVienModel nv = new NhanVienModel(idNhanVien, matKhau, tenNV, ngaySinhSql, gioiTinh, SDT, email, chucVu,
+//						trangThai, luongCB, null);
+//				for (NhanVienModel nhanVienModel : listNV) {
+//					if(nhanVienModel.getIdNhanVien().equals(nv.getIdNhanVien())) {
+//						 throw new Exception("ID nhân viên bị trùng");
+//					}
+//				}
+//				NhanVienDAO.getInstance().insert(nv);
+//				qlv.btn_them().setEnabled(false);
+//				qlv.btn_sua().setEnabled(true);
+//				qlv.txt_id().setEditable(false);
+//				fildTable();
+//
+//				JOptionPane.showMessageDialog(qlv, "thêm Nhân viên thành công");
+//			} catch (NumberFormatException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (HeadlessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (java.text.ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//	
+//	}
 	public void them() {
-		try {
-			String idNhanVien = qlv.txt_id().getText();
-			String matKhau = generateRandomPassword(10);
-			String tenNV = qlv.txt_ten().getText();
-			String ngaySinhText = qlv.txt_ngaySinh().getText();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			java.util.Date ngaySinhUtil = dateFormat.parse(ngaySinhText);
+	    try {
+	        // Kiểm tra ID nhân viên
+	        String idNhanVien = qlv.txt_id().getText();
+	        if (!idNhanVien.startsWith("NV")) {
+	            throw new Exception("ID nhân viên phải bắt đầu bằng 'NV'");
+	        }
+	       
+	        for (NhanVienModel nhanVienModel : listNV) {
+	            if (nhanVienModel.getIdNhanVien().equals(idNhanVien)) {
+	                throw new Exception("ID nhân viên bị trùng");
+	            }
+	        }
 
-			// Chuyển đổi java.util.Date thành java.sql.Date
-			java.sql.Date ngaySinhSql = new java.sql.Date(ngaySinhUtil.getTime());
-			boolean gioiTinh = false;
-			if (qlv.rdo_nam().isSelected() == true) {
-				gioiTinh = true;
-			} else if (qlv.rdo_nu().isSelected() == true) {
-				gioiTinh = false;
-			}
-			String SDT = qlv.txt_sdt().getText();
-			String email = qlv.txt_email().getText();
-			String chucVu = "";
-			if (qlv.cb_quanLy().isSelected() == true) {
-				chucVu = "Quản lý";
-			} else if (qlv.cb_nhanVien().isSelected() == true) {
-				chucVu = "Nhân viên";
-			}
-			String trangThai = qlv.txt_trangThai().getText();
-			double luongCB = Double.parseDouble(qlv.txt_luongCB().getText());
-			NhanVienModel nv = new NhanVienModel(idNhanVien, matKhau, tenNV, ngaySinhSql, gioiTinh, SDT, email, chucVu,
-					trangThai, luongCB, null);
-			NhanVienDAO.getInstance().insert(nv);
-			qlv.btn_them().setEnabled(false);
-			qlv.btn_sua().setEnabled(true);
-			qlv.txt_id().setEditable(false);
-			fildTable();
+	        // Kiểm tra tên nhân viên
+	        String tenNV = qlv.txt_ten().getText();
+	        if (tenNV.trim().isEmpty()) {
+	            throw new Exception("Tên nhân viên không được để trống");
+	        }
+	        if (tenNV.length() > 50) {
+	            throw new Exception("Tên nhân viên không được vượt quá 50 ký tự");
+	        }
 
-			JOptionPane.showMessageDialog(qlv, "thêm Nhân viên thành công");
+	        // Kiểm tra ngày sinh
+	        String ngaySinhText = qlv.txt_ngaySinh().getText();
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	        java.util.Date ngaySinhUtil = dateFormat.parse(ngaySinhText);
+	        java.sql.Date ngaySinhSql = new java.sql.Date(ngaySinhUtil.getTime());
+	        if (ngaySinhSql.after(new java.sql.Date(System.currentTimeMillis()))) {
+	            throw new Exception("Ngày sinh không được lớn hơn ngày hiện tại");
+	        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(qlv, "thêm Nhân viên thất bại");
-		}
+	        // Kiểm tra giới tính
+	        boolean gioiTinh = qlv.rdo_nam().isSelected();
+
+	        // Kiểm tra số điện thoại
+	        String SDT = qlv.txt_sdt().getText();
+	        if (SDT.length() != 10 || !SDT.matches("\\d+")) {
+	            throw new Exception("Số điện thoại phải có 10 chữ số");
+	        }
+
+	        // Kiểm tra email
+	        String email = qlv.txt_email().getText();
+	        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+	            throw new Exception("Email không hợp lệ");
+	        }
+
+	        // Kiểm tra chức vụ
+	        String chucVu = qlv.cb_quanLy().isSelected() ? "Quản lý" : "Nhân viên";
+
+	        // Kiểm tra trạng thái
+	        String trangThai = qlv.txt_trangThai().getText();
+	        if (trangThai.trim().isEmpty()) {
+	            throw new Exception("Trạng thái không được để trống");
+	        }
+
+	        // Kiểm tra lương cơ bản
+	        double luongCB = Double.parseDouble(qlv.txt_luongCB().getText());
+	        if (luongCB < 0) {
+	            throw new Exception("Lương cơ bản không được nhỏ hơn 0");
+	        }
+
+	        // Tạo đối tượng NhanVienModel và thêm vào cơ sở dữ liệu
+	        String matKhau = generateRandomPassword(10);
+	        NhanVienModel nv = new NhanVienModel(idNhanVien, matKhau, tenNV, ngaySinhSql, gioiTinh, SDT, email, chucVu, trangThai, luongCB, null);
+	        NhanVienDAO.getInstance().insert(nv);
+
+	        // Cập nhật giao diện
+	        qlv.btn_them().setEnabled(false);
+	        qlv.btn_sua().setEnabled(true);
+	        qlv.txt_id().setEditable(false);
+	        fildTable();
+	        JOptionPane.showMessageDialog(qlv, "Thêm nhân viên thành công");
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(qlv, "Lương cơ bản phải là số");
+	    } catch (ParseException e) {
+	        JOptionPane.showMessageDialog(qlv, "Ngày sinh không đúng định dạng");
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(qlv, e.getMessage());
+	    }
 	}
-
 	private String generateRandomPassword(int length) {
 		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
 		Random random = new Random();
