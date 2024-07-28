@@ -34,28 +34,28 @@ public class DangNhapControllerTest {
          nvd =  new NhanVienDAO();
 	 }
 	 // test đăng nhập với dữ liệu hợp lệ
-//	@Test
-//    public void testDangNhapVoiDuLieuHopLe() {
-//	
-//		dnv.txt_username().setText("NV001");
-//		dnv.txt_passWord().setText("quanly");
-//    
-//      dnc.DangNhap();
-//       
-//
-//	}
-	// test với dữ liệu Không tồn tại
-//	@Test
-//    public void testDangNhapVoiDuLieuKhongTonTai() {
-//	
-//		dnv.txt_username().setText("user01");
-//		dnv.txt_passWord().setText("quanly");
-//    
-//      dnc.DangNhap();
-//      JOptionPane.showMessageDialog(dnv, "Đăng nhập thất bại, sai tài khoản hoặc mật khẩu", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//
-//	}
-	// dữ liệu để chống 
+	@Test
+    public void testDangNhapVoiDuLieuHopLe() {
+	
+		dnv.txt_username().setText("NV001");
+		dnv.txt_passWord().setText("quanly");
+    
+      dnc.DangNhap();
+       
+
+	}
+//	 test với dữ liệu Không tồn tại
+	@Test
+    public void testDangNhapVoiDuLieuKhongTonTai() {
+	
+		dnv.txt_username().setText("user01");
+		dnv.txt_passWord().setText("quanly");
+    
+      dnc.DangNhap();
+      JOptionPane.showMessageDialog(dnv, "Đăng nhập thất bại, sai tài khoản hoặc mật khẩu", "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+	}
+	// dữ liệu để Trống 
 	@Test
     public void testDangNhapVoiDuLieuDeTrong() {
 	

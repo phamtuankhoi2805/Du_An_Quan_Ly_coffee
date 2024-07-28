@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-07-22T18:45:51 ICT" name="Default suite" finished-at="2024-07-22T18:45:57 ICT" duration-ms="5410">
+  <suite started-at="2024-07-22T23:12:15 ICT" name="Default suite" finished-at="2024-07-22T23:12:21 ICT" duration-ms="6235">
     <groups>
     </groups>
-    <test started-at="2024-07-22T18:45:51 ICT" name="Default test" finished-at="2024-07-22T18:45:57 ICT" duration-ms="5410">
-      <class name="Controller.DangNhapControllerTest">
-        <test-method is-config="true" signature="setup()[pri:0, instance:Controller.DangNhapControllerTest@47d9a273]" started-at="2024-07-22T18:45:51 ICT" name="setup" finished-at="2024-07-22T18:45:53 ICT" duration-ms="1368" status="PASS">
+    <test started-at="2024-07-22T23:12:15 ICT" name="Default test" finished-at="2024-07-22T23:12:21 ICT" duration-ms="6235">
+      <class name="Controller.QuanLyControllerTest">
+        <test-method is-config="true" signature="setup()[pri:0, instance:Controller.QuanLyControllerTest@4b8ee4de]" started-at="2024-07-22T23:12:15 ICT" name="setup" finished-at="2024-07-22T23:12:16 ICT" duration-ms="1182" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="testDangNhapVoiDuLieuDeTrong()[pri:0, instance:Controller.DangNhapControllerTest@47d9a273]" started-at="2024-07-22T18:45:53 ICT" name="testDangNhapVoiDuLieuDeTrong" finished-at="2024-07-22T18:45:57 ICT" duration-ms="4012" status="PASS">
+        <test-method signature="testUpdateDuLieuRong()[pri:0, instance:Controller.QuanLyControllerTest@4b8ee4de]" started-at="2024-07-22T23:12:16 ICT" name="testUpdateDuLieuRong" finished-at="2024-07-22T23:12:18 ICT" duration-ms="1942" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testDangNhapVoiDuLieuDeTrong -->
-      </class> <!-- Controller.DangNhapControllerTest -->
+        </test-method> <!-- testUpdateDuLieuRong -->
+        <test-method is-config="true" signature="setup()[pri:0, instance:Controller.QuanLyControllerTest@4b8ee4de]" started-at="2024-07-22T23:12:18 ICT" name="setup" finished-at="2024-07-22T23:12:18 ICT" duration-ms="298" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testUpdateLuongNhoHon0()[pri:0, instance:Controller.QuanLyControllerTest@4b8ee4de]" started-at="2024-07-22T23:12:18 ICT" name="testUpdateLuongNhoHon0" finished-at="2024-07-22T23:12:21 ICT" duration-ms="2783" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateLuongNhoHon0 -->
+      </class> <!-- Controller.QuanLyControllerTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

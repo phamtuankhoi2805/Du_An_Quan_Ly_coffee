@@ -252,68 +252,7 @@ public class QuanLyController implements ActionListener {
 
 	}
 
-//	public void them() {
-//	
-//			try {
-//				String idNhanVien = qlv.txt_id().getText();
-//				if (!idNhanVien.startsWith("NV")) {
-//					 throw new Exception("ID nhân viên phải bắt đầu là NV");
-//					 
-//				} 
-//				String matKhau = generateRandomPassword(10);
-//				String tenNV = qlv.txt_ten().getText();
-//				String ngaySinhText = qlv.txt_ngaySinh().getText();
-//				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//				java.util.Date ngaySinhUtil = dateFormat.parse(ngaySinhText);
-//
-//				// Chuyển đổi java.util.Date thành java.sql.Date
-//				java.sql.Date ngaySinhSql = new java.sql.Date(ngaySinhUtil.getTime());
-//				boolean gioiTinh = false;
-//				if (qlv.rdo_nam().isSelected() == true) {
-//					gioiTinh = true;
-//				} else if (qlv.rdo_nu().isSelected() == true) {
-//					gioiTinh = false;
-//				}
-//				String SDT = qlv.txt_sdt().getText();
-//				String email = qlv.txt_email().getText();
-//				String chucVu = "";
-//				if (qlv.cb_quanLy().isSelected() == true) {
-//					chucVu = "Quản lý";
-//				} else if (qlv.cb_nhanVien().isSelected() == true) {
-//					chucVu = "Nhân viên";
-//				}
-//				String trangThai = qlv.txt_trangThai().getText();
-//				double luongCB = Double.parseDouble(qlv.txt_luongCB().getText());
-//				NhanVienModel nv = new NhanVienModel(idNhanVien, matKhau, tenNV, ngaySinhSql, gioiTinh, SDT, email, chucVu,
-//						trangThai, luongCB, null);
-//				for (NhanVienModel nhanVienModel : listNV) {
-//					if(nhanVienModel.getIdNhanVien().equals(nv.getIdNhanVien())) {
-//						 throw new Exception("ID nhân viên bị trùng");
-//					}
-//				}
-//				NhanVienDAO.getInstance().insert(nv);
-//				qlv.btn_them().setEnabled(false);
-//				qlv.btn_sua().setEnabled(true);
-//				qlv.txt_id().setEditable(false);
-//				fildTable();
-//
-//				JOptionPane.showMessageDialog(qlv, "thêm Nhân viên thành công");
-//			} catch (NumberFormatException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (HeadlessException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (java.text.ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//	
-//	}
+
 	public void them() {
 	    try {
 	        // Kiểm tra ID nhân viên
@@ -409,41 +348,60 @@ public class QuanLyController implements ActionListener {
 	}
 
 	public void sua() {
-		try {
-			String idNhanVien = qlv.txt_id().getText();
-
-			String tenNV = qlv.txt_ten().getText();
-			String ngaySinhText = qlv.txt_ngaySinh().getText();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			java.util.Date ngaySinhUtil = dateFormat.parse(ngaySinhText);
-
-			// Chuyển đổi java.util.Date thành java.sql.Date
-			java.sql.Date ngaySinhSql = new java.sql.Date(ngaySinhUtil.getTime());
-			boolean gioiTinh = false;
-			if (qlv.rdo_nam().isSelected() == true) {
-				gioiTinh = true;
-			} else if (qlv.rdo_nu().isSelected() == true) {
-				gioiTinh = false;
-			}
-			String SDT = qlv.txt_sdt().getText();
-			String email = qlv.txt_email().getText();
-			String chucVu = "";
-			if (qlv.cb_quanLy().isSelected() == true) {
-				chucVu = "Quản lý";
-			} else if (qlv.cb_nhanVien().isSelected() == true) {
-				chucVu = "Nhân viên";
-			}
-			String trangThai = qlv.txt_trangThai().getText();
-			double luongCB = Double.parseDouble(qlv.txt_luongCB().getText());
-			NhanVienModel nv = new NhanVienModel(idNhanVien, null, tenNV, ngaySinhSql, gioiTinh, SDT, email, chucVu,
-					trangThai, luongCB, null);
-			NhanVienDAO.getInstance().update(nv);
-			fildTable();
-			JOptionPane.showMessageDialog(qlv, "Sửa thông tin nhân viên thành công");
-		} catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(qlv, "Sửa thông tin nhân viên thất bại");
-		}
+	    try {
+	        String idNhanVien = qlv.txt_id().getText();
+	        String tenNV = qlv.txt_ten().getText();
+	        String ngaySinhText = qlv.txt_ngaySinh().getText();
+	        
+	        // Kiểm tra dữ liệu
+	        if (tenNV.isEmpty()) {       
+	            JOptionPane.showMessageDialog(qlv, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        
+	        if (ngaySinhText.isEmpty()) {
+	            JOptionPane.showMessageDialog(qlv, "Ngày sinh không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	        java.util.Date ngaySinhUtil = dateFormat.parse(ngaySinhText);
+	        java.sql.Date ngaySinhSql = new java.sql.Date(ngaySinhUtil.getTime());
+	        
+	        boolean gioiTinh;
+	        if (qlv.rdo_nam().isSelected()) {
+	            gioiTinh = true;
+	        } else {
+	            gioiTinh = false;
+	        }
+	        
+	        String SDT = qlv.txt_sdt().getText();
+	        if (SDT.isEmpty()) {
+	            JOptionPane.showMessageDialog(qlv, "SDT không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        String email = qlv.txt_email().getText();
+	        String chucVu;
+	        if (qlv.cb_quanLy().isSelected()) {
+	            chucVu = "Quản lý";
+	        } else {
+	            chucVu = "Nhân viên";
+	        }
+	        
+	        String trangThai = qlv.txt_trangThai().getText();
+	        double luongCB = Double.parseDouble(qlv.txt_luongCB().getText());
+	        if (luongCB <0) {
+	            JOptionPane.showMessageDialog(qlv, "Lương CB không được Nhỏ hơn 0!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        NhanVienModel nv = new NhanVienModel(idNhanVien, null, tenNV, ngaySinhSql, gioiTinh, SDT, email, chucVu, trangThai, luongCB, null);
+	        NhanVienDAO.getInstance().update(nv);
+	        fildTable();
+	        JOptionPane.showMessageDialog(qlv, "Sửa thông tin nhân viên thành công");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	           JOptionPane.showMessageDialog(qlv, "Sửa thông tin thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 
 	public void timKiem() {

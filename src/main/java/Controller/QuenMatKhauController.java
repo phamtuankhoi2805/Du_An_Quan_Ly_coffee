@@ -51,7 +51,7 @@ int maKhoiPhuc ;
 	public void sendEmail() {
         String host = "smtp.gmail.com"; // Địa chỉ SMTP server
         int port = 587; // Cổng SMTP server
-        String email = "khoiptps34900@fpt.edu.vn"; // Tài khoản email nguồn
+        String email = "Email của bạn "; // Tài khoản email nguồn
         String password = "mxje bazn lnvo iiav"; // Mật khẩu email nguồn
 
         String recipientEmail = qmkv.txt_email().getText(); // Địa chỉ email người nhận

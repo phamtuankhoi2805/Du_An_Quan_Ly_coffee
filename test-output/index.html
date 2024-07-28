@@ -51,7 +51,7 @@
               <ul>
                 <li>
                   <a href="#" panel-name="test-xml-Default_suite" class="navigator-link ">
-                    <span>C:\Users\ADMIN\AppData\Local\Temp\testng-eclipse-936582035\testng-customsuite.xml</span>
+                    <span>C:\Users\ADMIN\AppData\Local\Temp\testng-eclipse-419025990\testng-customsuite.xml</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
@@ -93,7 +93,7 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">1 method,   1 passed</span>
+                    <span class="method-stats">2 methods,   2 passed</span>
                   </li>
                   <li>
                     <span class="method-list-title passed">Passed methods</span>
@@ -104,7 +104,12 @@
                     <div class="method-list-content passed suite-Default_suite">
                       <span>
                         <img src="passed.png" width="3%"/>
-                        <a href="#" panel-name="suite-Default_suite" title="Controller.DangNhapControllerTest" class="method navigator-link" hash-for-method="testDangNhapVoiDuLieuDeTrong">testDangNhapVoiDuLieuDeTrong</a> <!-- method navigator-link -->
+                        <a href="#" panel-name="suite-Default_suite" title="Controller.QuanLyControllerTest" class="method navigator-link" hash-for-method="testUpdateDuLieuRong">testUpdateDuLieuRong</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img src="passed.png" width="3%"/>
+                        <a href="#" panel-name="suite-Default_suite" title="Controller.QuanLyControllerTest" class="method navigator-link" hash-for-method="testUpdateLuongNhoHon0">testUpdateLuongNhoHon0</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content passed suite-Default_suite -->
@@ -122,14 +127,21 @@
           <div class="suite-Default_suite-class-passed">
             <div class="main-panel-header rounded-window-top">
               <img src="passed.png"/>
-              <span class="class-name">Controller.DangNhapControllerTest</span>
+              <span class="class-name">Controller.QuanLyControllerTest</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="testDangNhapVoiDuLieuDeTrong">
-                  </a> <!-- testDangNhapVoiDuLieuDeTrong -->
-                  <span class="method-name">testDangNhapVoiDuLieuDeTrong</span>
+                  <a name="testUpdateDuLieuRong">
+                  </a> <!-- testUpdateDuLieuRong -->
+                  <span class="method-name">testUpdateDuLieuRong</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testUpdateLuongNhoHon0">
+                  </a> <!-- testUpdateLuongNhoHon0 -->
+                  <span class="method-name">testUpdateLuongNhoHon0</span>
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
@@ -137,7 +149,7 @@
         </div> <!-- panel Default_suite -->
         <div panel-name="test-xml-Default_suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">C:\Users\ADMIN\AppData\Local\Temp\testng-eclipse-936582035\testng-customsuite.xml</span>
+            <span class="header-content">C:\Users\ADMIN\AppData\Local\Temp\testng-eclipse-419025990\testng-customsuite.xml</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <pre>
@@ -146,7 +158,7 @@
 &lt;suite name=&quot;Default suite&quot; guice-stage=&quot;DEVELOPMENT&quot;&gt;
   &lt;test thread-count=&quot;5&quot; name=&quot;Default test&quot; verbose=&quot;2&quot;&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;Controller.DangNhapControllerTest&quot;/&gt;
+      &lt;class name=&quot;Controller.QuanLyControllerTest&quot;/&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- Default test --&gt;
 &lt;/suite&gt; &lt;!-- Default suite --&gt;
@@ -186,11 +198,15 @@ data.addColumn('number', 'Number');
 data.addColumn('string', 'Method');
 data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
-data.addRows(1);
+data.addRows(2);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'testDangNhapVoiDuLieuDeTrong')
-data.setCell(0, 2, 'Controller.DangNhapControllerTest')
-data.setCell(0, 3, 4012);
+data.setCell(0, 1, 'testUpdateLuongNhoHon0')
+data.setCell(0, 2, 'Controller.QuanLyControllerTest')
+data.setCell(0, 3, 2783);
+data.setCell(1, 0, 1)
+data.setCell(1, 1, 'testUpdateDuLieuRong')
+data.setCell(1, 2, 'Controller.QuanLyControllerTest')
+data.setCell(1, 3, 1942);
 window.suiteTableData['Default_suite']= { tableData: data, tableDiv: 'times-div-Default_suite'}
 return data;
 }
@@ -221,14 +237,22 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">Controller.DangNhapControllerTest</div> <!-- chronological-class-name -->
+              <div class="chronological-class-name">Controller.QuanLyControllerTest</div> <!-- chronological-class-name -->
               <div class="configuration-method before">
                 <span class="method-name">setup</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
-                <span class="method-name">testDangNhapVoiDuLieuDeTrong</span>
-                <span class="method-start">1369 ms</span>
+                <span class="method-name">testUpdateDuLieuRong</span>
+                <span class="method-start">1183 ms</span>
+              </div> <!-- test-method -->
+              <div class="configuration-method before">
+                <span class="method-name">setup</span>
+                <span class="method-start">3127 ms</span>
+              </div> <!-- configuration-method before -->
+              <div class="test-method">
+                <span class="method-name">testUpdateLuongNhoHon0</span>
+                <span class="method-start">3425 ms</span>
               </div> <!-- test-method -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

@@ -3,12 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Controller.DangNhapControllerTest">
+      <class name="Controller.QuanLyControllerTest">
         <methods>
-          <include name="testDangNhapVoiDuLieuHopLe"/>
           <include name="setup"/>
+          <include name="testUpdateDuLieuRong"/>
         </methods>
-      </class> <!-- Controller.DangNhapControllerTest -->
+      </class> <!-- Controller.QuanLyControllerTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
